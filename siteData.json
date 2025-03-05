@@ -11,7 +11,8 @@
         "jane-doe": "Jane Doe",
         "johnny-doe": "Johnny Doe",
         "ong-wei-en": "Ong Wei En",
-        "philbert-shea": "Philbert Shea"
+        "philbert-shea": "Philbert Shea",
+        "xuezhou-xu": "Xuezhou Xu"
       },
       "headingKeywords": {}
     },
@@ -162,6 +163,14 @@
     {
       "src": "team/philbertshea.md",
       "title": "Philbert Shea's Project Portfolio Page",
+      "headings": {
+        "project-addressbook-level-3": "Project: AddressBook Level 3"
+      },
+      "headingKeywords": {}
+    },
+    {
+      "src": "team/xuxuezhou.md",
+      "title": "Xuezhou Xu's Project Portfolio Page",
       "headings": {
         "project-addressbook-level-3": "Project: AddressBook Level 3"
       },
