@@ -16,7 +16,9 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.RemarkTutorialHY;
 import seedu.address.model.tag.Tag;
+
 
 /**
  * Jackson-friendly version of {@link Person}.
@@ -29,6 +31,7 @@ class JsonAdaptedPerson {
     private final String phone;
     private final String email;
     private final String address;
+    final RemarkTutorialHY modelRemark = new RemarkTutorialHY(""); //TODO: Implement parsing and marshalling in the storage commit.
     private final String attendances;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
 
@@ -120,7 +123,7 @@ class JsonAdaptedPerson {
         final AttendanceList modelAttendanceList = AttendanceList.generateAttendanceList(attendances);
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelAttendanceList, modelTags);
+        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelRemark, modelAttendanceList, modelTags);
     }
 
 }
