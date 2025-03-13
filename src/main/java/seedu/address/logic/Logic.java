@@ -11,7 +11,9 @@ import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.person.Person;
 
 /**
- * API of the Logic component
+ * API of the Logic component.
+ * This interface defines the main logic of the application, including command execution
+ * and interaction with the address book model.
  */
 public interface Logic {
     /**
