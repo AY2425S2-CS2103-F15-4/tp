@@ -23,17 +23,26 @@ public class Person {
 
     // Data fields
     private final Address address;
+    private final Remark remark;
     private final Set<Tag> tags = new HashSet<>();
 
     /**
-     * Every field must be present and not null.
+     * Constructs a {@code Person} with the given details.
+     *
+     * @param name    The person's name.
+     * @param phone   The person's phone number.
+     * @param email   The person's email.
+     * @param address The person's address.
+     * @param remark  The person's remark.
+     * @param tags    The person's tags.
      */
-    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
-        requireAllNonNull(name, phone, email, address, tags);
+    public Person(Name name, Phone phone, Email email, Address address, Remark remark, Set<Tag> tags) {
+        requireAllNonNull(name, phone, email, address, remark, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.address = address;
+        this.remark = remark;
         this.tags.addAll(tags);
     }
 
@@ -53,10 +62,10 @@ public class Person {
         return address;
     }
 
-    /**
-     * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
-     * if modification is attempted.
-     */
+    public Remark getRemark() {
+        return remark;
+    }
+
     public Set<Tag> getTags() {
         return Collections.unmodifiableSet(tags);
     }
@@ -64,27 +73,24 @@ public class Person {
     /**
      * Returns true if both persons have the same name.
      * This defines a weaker notion of equality between two persons.
+     *
+     * @param otherPerson The person to compare with.
+     * @return True if both persons have the same name.
      */
     public boolean isSamePerson(Person otherPerson) {
         if (otherPerson == this) {
             return true;
         }
 
-        return otherPerson != null
-                && otherPerson.getName().equals(getName());
+        return otherPerson != null && otherPerson.getName().equals(getName());
     }
 
-    /**
-     * Returns true if both persons have the same identity and data fields.
-     * This defines a stronger notion of equality between two persons.
-     */
     @Override
     public boolean equals(Object other) {
         if (other == this) {
             return true;
         }
 
-        // instanceof handles nulls
         if (!(other instanceof Person)) {
             return false;
         }
@@ -94,13 +100,13 @@ public class Person {
                 && phone.equals(otherPerson.phone)
                 && email.equals(otherPerson.email)
                 && address.equals(otherPerson.address)
+                && remark.equals(otherPerson.remark)
                 && tags.equals(otherPerson.tags);
     }
 
     @Override
     public int hashCode() {
-        // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, address, tags);
+        return Objects.hash(name, phone, email, address, remark, tags);
     }
 
     @Override
@@ -110,8 +116,8 @@ public class Person {
                 .add("phone", phone)
                 .add("email", email)
                 .add("address", address)
+                .add("remark", remark)
                 .add("tags", tags)
                 .toString();
     }
-
 }

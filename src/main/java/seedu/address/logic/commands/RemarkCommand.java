@@ -27,8 +27,10 @@ public class RemarkCommand extends Command {
     private final String remark;
 
     /**
-     * @param index  Index of the person in the filtered person list to edit the remark
-     * @param remark The new remark of the person
+     * Constructs a {@code RemarkCommand}.
+     *
+     * @param index  Index of the person in the filtered person list to edit the remark.
+     * @param remark The new remark of the person.
      */
     public RemarkCommand(Index index, String remark) {
         requireAllNonNull(index, remark);
@@ -38,8 +40,7 @@ public class RemarkCommand extends Command {
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
-        throw new CommandException(
-                String.format(MESSAGE_ARGUMENTS, index.getOneBased(), remark));
+        throw new CommandException(String.format(MESSAGE_ARGUMENTS, index.getOneBased(), remark));
     }
 
     @Override
@@ -52,7 +53,18 @@ public class RemarkCommand extends Command {
             return false;
         }
 
-        RemarkCommand e = (RemarkCommand) other;
-        return index.equals(e.index) && remark.equals(e.remark);
+        RemarkCommand otherRemarkCommand = (RemarkCommand) other;
+        return index.equals(otherRemarkCommand.index) && remark.equals(otherRemarkCommand.remark);
     }
+
+    @Override
+    public int hashCode() {
+        return index.hashCode() ^ remark.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getCanonicalName() + "{index=" + index.getOneBased() + ", remark='" + remark + "'}";
+    }
+
 }

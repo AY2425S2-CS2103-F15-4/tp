@@ -5,13 +5,17 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+
+import java.util.Optional;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Remark;
 
 /**
  * Adds a person to the address book.
@@ -26,12 +30,14 @@ public class AddCommand extends Command {
             + PREFIX_PHONE + "PHONE "
             + PREFIX_EMAIL + "EMAIL "
             + PREFIX_ADDRESS + "ADDRESS "
+            + PREFIX_REMARK + "REMARK "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_NAME + "John Doe "
             + PREFIX_PHONE + "98765432 "
             + PREFIX_EMAIL + "johnd@example.com "
             + PREFIX_ADDRESS + "311, Clementi Ave 2, #02-25 "
+            + PREFIX_REMARK + "Nice guy "
             + PREFIX_TAG + "friends "
             + PREFIX_TAG + "owesMoney";
 
@@ -39,9 +45,10 @@ public class AddCommand extends Command {
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book";
 
     private final Person toAdd;
+    private Remark remark;
 
     /**
-     * Creates an AddCommand to add the specified {@code Person}
+     * Creates an AddCommand to add the specified {@code Person}.
      */
     public AddCommand(Person person) {
         requireNonNull(person);
@@ -66,13 +73,20 @@ public class AddCommand extends Command {
             return true;
         }
 
-        // instanceof handles nulls
         if (!(other instanceof AddCommand)) {
             return false;
         }
 
         AddCommand otherAddCommand = (AddCommand) other;
         return toAdd.equals(otherAddCommand.toAdd);
+    }
+
+    public void setRemark(Remark remark) {
+        this.remark = remark;
+    }
+
+    public Optional<Remark> getRemark() {
+        return Optional.ofNullable(remark);
     }
 
     @Override
