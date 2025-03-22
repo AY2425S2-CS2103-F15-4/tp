@@ -18,6 +18,12 @@ public class Messages {
     public static final String MESSAGE_INVALID_QUOTES = "Incorrect quote format detected!"
             + "\nA maximum of one quote should be found in between every flag."
             + "\nEvery quote should be paired.";
+    public static final String MESSAGE_POTENTIAL_INVALID_QUOTES =
+            "There may be hyphenated inputs that are mistaken for command flags.\n"
+            + "If so, please enclose the entire parameter in double quotes.\n"
+            + "Example: \"example -t hyphens\" instead of example -t hyphens";
+    public static final String MESSAGE_AT_LEAST_ONE_FIELD_REQUIRED =
+            "At least one of this fields must be non empty: ";
     public static final String MESSAGE_INVALID_PERSON_DISPLAYED_INDEX = "The person index provided "
             + "is invalid. You currently have %d records!";
     public static final String MESSAGE_PERSONS_LISTED_OVERVIEW = "%1$d persons listed!";
@@ -39,6 +45,26 @@ public class Messages {
                 Stream.of(duplicatePrefixes).map(Prefix::toString).collect(Collectors.toSet());
 
         return MESSAGE_DUPLICATE_FIELDS + String.join(" ", duplicateFields);
+    }
+
+    public static String getErrorMessageForQuotes() {
+        return MESSAGE_POTENTIAL_INVALID_QUOTES;
+    }
+
+    /**
+     * Wrapper for two sub method calls.
+     */
+    public static String getErrorMessageForDuplicatePrefixesWithQuotes(Prefix ... duplicatePrefixes) {
+        return getErrorMessageForDuplicatePrefixes(duplicatePrefixes) + "\n"
+                + getErrorMessageForQuotes();
+    }
+
+    public static String getErrorMessageForRequiredButEmptyField(Prefix ... emptyPrefixes) {
+        assert emptyPrefixes.length > 0;
+
+        Set<String> emptyFields =
+                Stream.of(emptyPrefixes).map(Prefix::toString).collect(Collectors.toSet());
+        return MESSAGE_AT_LEAST_ONE_FIELD_REQUIRED + String.join(" ", emptyFields);
     }
 
     /**
@@ -67,7 +93,7 @@ public class Messages {
      */
     public static String getFormattedPersonAttributesForDisplay(Person person) {
         final StringBuilder builder = new StringBuilder();
-        builder.append(" Name              : ").append(person.getName()).append("\n")
+        builder.append("\n Name              : ").append(person.getName()).append("\n")
                 .append(" Phone             : ")
                 .append(person.getPhone().value.isEmpty() ? "-" : person.getPhone())
                 .append("\n")

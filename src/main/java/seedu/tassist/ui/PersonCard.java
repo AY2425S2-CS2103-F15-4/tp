@@ -99,8 +99,12 @@ public class PersonCard extends UiPart<Region> {
                     + person.getFaculty().value);
         }
 
+
         if (!person.getRemark().value.isEmpty()) {
             remark.setText(person.getRemark().value);
+        } else {
+            remark.setVisible(false);
+            remark.setManaged(false);
         }
 
         labScores.getChildren().add(new Label("Lab grades:"));
@@ -166,5 +170,28 @@ public class PersonCard extends UiPart<Region> {
         imageView.setFitWidth(11);
         hBox.getChildren().addAll(new Label(labelText), imageView);
         return hBox;
+    }
+
+    /**
+     * Controls the visibility of detailed information about the person.
+     *
+     * @param show True to show details, false to hide them
+     */
+    public void showDetails(boolean show) {
+        contact.setVisible(show);
+        contact.setManaged(show);
+
+        email.setVisible(show);
+        email.setManaged(show);
+
+        if (facAndYear.getText().isEmpty()) {
+            facAndYear.setVisible(false);
+            facAndYear.setManaged(false);
+        } else {
+            facAndYear.setVisible(show);
+            facAndYear.setManaged(show);
+        }
+
+        cardPane.requestLayout();
     }
 }

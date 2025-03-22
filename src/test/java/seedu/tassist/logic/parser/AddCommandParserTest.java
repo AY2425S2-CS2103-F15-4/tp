@@ -119,49 +119,49 @@ public class AddCommandParserTest {
 
         // Multiple names.
         assertParseFailure(parser, NAME_DESC_AMY + validExpectedPersonString,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_NAME));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_NAME));
 
         // Multiple phones.
         assertParseFailure(parser, PHONE_DESC_AMY + validExpectedPersonString,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_PHONE));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_PHONE));
 
         // Multiple Telegram handles.
         assertParseFailure(parser, TELE_HANDLE_DESC_AMY + validExpectedPersonString,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_TELE_HANDLE));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_TELE_HANDLE));
 
         // Multiple emails.
         assertParseFailure(parser, EMAIL_DESC_AMY + validExpectedPersonString,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_EMAIL));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_EMAIL));
 
         // Multiple matric numbers.
         assertParseFailure(parser, MAT_NUM_DESC_AMY + validExpectedPersonString,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_MAT_NUM));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_MAT_NUM));
 
         // Multiple tutorial groups.
         assertParseFailure(parser, TUT_GROUP_DESC_AMY + validExpectedPersonString,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_TUT_GROUP));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_TUT_GROUP));
 
         // Multiple lab groups.
         assertParseFailure(parser, LAB_GROUP_DESC_AMY + validExpectedPersonString,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_LAB_GROUP));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_LAB_GROUP));
 
         // Multiple faculties.
         assertParseFailure(parser, FACULTY_DESC_AMY + validExpectedPersonString,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_FACULTY));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_FACULTY));
 
         // Multiple years.
         assertParseFailure(parser, YEAR_DESC_AMY + validExpectedPersonString,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_YEAR));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_YEAR));
 
         // Multiple remarks.
         assertParseFailure(parser, REMARK_DESC_AMY + validExpectedPersonString,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_REMARK));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_REMARK));
 
         // Multiple fields repeated
         assertParseFailure(parser,
                 validExpectedPersonString + PHONE_DESC_AMY + EMAIL_DESC_AMY + NAME_DESC_AMY
                         + validExpectedPersonString,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_TELE_HANDLE, PREFIX_MAT_NUM,
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_TELE_HANDLE, PREFIX_MAT_NUM,
                         PREFIX_NAME, PREFIX_PHONE, PREFIX_LAB_GROUP, PREFIX_REMARK, PREFIX_TUT_GROUP,
                         PREFIX_EMAIL, PREFIX_YEAR, PREFIX_FACULTY));
 
@@ -169,77 +169,77 @@ public class AddCommandParserTest {
 
         // Invalid name.
         assertParseFailure(parser, INVALID_NAME_DESC + validExpectedPersonString,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_NAME));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_NAME));
 
         // Invalid phone.
         assertParseFailure(parser, INVALID_PHONE_DESC + validExpectedPersonString,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_PHONE));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_PHONE));
 
         // Invalid Telegram handle.
         assertParseFailure(parser, INVALID_TELE_HANDLE_DESC + validExpectedPersonString,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_TELE_HANDLE));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_TELE_HANDLE));
 
         // Invalid email.
         assertParseFailure(parser, INVALID_EMAIL_DESC + validExpectedPersonString,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_EMAIL));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_EMAIL));
 
         // Invalid matric number.
         assertParseFailure(parser, INVALID_MAT_NUM_DESC + validExpectedPersonString,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_MAT_NUM));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_MAT_NUM));
 
         // Invalid tutorial group.
         assertParseFailure(parser, INVALID_TUT_GROUP_DESC + validExpectedPersonString,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_TUT_GROUP));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_TUT_GROUP));
 
         // Invalid lab group.
         assertParseFailure(parser, INVALID_LAB_GROUP_DESC + validExpectedPersonString,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_LAB_GROUP));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_LAB_GROUP));
 
         // Invalid faculty.
         assertParseFailure(parser, INVALID_FACULTY_DESC + validExpectedPersonString,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_FACULTY));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_FACULTY));
 
         // Invalid year.
         assertParseFailure(parser, INVALID_YEAR_DESC + validExpectedPersonString,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_YEAR));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_YEAR));
 
         // Valid value followed by invalid value
 
         // Invalid name.
         assertParseFailure(parser, validExpectedPersonString + INVALID_NAME_DESC,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_NAME));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_NAME));
 
         // Invalid phone.
         assertParseFailure(parser, validExpectedPersonString + INVALID_PHONE_DESC,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_PHONE));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_PHONE));
 
         // Invalid Telegram handle.
         assertParseFailure(parser, INVALID_TELE_HANDLE_DESC + validExpectedPersonString,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_TELE_HANDLE));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_TELE_HANDLE));
 
         // Invalid email.
         assertParseFailure(parser, validExpectedPersonString + INVALID_EMAIL_DESC,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_EMAIL));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_EMAIL));
 
         // Invalid matric number.
         assertParseFailure(parser, validExpectedPersonString + INVALID_MAT_NUM_DESC,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_MAT_NUM));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_MAT_NUM));
 
         // Invalid tutorial group.
         assertParseFailure(parser, validExpectedPersonString + INVALID_TUT_GROUP_DESC,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_TUT_GROUP));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_TUT_GROUP));
 
         // Invalid lab group.
         assertParseFailure(parser, validExpectedPersonString + INVALID_LAB_GROUP_DESC,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_LAB_GROUP));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_LAB_GROUP));
 
         // Invalid faculty.
         assertParseFailure(parser, validExpectedPersonString + INVALID_FACULTY_DESC,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_FACULTY));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_FACULTY));
 
         // Invalid year.
         assertParseFailure(parser, validExpectedPersonString + INVALID_YEAR_DESC,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_YEAR));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_YEAR));
     }
 
     @Test
@@ -362,8 +362,6 @@ public class AddCommandParserTest {
                 + LAB_GROUP_DESC_BOB + FACULTY_DESC_BOB + YEAR_DESC_BOB + REMARK_DESC_BOB
                 + TAG_DESC_HUSBAND + TAG_DESC_FRIEND, Phone.MESSAGE_CONSTRAINTS);
 
-
-
         // Invalid email.
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + TELE_HANDLE_DESC_BOB
                 + INVALID_EMAIL_DESC + MAT_NUM_DESC_BOB + TUT_GROUP_DESC_BOB
@@ -453,7 +451,7 @@ public class AddCommandParserTest {
                 + YEAR_DESC_BOB
                 + " " + PREFIX_REMARK + " \"" + "-n !@# -p &^% -e !@#"
                 + " -tg !$#! -b %#$ -t" + "\" ",
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_TUT_GROUP));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_TUT_GROUP));
 
         // Missing quotation in faculty.
         assertParseFailure(parser, " " + PREFIX_NAME + " \"" + "Bob -t ./123 Choo" + "\" "
@@ -467,7 +465,7 @@ public class AddCommandParserTest {
                 + YEAR_DESC_BOB
                 + " " + PREFIX_REMARK + " \"" + "-n !@# -p &^% -e !@#"
                 + " -tg !$#! -b %#$ -t" + "\" ",
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_PHONE));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_PHONE));
 
         // Missing quotation in remark.
         assertParseFailure(parser, " " + PREFIX_NAME + " \"" + "Bob -t ./123 Choo" + "\" "
@@ -481,10 +479,54 @@ public class AddCommandParserTest {
                 + YEAR_DESC_BOB
                 + " " + PREFIX_REMARK + " " + "-n !@# -p &^% -e !@#"
                 + " -tg !$#! -b %#$ -t" + " ",
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_TELE_HANDLE, PREFIX_NAME,
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_TELE_HANDLE, PREFIX_NAME,
                         PREFIX_PHONE, PREFIX_LAB_GROUP, PREFIX_TUT_GROUP, PREFIX_EMAIL));
 
     }
 
+    @Test
+    public void parse_whiteSpaceSuccess() {
+        // One of TeleHandle or Phone is passed and one of TutGroup or LabGroup is passed
+        Person expectedPerson = new PersonBuilder(BOB).withName("Bob -t ./123 Choo")
+                .withEmail("bob-bob@example.com").withPhone("").withFaculty("m -p abcdefg")
+                .withLabGroup("").withRemark("-n !@# -p &^% -e !@# -tg !$#! -b %#$ -t")
+                .withTags().build();
+        assertParseSuccess(parser, " " + PREFIX_NAME + " \"" + "Bob -t ./123 Choo" + "\" "
+                + PREFIX_PHONE + " " + PREAMBLE_WHITESPACE
+                + TELE_HANDLE_DESC_BOB
+                + " " + PREFIX_EMAIL + " " + "bob-bob@example.com" + " "
+                + MAT_NUM_DESC_BOB
+                + TUT_GROUP_DESC_BOB + " "
+                + PREFIX_LAB_GROUP + " " + PREAMBLE_WHITESPACE
+                + " " + PREFIX_FACULTY + " \"" + "m -p abcdefg" + "\" "
+                + YEAR_DESC_BOB
+                + " " + PREFIX_REMARK + " \"" + "-n !@# -p &^% -e !@#"
+                + " -tg !$#! -b %#$ -t" + "\" ", new AddCommand(expectedPerson));
+    }
+
+    @Test
+    public void parse_whiteSpaceFailure() {
+        // Both TeleHandle and Phone are empty.
+        assertParseFailure(parser, " " + PREFIX_NAME + " \"" + "Bob -t ./123 Choo" + "\" "
+                        + " " + PREFIX_PHONE + " " + PREAMBLE_WHITESPACE + " "
+                        + " " + PREFIX_TELE_HANDLE + " " + PREAMBLE_WHITESPACE + " "
+                        + " " + PREFIX_EMAIL + " " + "bob-bob@example.com" + " "
+                        + MAT_NUM_DESC_BOB
+                        + TUT_GROUP_DESC_BOB
+                        + LAB_GROUP_DESC_BOB,
+                Messages.getErrorMessageForRequiredButEmptyField(PREFIX_TELE_HANDLE, PREFIX_PHONE));
+
+        // Both TutGroup and LabGroup are empty.
+        assertParseFailure(parser, " " + PREFIX_NAME + " \"" + "Bob -t ./123 Choo" + "\" "
+                        + PHONE_DESC_BOB
+                        + TELE_HANDLE_DESC_BOB
+                        + " " + PREFIX_EMAIL + " " + "bob-bob@example.com" + " "
+                        + MAT_NUM_DESC_BOB
+                        + " " + PREFIX_TUT_GROUP + " " + PREAMBLE_WHITESPACE + " "
+                        + " " + PREFIX_LAB_GROUP + " " + PREAMBLE_WHITESPACE + " ",
+                Messages.getErrorMessageForRequiredButEmptyField(PREFIX_TUT_GROUP,
+                        PREFIX_LAB_GROUP));
+
+    }
 
 }

@@ -35,7 +35,7 @@ public class ArgumentTokenizer {
 
     /**
      * Finds all sections enclosed in quotes in the given arguments string.
-     * Assumes even number of quotes. (See {@code AddCommandParser#isValidQuotePattern}).
+     * Assumes even number of quotes. (See {@code QuotePattern} class).
      *
      * @param argsString Arguments string to search for quoted sections
      * @return           List of quoted sections with their start and end positions

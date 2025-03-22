@@ -63,10 +63,11 @@ public class AddCommandParser implements Parser<AddCommand> {
                     AddCommand.MESSAGE_USAGE));
         }
 
-        // todo: change in future to allow for duplicate fields.
-        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_TELE_HANDLE,
-                PREFIX_EMAIL, PREFIX_MAT_NUM, PREFIX_TUT_GROUP, PREFIX_LAB_GROUP,
-                PREFIX_FACULTY, PREFIX_YEAR, PREFIX_REMARK);
+        argMultimap.verifyNoDuplicatePrefixesAndWarnQuotesFor(PREFIX_NAME, PREFIX_PHONE,
+                PREFIX_TELE_HANDLE, PREFIX_EMAIL, PREFIX_MAT_NUM, PREFIX_TUT_GROUP,
+                PREFIX_LAB_GROUP, PREFIX_FACULTY, PREFIX_YEAR, PREFIX_REMARK);
+        argMultimap.verifyOneNonEmptyFor(PREFIX_PHONE, PREFIX_TELE_HANDLE);
+        argMultimap.verifyOneNonEmptyFor(PREFIX_TUT_GROUP, PREFIX_LAB_GROUP);
 
         Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).orElse(""));

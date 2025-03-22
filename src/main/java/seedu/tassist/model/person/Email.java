@@ -24,7 +24,7 @@ public class Email {
             + "    - end with a domain label at least 2 characters long\n"
             + "    - have each domain label start and end with alphanumeric characters\n"
             + "    - have each domain label consist of alphanumeric characters, "
-            + "separated only by hyphens, if any."
+            + "separated only by hyphens, if any.\n"
             + "3. All hyphens should be encapsulated in \"\"";
 
     // alphanumeric and special characters
