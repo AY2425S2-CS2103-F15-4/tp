@@ -135,18 +135,18 @@ public class MarkAttendanceCommandParserTest {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                 MarkAttendanceCommand.MESSAGE_USAGE);
 
-        // no parameters
+        // No parameters.
         assertParseFailure(parser, MarkAttendanceCommand.COMMAND_WORD, expectedMessage);
 
-        // no index AND no tutorial group
+        // No index AND no tutorial group.
         assertParseFailure(parser, MarkAttendanceCommand.COMMAND_WORD + " "
                 + PREFIX_WEEK + " " + VALID_WEEK_A, expectedMessage);
 
-        // no week
+        // No week.
         assertParseFailure(parser, MarkAttendanceCommand.COMMAND_WORD + " "
                 + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased(), expectedMessage);
 
-        // MC and Not Attended Flag together
+        // MC and Not Attended Flag together.
         assertParseFailure(parser, MarkAttendanceCommand.COMMAND_WORD + " "
                 + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + " "
                 + PREFIX_WEEK + " " + VALID_WEEK_A + " "
@@ -158,31 +158,31 @@ public class MarkAttendanceCommandParserTest {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                 MarkAttendanceCommand.MESSAGE_USAGE);
 
-        // Index, On MC and Not Attended Flag together
+        // Index, On MC and Not Attended Flag together.
         assertParseFailure(parser, MarkAttendanceCommand.COMMAND_WORD + " "
                 + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + " "
                 + PREFIX_WEEK + " " + VALID_WEEK_A + " "
                 + PREFIX_MARK_ON_MC + " " + PREFIX_MARK_NOT_ATTENDED, expectedMessage);
 
-        // TutGroup, On MC and Not Attended Flag together
+        // TutGroup, On MC and Not Attended Flag together.
         assertParseFailure(parser, MarkAttendanceCommand.COMMAND_WORD + " "
                 + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_AMY + " "
                 + PREFIX_WEEK + " " + VALID_WEEK_A + " "
                 + PREFIX_MARK_ON_MC + " " + PREFIX_MARK_NOT_ATTENDED, expectedMessage);
 
-        // TutGroup, On MC and No Tutorial Flag together
+        // TutGroup, On MC and No Tutorial Flag together.
         assertParseFailure(parser, MarkAttendanceCommand.COMMAND_WORD + " "
                 + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_AMY + " "
                 + PREFIX_WEEK + " " + VALID_WEEK_A + " "
                 + PREFIX_MARK_ON_MC + " " + PREFIX_MARK_NO_TUTORIAL, expectedMessage);
 
-        // TutGroup, Not Attended and No Tutorial Flag together
+        // TutGroup, Not Attended and No Tutorial Flag together.
         assertParseFailure(parser, MarkAttendanceCommand.COMMAND_WORD + " "
                 + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_AMY + " "
                 + PREFIX_WEEK + " " + VALID_WEEK_A + " "
                 + PREFIX_MARK_NOT_ATTENDED + " " + PREFIX_MARK_NO_TUTORIAL, expectedMessage);
 
-        // Index, No Tutorial Flag
+        // Index and TutGroup Flag together.
         assertParseFailure(parser, MarkAttendanceCommand.COMMAND_WORD + " "
                 + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + " "
                 + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_AMY + " "

@@ -44,10 +44,10 @@ public class AttendanceTest {
         assertFalse(Attendance.isValidAttendance(10));
 
         // Valid attendance -> returns true.
-        assertTrue(Attendance.isValidAttendance(0)); // Not attended
-        assertTrue(Attendance.isValidAttendance(1)); // Attended
-        assertTrue(Attendance.isValidAttendance(2)); // On MC
-        assertTrue(Attendance.isValidAttendance(3)); // No tutorial
+        assertTrue(Attendance.isValidAttendance(0)); // Not attended.
+        assertTrue(Attendance.isValidAttendance(1)); // Attended.
+        assertTrue(Attendance.isValidAttendance(2)); // On MC.
+        assertTrue(Attendance.isValidAttendance(3)); // No tutorial.
     }
 
     @Test
@@ -59,25 +59,25 @@ public class AttendanceTest {
     }
 
     @Test
-    public void equals() {
+    public void equalsMethod() {
         Attendance attendance = new Attendance(3, Attendance.ATTENDED);
 
-        // same values -> returns true
+        // Same values -> returns true.
         assertTrue(attendance.equals(new Attendance(3, Attendance.ATTENDED)));
 
-        // same object -> returns true
+        // Same object -> returns true.
         assertTrue(attendance.equals(attendance));
 
-        // null -> returns false
+        // Null -> returns false.
         assertFalse(attendance.equals(null));
 
-        // different types -> returns false
+        // Different types -> returns false.
         assertFalse(attendance.equals(5.0f));
 
-        // different week -> returns false
+        // Different week -> returns false.
         assertFalse(attendance.equals(new Attendance(5, Attendance.ATTENDED)));
 
-        // different attendance -> returns false
+        // Different attendance -> returns false.
         assertFalse(attendance.equals(new Attendance(3, Attendance.NOT_ATTENDED)));
     }
 }

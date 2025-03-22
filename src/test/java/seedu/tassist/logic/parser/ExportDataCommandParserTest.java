@@ -42,13 +42,13 @@ public class ExportDataCommandParserTest {
         String noFileName = ExportDataCommand.COMMAND_WORD + " " + PREFIX_EXTENSION + VALID_FILE_EXTENSION_CSV;
         String noFileExtension = ExportDataCommand.COMMAND_WORD + " " + PREFIX_FILENAME + VALID_FILE_NAME;
 
-        // missing all parameters
+        // Missing all parameters.
         assertParseFailure(parser, ExportDataCommand.COMMAND_WORD, expectedMessage);
 
-        // missing filename
+        // Missing filename.
         assertParseFailure(parser, noFileName , expectedMessage);
 
-        // missing file extension
+        // Missing file extension.
         assertParseFailure(parser, noFileExtension , expectedMessage);
     }
 }

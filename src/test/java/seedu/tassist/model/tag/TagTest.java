@@ -21,7 +21,7 @@ public class TagTest {
 
     @Test
     public void isValidTagName() {
-        // null tag name
+        // Null tag name.
         assertThrows(NullPointerException.class, () -> Tag.isValidTagName(null));
 
         assertFalse(Tag.isValidTagName("áéíóúüñ")); // Special characters.

@@ -21,7 +21,7 @@ public class PhoneTest {
 
     @Test
     public void isValidPhone() {
-        // null phone number.
+        // Null phone number.
         assertThrows(NullPointerException.class, () -> Phone.isValidPhone(null));
 
         // Invalid phone numbers.
@@ -50,7 +50,7 @@ public class PhoneTest {
     }
 
     @Test
-    public void equals() {
+    public void equalsMethod() {
         Phone phone = new Phone("999");
 
         // Same values -> returns true.
@@ -59,7 +59,7 @@ public class PhoneTest {
         // Same object -> returns true.
         assertTrue(phone.equals(phone));
 
-        // null -> returns false.
+        // Null -> returns false.
         assertFalse(phone.equals(null));
 
         // Different types -> returns false.

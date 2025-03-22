@@ -50,27 +50,27 @@ public class ExportDataCommandTest {
     }
 
     @Test
-    public void equals() {
+    public void equalsMethod() {
         //TODO: These checks might not be necessary
         final ExportDataCommand exportDataCommand = new ExportDataCommand(VALID_FILE_NAME, VALID_FILE_EXTENSION_CSV);
 
-        // same values -> returns true
+        // Same values -> returns true.
         ExportDataCommand exportDataCommandTester = new ExportDataCommand(VALID_FILE_NAME, VALID_FILE_EXTENSION_CSV);
         assertTrue(exportDataCommand.equals(exportDataCommandTester));
 
-        // same object -> returns true
+        // Same object -> returns true.
         assertTrue(exportDataCommand.equals(exportDataCommand));
 
-        // null -> returns false
+        // Null -> returns false.
         assertFalse(exportDataCommand.equals(null));
 
-        // different types -> returns false
+        // Different types -> returns false.
         assertFalse(exportDataCommand.equals(new ClearCommand()));
 
-        // different file names -> false
+        // Different file names -> returns false.
         assertFalse(exportDataCommand.equals(new ExportDataCommand("lifeisgood", VALID_FILE_EXTENSION_CSV)));
 
-        // different file extensions -> false
+        // Different file extensions -> returns false.
         assertFalse(exportDataCommand.equals(new ExportDataCommand(VALID_FILE_NAME, VALID_FILE_EXTENSION_JSON)));
     }
 }

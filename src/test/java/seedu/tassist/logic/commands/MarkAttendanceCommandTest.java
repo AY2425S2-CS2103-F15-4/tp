@@ -319,7 +319,7 @@ public class MarkAttendanceCommandTest {
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
         Index outOfBoundIndex = INDEX_SECOND_PERSON;
 
-        // ensures that outOfBoundIndex is still in bounds of address book list
+        // Ensures that outOfBoundIndex is still in bounds of address book list.
         assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getPersonList().size());
 
         MarkAttendanceCommand command = new MarkAttendanceCommand(outOfBoundIndex, 1, Attendance.ATTENDED);
@@ -328,33 +328,33 @@ public class MarkAttendanceCommandTest {
     }
 
     @Test
-    public void equals() {
+    public void equalsMethod() {
         final MarkAttendanceCommand standardCommand =
                 new MarkAttendanceCommand(INDEX_FIRST_PERSON, VALID_WEEK_A, Attendance.ATTENDED);
 
-        // same values -> return true
+        // Same values -> returns true.
         MarkAttendanceCommand commandWithSameValues =
                 new MarkAttendanceCommand(INDEX_FIRST_PERSON, VALID_WEEK_A, Attendance.ATTENDED);
         assertTrue(standardCommand.equals(commandWithSameValues));
 
-        // same object -> return true
+        // Same object -> returns true.
         assertTrue(standardCommand.equals(standardCommand));
 
-        // null -> return false
+        // Null -> returns false.
         assertFalse(standardCommand.equals(null));
 
-        // different types -> return false
+        // Different types -> returns false.
         assertFalse(standardCommand.equals(new ClearCommand()));
 
-        // different index -> return false
+        // Different index -> returns false.
         assertFalse(standardCommand.equals(new MarkAttendanceCommand(
                 INDEX_SECOND_PERSON, VALID_WEEK_A, Attendance.ATTENDED)));
 
-        // different week -> return false
+        // Different week -> returns false.
         assertFalse(standardCommand.equals(new MarkAttendanceCommand(
                 INDEX_FIRST_PERSON, VALID_WEEK_B, Attendance.ATTENDED)));
 
-        // different attendanceStatus -> return false
+        // Different attendanceStatus -> returns false.
         assertFalse(standardCommand.equals(new MarkAttendanceCommand(
                 INDEX_FIRST_PERSON, VALID_WEEK_A, Attendance.NOT_ATTENDED)));
 
@@ -362,7 +362,7 @@ public class MarkAttendanceCommandTest {
                 new MarkAttendanceCommand(new TutGroup(VALID_TUT_GROUP_AMY),
                         VALID_WEEK_B, Attendance.NO_TUTORIAL);
 
-        // different tut group -> return false
+        // Different tut group -> returns false.
         assertFalse(standardCommandWithTutGroup.equals(new MarkAttendanceCommand(
                 new TutGroup(VALID_TUT_GROUP_BOB), VALID_WEEK_B, Attendance.NO_TUTORIAL)));
 

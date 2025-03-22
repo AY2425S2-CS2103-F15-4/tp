@@ -21,7 +21,7 @@ public class TeleHandleTest {
 
     @Test
     public void isValidTeleHandle() {
-        // null teleHandle.
+        // Null teleHandle.
         assertThrows(NullPointerException.class, () -> TeleHandle.isValidTeleHandle(null));
 
         // Invalid teleHandle.
@@ -52,7 +52,7 @@ public class TeleHandleTest {
     }
 
     @Test
-    public void equals() {
+    public void equalsMethod() {
         TeleHandle teleHandle = new TeleHandle("@peter");
 
         // Same values -> returns true.
@@ -61,7 +61,7 @@ public class TeleHandleTest {
         // Same object -> returns true.
         assertTrue(teleHandle.equals(teleHandle));
 
-        // null -> returns false
+        // Null -> returns false.
         assertFalse(teleHandle.equals(null));
 
         // Different types -> returns false.

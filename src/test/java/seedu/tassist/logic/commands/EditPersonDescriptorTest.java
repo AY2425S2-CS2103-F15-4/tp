@@ -25,64 +25,64 @@ import seedu.tassist.testutil.EditPersonDescriptorBuilder;
 public class EditPersonDescriptorTest {
 
     @Test
-    public void equals() {
-        // same values -> returns true
+    public void equalsMethod() {
+        // Same values -> returns true.
         EditPersonDescriptor descriptorWithSameValues = new EditPersonDescriptor(DESC_AMY);
         assertTrue(DESC_AMY.equals(descriptorWithSameValues));
 
-        // same object -> returns true
+        // Same object -> returns true.
         assertTrue(DESC_AMY.equals(DESC_AMY));
 
-        // null -> returns false
+        // Null -> returns false.
         assertFalse(DESC_AMY.equals(null));
 
-        // different types -> returns false
+        // Different types -> returns false.
         assertFalse(DESC_AMY.equals(5));
 
-        // different values -> returns false
+        // Different values -> returns false.
         assertFalse(DESC_AMY.equals(DESC_BOB));
 
-        // different name -> returns false
+        // Different name -> returns false.
         EditPersonDescriptor editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withName(VALID_NAME_BOB).build();
         assertFalse(DESC_AMY.equals(editedAmy));
 
-        // different phone -> returns false
+        // Different phone -> returns false.
         editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withPhone(VALID_PHONE_BOB).build();
         assertFalse(DESC_AMY.equals(editedAmy));
 
-        // different telehandle -> returns false
+        // Different telehandle -> returns false.
         editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withTeleHandle(VALID_TELE_HANDLE_BOB).build();
         assertFalse(DESC_AMY.equals(editedAmy));
 
-        // different email -> returns false
+        // Different email -> returns false.
         editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withEmail(VALID_EMAIL_BOB).build();
         assertFalse(DESC_AMY.equals(editedAmy));
 
-        // different mat_num -> returns false
+        // Different mat_num -> returns false.
         editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withMatNum(VALID_MAT_NUM_BOB).build();
         assertFalse(DESC_AMY.equals(editedAmy));
 
-        // different tut_group -> returns false
+        // Different tut_group -> returns false.
         editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withTutGroup(VALID_TUT_GROUP_BOB).build();
         assertFalse(DESC_AMY.equals(editedAmy));
 
-        // different lab_group -> returns false
+        // Different lab_group -> returns false.
         editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withLabGroup(VALID_LAB_GROUP_BOB).build();
         assertFalse(DESC_AMY.equals(editedAmy));
 
-        // different faculty -> returns false
+        // Different faculty -> returns false.
         editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withFaculty(VALID_FACULTY_BOB).build();
         assertFalse(DESC_AMY.equals(editedAmy));
 
-        // different year -> returns false
+        // Different year -> returns false.
         editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withYear(VALID_YEAR_BOB).build();
         assertFalse(DESC_AMY.equals(editedAmy));
 
-        // different remark -> returns false
+        // Different remark -> returns false.
         editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withRemark(VALID_REMARK_BOB).build();
         assertFalse(DESC_AMY.equals(editedAmy));
 
-        // different tags -> returns false
+        // Different tags -> returns false.
         editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withTags(VALID_TAG_HUSBAND).build();
         assertFalse(DESC_AMY.equals(editedAmy));
     }

@@ -21,10 +21,10 @@ public class AttendanceListTest {
     @Test
     public void isValidAttendanceString() {
 
-        // null -> throws NullPointerException
+        // Null -> throws NullPointerException
         assertThrows(NullPointerException.class, () -> AttendanceList.isValidAttendanceString(null));
 
-        // invalid attendanceString -> returns false
+        // Invalid attendanceString -> returns false.
         assertFalse(AttendanceList.isValidAttendanceString(""));
         assertFalse(AttendanceList.isValidAttendanceString("00000")); // Invalid Length
         assertFalse(AttendanceList.isValidAttendanceString("000000000000000")); // Invalid Length
@@ -32,7 +32,7 @@ public class AttendanceListTest {
         assertFalse(AttendanceList.isValidAttendanceString("000a*-0000000")); // Invalid Chars
         assertFalse(AttendanceList.isValidAttendanceString("0120120120124")); // Not within 0, 1, 2 or 3
 
-        // valid attendanceString -> returns true
+        // Valid attendanceString -> returns true.
         assertTrue(AttendanceList.isValidAttendanceString(AttendanceList.DEFAULT_ATTENDANCE_STRING));
         assertTrue(AttendanceList.isValidAttendanceString("1111111111111"));
         assertTrue(AttendanceList.isValidAttendanceString("2222222222222"));
@@ -53,7 +53,7 @@ public class AttendanceListTest {
 
     @Test
     public void getAttendanceForWeek() {
-        // invalid week -> throws IllegalArgumentException
+        // Invalid week -> throws IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> attendanceList.getAttendanceForWeek(-10000000));
         assertThrows(IllegalArgumentException.class, () -> attendanceList.getAttendanceForWeek(-1));
         assertThrows(IllegalArgumentException.class, () -> attendanceList.getAttendanceForWeek(0));
@@ -61,7 +61,7 @@ public class AttendanceListTest {
         assertThrows(IllegalArgumentException.class, () -> attendanceList.getAttendanceForWeek(15));
         assertThrows(IllegalArgumentException.class, () -> attendanceList.getAttendanceForWeek(10000000));
 
-        // valid week -> returns the correct attendance value
+        // Valid week -> returns the correct attendance value
         for (int i = 1; i <= 13; i++) {
             assertTrue(attendanceList.getAttendanceForWeek(i)
                     == Integer.parseInt(attendanceString.substring(i - 1, i)));
@@ -72,13 +72,13 @@ public class AttendanceListTest {
     @Test
     public void setAttendanceForWeek_invalidWeekOrAttendance_throwsIllegalArgumentException() {
 
-        // invalid week -> throws IllegalArgumentException
+        // Invalid week -> throws IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () ->
                 attendanceList.setAttendanceForWeek(0, Attendance.ATTENDED));
         assertThrows(IllegalArgumentException.class, () ->
                 attendanceList.setAttendanceForWeek(14, Attendance.ATTENDED));
 
-        // invalid attendance -> throws IllegalArgumentException
+        // Invalid attendance -> throws IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () ->
                 attendanceList.setAttendanceForWeek(1, -1));
         assertThrows(IllegalArgumentException.class, () ->
@@ -101,20 +101,20 @@ public class AttendanceListTest {
     }
 
     @Test
-    public void equals() {
-        // same AttendanceList instance -> returns true
+    public void equalsMethod() {
+        // Same AttendanceList instance -> returns true.
         assertTrue(attendanceList.equals(attendanceList));
 
-        // same attendanceString -> returns true
+        // Same attendanceString -> returns true.
         assertTrue(attendanceList.equals(attendanceListDuplicate));
 
-        // null -> returns false
+        // Null -> returns false.
         assertFalse(attendanceList.equals(null));
 
-        // different types -> returns false
+        // Different types -> returns false.
         assertFalse(attendanceList.equals(5.0f));
 
-        // different attendanceString -> returns false
+        // Different attendanceString -> returns false.
         assertFalse(attendanceList.equals(attendanceListDifferent));
     }
 }

@@ -55,26 +55,26 @@ public class AddCommandTest {
     }
 
     @Test
-    public void equals() {
+    public void equalsMethod() {
         Person alice = new PersonBuilder().withName("Alice").build();
         Person bob = new PersonBuilder().withName("Bob").build();
         AddCommand addAliceCommand = new AddCommand(alice);
         AddCommand addBobCommand = new AddCommand(bob);
 
-        // same object -> returns true
+        // Same object -> returns true.
         assertTrue(addAliceCommand.equals(addAliceCommand));
 
-        // same values -> returns true
+        // Same values -> returns true.
         AddCommand addAliceCommandCopy = new AddCommand(alice);
         assertTrue(addAliceCommand.equals(addAliceCommandCopy));
 
-        // different types -> returns false
+        // Different types -> returns false.
         assertFalse(addAliceCommand.equals(1));
 
-        // null -> returns false
+        // Null -> returns false.
         assertFalse(addAliceCommand.equals(null));
 
-        // different person -> returns false
+        // Different person -> returns false.
         assertFalse(addAliceCommand.equals(addBobCommand));
     }
 
@@ -86,7 +86,7 @@ public class AddCommandTest {
     }
 
     /**
-     * A default model stub that have all of the methods failing.
+     * A default model stub that has all methods failing.
      */
     private class ModelStub implements Model {
         @Override

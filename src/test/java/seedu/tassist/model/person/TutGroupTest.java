@@ -55,7 +55,7 @@ public class TutGroupTest {
     }
 
     @Test
-    public void equals() {
+    public void equalsMethod() {
         TutGroup tutGroup = new TutGroup("t3");
         TutGroup sameTutGroupOne = new TutGroup("t03");
         TutGroup sameTutGroupTwo = new TutGroup("T3");
@@ -74,7 +74,7 @@ public class TutGroupTest {
         // Different types -> returns false.
         assertFalse(tutGroup.equals(2.0f));
 
-        // null -> returns false.
+        // Null -> returns false.
         assertFalse(tutGroup.equals(null));
 
         // Different TutGroup -> returns false.

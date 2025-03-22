@@ -35,7 +35,7 @@ public class PersonTest {
         // Same object -> returns true.
         assertTrue(ALICE.isSamePerson(ALICE));
 
-        // null -> returns false
+        // Null -> returns false.
         assertFalse(ALICE.isSamePerson(null));
 
         // Same matNum, all other attributes different -> returns true.
@@ -58,36 +58,36 @@ public class PersonTest {
     }
 
     @Test
-    public void equals() {
-        // same values -> returns true
+    public void equalsMethod() {
+        // Same values -> returns true.
         Person aliceCopy = new PersonBuilder(ALICE).build();
         assertTrue(ALICE.equals(aliceCopy));
 
-        // same object -> returns true
+        // Same object -> returns true.
         assertTrue(ALICE.equals(ALICE));
 
-        // null -> returns false
+        // Null -> returns false.
         assertFalse(ALICE.equals(null));
 
-        // different type -> returns false
+        // Different type -> returns false.
         assertFalse(ALICE.equals(5));
 
-        // different person -> returns false
+        // Different person -> returns false.
         assertFalse(ALICE.equals(BOB));
 
-        // different name -> returns false
+        // Different name -> returns false.
         Person editedAlice = new PersonBuilder(ALICE).withName(VALID_NAME_BOB).build();
         assertFalse(ALICE.equals(editedAlice));
 
-        // different phone -> returns false
+        // Different phone -> returns false.
         editedAlice = new PersonBuilder(ALICE).withPhone(VALID_PHONE_BOB).build();
         assertFalse(ALICE.equals(editedAlice));
 
-        // different email -> returns false
+        // Different email -> returns false.
         editedAlice = new PersonBuilder(ALICE).withEmail(VALID_EMAIL_BOB).build();
         assertFalse(ALICE.equals(editedAlice));
 
-        // different tags -> returns false
+        // Different tags -> returns false.
         editedAlice = new PersonBuilder(ALICE).withTags(VALID_TAG_HUSBAND).build();
         assertFalse(ALICE.equals(editedAlice));
     }

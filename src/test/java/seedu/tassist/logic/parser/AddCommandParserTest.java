@@ -157,7 +157,7 @@ public class AddCommandParserTest {
         assertParseFailure(parser, REMARK_DESC_AMY + validExpectedPersonString,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_REMARK));
 
-        // Multiple fields repeated
+        // Multiple fields repeated.
         assertParseFailure(parser,
                 validExpectedPersonString + PHONE_DESC_AMY + EMAIL_DESC_AMY + NAME_DESC_AMY
                         + validExpectedPersonString,
@@ -203,7 +203,7 @@ public class AddCommandParserTest {
         assertParseFailure(parser, INVALID_YEAR_DESC + validExpectedPersonString,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_YEAR));
 
-        // Valid value followed by invalid value
+        // Valid value followed by invalid value.
 
         // Invalid name.
         assertParseFailure(parser, validExpectedPersonString + INVALID_NAME_DESC,
@@ -221,7 +221,7 @@ public class AddCommandParserTest {
         assertParseFailure(parser, validExpectedPersonString + INVALID_EMAIL_DESC,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_EMAIL));
 
-        // Invalid matric number.
+        // Invalid Matric number.
         assertParseFailure(parser, validExpectedPersonString + INVALID_MAT_NUM_DESC,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_MAT_NUM));
 

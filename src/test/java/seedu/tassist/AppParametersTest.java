@@ -47,7 +47,7 @@ public class AppParametersTest {
     }
 
     @Test
-    public void equals() {
+    public void equalsMethod() {
         AppParameters appParameters = new AppParameters();
 
         // same values -> returns true

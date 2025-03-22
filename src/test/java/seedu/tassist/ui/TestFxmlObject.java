@@ -33,7 +33,7 @@ public class TestFxmlObject {
             return true;
         }
 
-        // instanceof handles nulls
+        // Instanceof handles nulls
         if (!(other instanceof TestFxmlObject)) {
             return false;
         }

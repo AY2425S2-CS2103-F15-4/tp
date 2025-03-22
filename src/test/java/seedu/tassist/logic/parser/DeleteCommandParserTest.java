@@ -28,54 +28,54 @@ public class DeleteCommandParserTest {
 
     @Test
     public void parse_missingIndex_throwsParseException() {
-        // user typed only "-i"
+        // User typed only "-i".
         assertParseFailure(parser, "-i ",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
 
-        // user typed nothing at all
+        // User typed nothing at all
         assertParseFailure(parser, "",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
     }
 
     @Test
     public void parse_noFlag_throwsParseException() {
-        // user typed just "1" without the -i prefix
+        // User typed just "1" without the -i prefix.
         assertParseFailure(parser, "1",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
     }
 
     @Test
     public void parse_nonNumeric_throwsParseException() {
-        // e.g. user typed "-i abc"
+        // e.g. user typed "-i abc".
         assertParseFailure(parser, "-i abc",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
     }
 
     @Test
     public void parse_zeroIndex_throwsParseException() {
-        // e.g. user typed "-i 0"
-        // The parser or Index will fail if zero or negative is not allowed
+        // e.g. user typed "-i 0".
+        // The parser or Index will fail if zero or negative is not allowed.
         assertParseFailure(parser, "-i 0",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
     }
 
     @Test
     public void parse_negativeIndex_throwsParseException() {
-        // e.g. user typed "-i -3"
+        // e.g. user typed "-i -3".
         assertParseFailure(parser, "-i -3",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
     }
 
     @Test
     public void parse_extraTokens_throwsParseException() {
-        // e.g. user typed "-i 1 extra"
+        // e.g. user typed "-i 1 extra".
         assertParseFailure(parser, "-i 1 extra",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
     }
 
     @Test
     public void parse_exceedIntRange_throwsParseException() {
-        // e.g. user typed "-i 2147483648" => integer overflow
+        // e.g. user typed "-i 2147483648" => integer overflow.
         assertParseFailure(parser, "-i 2147483648",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
     }

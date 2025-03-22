@@ -55,7 +55,7 @@ public class LabGroupTest {
     }
 
     @Test
-    public void equals() {
+    public void equalsMethod() {
         LabGroup labGroup = new LabGroup("b3");
         LabGroup sameLabGroupOne = new LabGroup("b03");
         LabGroup sameLabGroupTwo = new LabGroup("B3");
@@ -74,7 +74,7 @@ public class LabGroupTest {
         // Different types -> returns false.
         assertFalse(labGroup.equals(2.0f));
 
-        // null -> returns false.
+        // Null -> returns false.
         assertFalse(labGroup.equals(null));
 
         // Different LabGroup -> returns false.

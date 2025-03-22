@@ -12,16 +12,14 @@ public class QuotePatternTest {
 
         QuotePattern tester = new QuotePattern();
 
-        // Invalid
-        // Odd number of quotation marks.
+        // Odd number of quotation marks -> returns false.
         assertFalse(tester.test("\"hehehaha\"\""));
-        // More than a pair of quotation marks within a flag.
+        // More than a pair of quotation marks within a flag -> returns false.
         assertFalse(tester.test("-a \"hehehaha\"\"\" -g abc"));
 
-        // Valid.
-        // No quotation marks.
+        // No quotation marks -> returns true.
         assertTrue(tester.test("abc"));
-        // One pair of quotation marks per flag.
+        // One pair of quotation marks per flag -> returns true.
         assertTrue(tester.test("-t \"abc\" -g \" abc \""));
     }
 

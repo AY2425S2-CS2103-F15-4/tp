@@ -71,7 +71,7 @@ public class SearchCommandTest {
     }
 
     @Test
-    public void equals() {
+    public void equalsMethod() {
         SearchCommand searchAlice = new SearchCommand(
                 new PersonMatchesPredicate("Alice", null, null, null, null, null)
         );
@@ -79,22 +79,22 @@ public class SearchCommandTest {
                 new PersonMatchesPredicate("Bob", null, null, null, null, null)
         );
 
-        // Same object -> returns true
+        // Same object -> returns true.
         assertTrue(searchAlice.equals(searchAlice));
 
-        // Same values -> returns true
+        // Same values -> returns true.
         SearchCommand searchAliceCopy = new SearchCommand(
                 new PersonMatchesPredicate("Alice", null, null, null, null, null)
         );
         assertTrue(searchAlice.equals(searchAliceCopy));
 
-        // Different types -> returns false
+        // Different types -> returns false.
         assertFalse(searchAlice.equals(1));
 
-        // Null -> returns false
+        // Null -> returns false.
         assertFalse(searchAlice.equals(null));
 
-        // Different values -> returns false
+        // Different values -> returns false.
         assertFalse(searchAlice.equals(searchBob));
     }
 
@@ -130,7 +130,7 @@ public class SearchCommandTest {
             );
         }
 
-        // Methods not used in tests throw AssertionError
+        // Methods not used in tests throw AssertionError.
         @Override
         public void setUserPrefs(ReadOnlyUserPrefs userPrefs) {
             throw new AssertionError("This method should not be called.");

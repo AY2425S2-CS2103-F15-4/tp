@@ -21,7 +21,7 @@ public class NameTest {
 
     @Test
     public void isValidName() {
-        // null name.
+        // Null name.
         assertThrows(NullPointerException.class, () -> Name.isValidName(null));
 
         // Invalid name.
@@ -42,7 +42,7 @@ public class NameTest {
     }
 
     @Test
-    public void equals() {
+    public void equalsMethod() {
         Name name = new Name("Valid Name");
 
         // Same values -> returns true.
@@ -51,7 +51,7 @@ public class NameTest {
         // Same object -> returns true.
         assertTrue(name.equals(name));
 
-        // null -> returns false
+        // Null -> returns false.
         assertFalse(name.equals(null));
 
         // Different types -> returns false.

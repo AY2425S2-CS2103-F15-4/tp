@@ -49,7 +49,7 @@ public class FacultyTest {
     }
 
     @Test
-    public void equals() {
+    public void equalsMethod() {
         Faculty faculty = new Faculty("3");
 
         // Same object -> returns true.
@@ -62,7 +62,7 @@ public class FacultyTest {
         // Different types -> returns false.
         assertFalse(faculty.equals(2.0f));
 
-        // null -> returns false.
+        // Null -> returns false.
         assertFalse(faculty.equals(null));
 
         // Different Faculty -> returns false.

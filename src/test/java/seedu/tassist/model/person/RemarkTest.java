@@ -52,7 +52,7 @@ public class RemarkTest {
     }
 
     @Test
-    public void equals() {
+    public void equalsMethod() {
         Remark remark = new Remark("Hello");
 
         // Same object -> returns true.
@@ -65,7 +65,7 @@ public class RemarkTest {
         // Different types -> returns false.
         assertFalse(remark.equals(1));
 
-        // null -> returns false.
+        // Null -> returns false.
         assertFalse(remark.equals(null));
 
         // Different remark -> returns false.
