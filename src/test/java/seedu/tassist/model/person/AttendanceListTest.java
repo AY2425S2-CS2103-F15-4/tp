@@ -101,6 +101,15 @@ public class AttendanceListTest {
     }
 
     @Test
+    public void isEmpty() {
+        // Empty AttendanceList -> returns true.
+        assertTrue(AttendanceList.EMPTY_ATTENDANCE_LIST.isEmpty());
+
+        // Non-empty AttendanceList -> returns false.
+        assertFalse(attendanceList.isEmpty());
+    }
+
+    @Test
     public void equals() {
         // same AttendanceList instance -> returns true
         assertTrue(attendanceList.equals(attendanceList));

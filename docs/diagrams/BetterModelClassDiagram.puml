@@ -26,6 +26,7 @@ Person *--> "1" MatNum
 Person *--> "0..1" TutGroup
 Person *--> "0..1" LabGroup
 Person *--> "0..1" Faculty
+Person *--> "1" AttendanceList
 Person *--> "0..1" Year
 Person *--> "0..1" Remark
 

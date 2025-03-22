@@ -38,7 +38,7 @@ public class IndexTest {
     }
 
     @Test
-    public void equals() {
+    public void equalsMethod() {
         final Index fifthPersonIndex = Index.fromOneBased(5);
 
         // same values -> returns true

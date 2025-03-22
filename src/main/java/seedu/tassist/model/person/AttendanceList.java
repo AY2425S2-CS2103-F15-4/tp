@@ -24,6 +24,7 @@ public class AttendanceList {
             + "0 representing Not Attended, 1 representing Attended, \n"
             + "2 representing On MC, 3 representing No Tutorial.";
     public static final String DEFAULT_ATTENDANCE_STRING = "3300000000000";
+    public static final AttendanceList EMPTY_ATTENDANCE_LIST = new AttendanceList();
 
     private ArrayList<Attendance> attendanceList;
 
@@ -97,6 +98,15 @@ public class AttendanceList {
      */
     public Stream<Attendance> getAttendanceStream() {
         return this.attendanceList.stream();
+    }
+
+    /**
+     * Checks whether the current instance is the Empty AttendanceList.
+     *
+     * @return Boolean representing whether the current instance is the Empty AttendanceList.
+     */
+    public boolean isEmpty() {
+        return this.equals(EMPTY_ATTENDANCE_LIST);
     }
 
     @Override

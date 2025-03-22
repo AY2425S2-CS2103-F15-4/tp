@@ -10,7 +10,6 @@ import static seedu.tassist.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.tassist.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.tassist.logic.commands.CommandTestUtil.showPersonAtIndex;
 import static seedu.tassist.logic.commands.MarkAttendanceCommand.MESSAGE_MARK_ATTENDED_SUCCESS;
-import static seedu.tassist.logic.commands.MarkAttendanceCommand.MESSAGE_MARK_GIVEN_NO_TUTORIAL_FAILURE;
 import static seedu.tassist.logic.commands.MarkAttendanceCommand.MESSAGE_MARK_MC_SUCCESS;
 import static seedu.tassist.logic.commands.MarkAttendanceCommand.MESSAGE_MARK_NOT_ATTENDED_SUCCESS;
 import static seedu.tassist.logic.commands.MarkAttendanceCommand.MESSAGE_MARK_NO_TUTORIAL_SUCCESS;
@@ -18,6 +17,7 @@ import static seedu.tassist.logic.commands.MarkAttendanceCommand.MESSAGE_MARK_TU
 import static seedu.tassist.logic.commands.MarkAttendanceCommand.MESSAGE_MARK_TUT_GROUP_MC_SUCCESS;
 import static seedu.tassist.logic.commands.MarkAttendanceCommand.MESSAGE_MARK_TUT_GROUP_NOT_ATTENDED_SUCCESS;
 import static seedu.tassist.logic.commands.MarkAttendanceCommand.MESSAGE_MARK_TUT_GROUP_NO_TUTORIAL_SUCCESS;
+import static seedu.tassist.logic.commands.MarkAttendanceCommand.MESSAGE_MARK_WHEN_NO_TUTORIAL_FAILURE;
 import static seedu.tassist.testutil.Assert.assertThrows;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
@@ -27,6 +27,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.logic.Messages;
+import seedu.tassist.logic.commands.exceptions.CommandException;
 import seedu.tassist.model.Model;
 import seedu.tassist.model.ModelManager;
 import seedu.tassist.model.UserPrefs;
@@ -172,7 +173,7 @@ public class MarkAttendanceCommandTest {
         MarkAttendanceCommand commandSetWeek1OnMc =
                 new MarkAttendanceCommand(INDEX_FIRST_PERSON, weekToEdit, Attendance.ON_MC);
 
-        String expectedMessage = String.format(MESSAGE_MARK_GIVEN_NO_TUTORIAL_FAILURE,
+        String expectedMessage = String.format(MESSAGE_MARK_WHEN_NO_TUTORIAL_FAILURE,
                 firstPerson.getName(), firstPerson.getMatNum(),
                 firstPerson.getTutGroup(), weekToEdit);
 
@@ -325,6 +326,22 @@ public class MarkAttendanceCommandTest {
         MarkAttendanceCommand command = new MarkAttendanceCommand(outOfBoundIndex, 1, Attendance.ATTENDED);
         assertCommandFailure(command, model,
                 String.format(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX, model.getFilteredPersonList().size()));
+    }
+
+    @Test
+    public void checkIfIndexFlagCommandValid_emptyAttendanceList_throwsCommandException() {
+        // Build a person with empty attendanceList.
+        Person personWithEmptyAttendanceList = new PersonBuilder().withTutGroup("").build();
+        assertThrows(CommandException.class, () ->
+                MarkAttendanceCommand.checkIfIndexFlagCommandValid(personWithEmptyAttendanceList, 5));
+    }
+
+    @Test
+    public void checkIfIndexFlagCommandValid_existingNoTutorial_throwsCommandException() {
+        // Build a person with No Tutorial on all weeks.
+        Person personWithNoTutorialAllWeeks = new PersonBuilder().withAttendanceList("3333333333333").build();
+        assertThrows(CommandException.class, () ->
+                MarkAttendanceCommand.checkIfIndexFlagCommandValid(personWithNoTutorialAllWeeks, 1));
     }
 
     @Test

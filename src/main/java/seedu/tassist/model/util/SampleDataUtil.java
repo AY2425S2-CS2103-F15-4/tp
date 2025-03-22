@@ -67,7 +67,7 @@ public class SampleDataUtil {
             new Person(new Name("Roy Balakrishnan"), new Phone("92624417"), new TeleHandle("@roynan"),
                     new Email("royb@example.com"), new MatNum("A0000060M"), new TutGroup(""),
                     new LabGroup("B10"), new Faculty(""), new Year(""), DEFAULT_REMARK,
-                    AttendanceList.generateAttendanceList("3300000000000"),
+                    AttendanceList.EMPTY_ATTENDANCE_LIST,
                     new LabScoreList(), getTagSet("colleagues"))
         };
     }

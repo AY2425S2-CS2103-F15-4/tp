@@ -29,6 +29,7 @@ Class TutGroup
 Class Name
 Class Phone
 Class Tag
+Class AttendanceList
 
 Class I #FFFFFF
 }
@@ -56,6 +57,7 @@ Person *--> "0..1" TutGroup
 Person *--> "0..1" LabGroup
 Person *--> "0..1" Faculty
 Person *--> "0..1" Year
+Person *--> "1" AttendanceList
 Person *--> "0..1" Remark
 Person *--> "*" Tag
 
@@ -70,7 +72,8 @@ MatNum -[hidden]right-> TutGroup
 TutGroup -[hidden]right-> LabGroup
 LabGroup -[hidden]right-> Faculty
 Faculty -[hidden]right-> Year
-Year -[hidden]right-> Remark
+Year -[hidden]right-> AttendanceList
+AttendanceList -[hidden]right-> Remark
 Remark -[hidden]right-> Tag
 
 note "At least one must be present" as PhoneTeleNote

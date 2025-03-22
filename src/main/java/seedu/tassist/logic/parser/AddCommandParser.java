@@ -38,7 +38,6 @@ import seedu.tassist.model.tag.Tag;
  * Parses input arguments and creates a new AddCommand object.
  */
 public class AddCommandParser implements Parser<AddCommand> {
-
     /**
      * Parses the given {@code String} of arguments in the context of the AddCommand
      * and returns an AddCommand object for execution.
@@ -84,8 +83,13 @@ public class AddCommandParser implements Parser<AddCommand> {
         Remark remark = ParserUtil.parseRemark(
                 argMultimap.getValue(PREFIX_REMARK).orElse(""));
 
-        AttendanceList attendanceList =
-                AttendanceList.generateAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING);
+        AttendanceList attendanceList = AttendanceList.EMPTY_ATTENDANCE_LIST;
+
+        if (argMultimap.getValue(PREFIX_TUT_GROUP).isPresent()) {
+            attendanceList =
+                    AttendanceList.generateAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING);
+        }
+
         LabScoreList labScoreList = new LabScoreList();
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 

@@ -30,12 +30,15 @@ public class MarkAttendanceCommand extends Command {
 
     public static final String COMMAND_WORD = "att";
 
-    public static final String MESSAGE_MARK_GIVEN_NO_TUTORIAL_FAILURE =
+    public static final String MESSAGE_MARK_WHEN_NO_TUTORIAL_FAILURE =
             "%1$s (%2$s) in Tutorial Group %3$s currently \nhas No Tutorial for Tutorial Week %4$d.\n"
             + "You must mark the Tutorial Group %3$s as Attended or Not Attended for Week %4$d,\n"
             + "e.g. using the command: " + COMMAND_WORD + " " + PREFIX_TUT_GROUP + " %3$s "
             + PREFIX_WEEK + " %4$d , which marks tutorial group as attended,\n"
             + "before you can mark %1$s individually as Attended, Not Attended or On MC.";
+
+    public static final String MESSAGE_MARK_GIVEN_NO_TUT_GROUP_FAILURE =
+            "%1$s (%2$s) has No Tutorial Group, so Attendance cannot be marked.\n";
 
     public static final String MESSAGE_MARK_ATTENDED_SUCCESS =
             "%1$s (%2$s) attended Tutorial Week %3$d.";
@@ -134,6 +137,31 @@ public class MarkAttendanceCommand extends Command {
         this.attendanceStatus = attendanceStatus;
     }
 
+    /**
+     * Checks if a Command (index flag) is valid, and throws a CommandException if not.
+     *
+     * @param personToCheck Person to be checked against.
+     * @param week Week to check for.
+     * @throws CommandException Exception to be thrown if Index Flag is Invalid.
+     */
+    public static void checkIfIndexFlagCommandValid(Person personToCheck, int week) throws CommandException {
+        // This method applies only for commands using Index flag.
+        // Commands using TutGroup flag will not involve people with an Empty AttendanceList
+        // and a whole tutorial group can be marked to any attendance status,
+        // regardless of the initial attendance status of students within it.
+
+        if (personToCheck.getAttendanceList() == AttendanceList.EMPTY_ATTENDANCE_LIST) {
+            // Cannot mark attendance if AttendanceList is Empty.
+            throw new CommandException(String.format(
+                    MESSAGE_MARK_GIVEN_NO_TUT_GROUP_FAILURE, personToCheck.getName(), personToCheck.getMatNum()));
+        } else if (personToCheck.getAttendanceList().getAttendanceForWeek(week) == Attendance.NO_TUTORIAL) {
+            // Cannot mark attendance if attendance status is currently No Tutorial.
+            throw new CommandException(String.format(
+                    MESSAGE_MARK_WHEN_NO_TUTORIAL_FAILURE, personToCheck.getName(), personToCheck.getMatNum(),
+                    personToCheck.getTutGroup(), week));
+        }
+    }
+
     @Override
     public CommandResult execute(Model model) throws CommandException {
 
@@ -151,11 +179,7 @@ public class MarkAttendanceCommand extends Command {
             }
             personsToEdit = new ArrayList<>();
             Person personToEdit = lastShownList.get(index.getZeroBased());
-            if (personToEdit.getAttendanceList().getAttendanceForWeek(this.week) == Attendance.NO_TUTORIAL) {
-                throw new CommandException(String.format(
-                        MESSAGE_MARK_GIVEN_NO_TUTORIAL_FAILURE, personToEdit.getName(), personToEdit.getMatNum(),
-                        personToEdit.getTutGroup(), this.week));
-            }
+            checkIfIndexFlagCommandValid(personToEdit, this.week);
             personsToEdit.add(personToEdit);
         }
 

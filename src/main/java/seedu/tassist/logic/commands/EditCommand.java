@@ -148,8 +148,19 @@ public class EditCommand extends Command {
         Faculty updatedFaculty = editPersonDescriptor.getFaculty().orElse(personToEdit.getFaculty());
         Year updatedYear = editPersonDescriptor.getYear().orElse(personToEdit.getYear());
         Remark updatedRemark = editPersonDescriptor.getRemark().orElse(personToEdit.getRemark());
-        // AttendanceList and LabScoreList are designed not to be edited via the EditCommand.
+
         AttendanceList updatedAttendanceList = personToEdit.getAttendanceList();
+        if (!personToEdit.getAttendanceList().isEmpty() && updatedTutGroup.isEmpty()) {
+            // If the origin attendanceList is not empty, but the updatedTutGroup is empty,
+            // Assign the Empty AttendanceList.
+            updatedAttendanceList = AttendanceList.EMPTY_ATTENDANCE_LIST;
+        } else if (personToEdit.getAttendanceList().isEmpty() && !updatedTutGroup.isEmpty()) {
+            // Else if the origin attendanceList is empty, but the updatedTutGroup is not empty,
+            // Generate an attendanceList with the Default AttendanceString.
+            updatedAttendanceList = AttendanceList.generateAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING);
+        }
+
+        // LabScoreList are designed not to be edited via the EditCommand.
         LabScoreList updatedLabScoreList = personToEdit.getLabScoreList();
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 

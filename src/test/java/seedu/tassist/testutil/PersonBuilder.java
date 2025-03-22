@@ -134,6 +134,15 @@ public class PersonBuilder {
      * Sets the {@code TutGroup} of the {@code Person} that we are building.
      */
     public PersonBuilder withTutGroup(String tutGroup) {
+        if (!this.attendanceList.isEmpty() && tutGroup.isEmpty()) {
+            // If the origin attendanceList is not empty, but the tutGroup is empty,
+            // Assign the Empty AttendanceList.
+            this.attendanceList = AttendanceList.EMPTY_ATTENDANCE_LIST;
+        } else if (this.attendanceList.isEmpty() && !tutGroup.isEmpty()) {
+            // Else if the origin attendanceList is empty, but the tutGroup is not empty,
+            // Generate an attendanceList with the Default AttendanceString.
+            this.attendanceList = AttendanceList.generateAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING);
+        }
         this.tutGroup = new TutGroup(tutGroup);
         return this;
     }
