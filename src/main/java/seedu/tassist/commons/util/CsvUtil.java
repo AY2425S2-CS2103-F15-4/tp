@@ -1,55 +1,62 @@
 package seedu.tassist.commons.util;
 
+import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
+
 import seedu.tassist.commons.core.LogsCenter;
+import seedu.tassist.model.person.AttendanceList;
+import seedu.tassist.model.person.Email;
+import seedu.tassist.model.person.Faculty;
+import seedu.tassist.model.person.LabGroup;
+import seedu.tassist.model.person.LabScoreList;
+import seedu.tassist.model.person.MatNum;
+import seedu.tassist.model.person.Name;
+import seedu.tassist.model.person.Person;
+import seedu.tassist.model.person.Phone;
+import seedu.tassist.model.person.Remark;
+import seedu.tassist.model.person.TeleHandle;
+import seedu.tassist.model.person.TutGroup;
+import seedu.tassist.model.person.Year;
+import seedu.tassist.model.tag.Tag;
 
 /**
- * Converts a Java object instance to CSV
+ * Converts Java objects to and from CSV.
  */
 public class CsvUtil {
     private static final Logger logger = LogsCenter.getLogger(CsvUtil.class);
+
+    // ====================== CSV Write ======================
 
     public static <T> void serializeObjectToCsvFile(Path csvFile, List<T> objects) throws IOException {
         FileUtil.writeToFile(csvFile, toCsvString(objects));
     }
 
-    /**
-     * Converts a given list of objects from a class into its CSV data string representation.
-     * @param objects The list of objects to be converted into the CSV string
-     * @param <T> The generic type to create an instance of
-     * @return CSV data representation of the given list of class objects, in string
-     */
     public static <T> String toCsvString(List<T> objects) {
         if (objects == null || objects.isEmpty()) {
             throw new IllegalArgumentException("Object list is empty.");
         }
 
-        // Get class type from the first object
         Class<?> clazz = objects.get(0).getClass();
-
-        // Get CSV header
         String header = getHeader(clazz);
 
-        // Get CSV rows
         List<String> rows = objects.stream()
                 .map(CsvUtil::getRow)
                 .collect(Collectors.toList());
 
-        // Combine header and rows
         return header + "\n" + String.join("\n", rows);
     }
 
-    /**
-     * Retrives the name of the fields in the class and formats them into the CSV header
-     * @param clazz The class object to get the header from
-     * @return A string representation of the headers
-     */
     private static String getHeader(Class<?> clazz) {
         return List.of(clazz.getDeclaredFields())
                 .stream()
@@ -57,18 +64,12 @@ public class CsvUtil {
                 .collect(Collectors.joining(","));
     }
 
-    /**
-     * Converts a given instance of an object into is CSV data string representation
-     * @param obj The T object to be converted into the CSV string
-     * @param <T> The generic type to create an instance of
-     * @return CSV data representation of the given class instance, in string
-     */
     private static <T> String getRow(T obj) {
         try {
             return List.of(obj.getClass().getDeclaredFields())
                     .stream()
                     .map(field -> {
-                        field.setAccessible(true); // Allow access to private fields
+                        field.setAccessible(true);
                         try {
                             return escapeCsv(field.get(obj));
                         } catch (IllegalAccessException e) {
@@ -81,28 +82,69 @@ public class CsvUtil {
         }
     }
 
-    /**
-     * Escapes a given value for safe inclusion in a CSV file.
-     * <p>
-     * This method converts an object to its string representation and ensures that
-     * special characters are properly escaped according to CSV format rules.
-     * </p>
-     * <p>
-     * If the string contains a comma (`,`), double quote (`"`), or newline (`\n`),
-     * it is enclosed in double quotes (`"`). Any existing double quotes within the
-     * string are escaped by doubling them (`""`).
-     * </p>
-     * @param value The object to be converted to a CSV-safe string. Can be {@code null}.
-     * @return A properly escaped CSV string. If the input is {@code null}, an empty string is returned.
-     */
     private static String escapeCsv(Object value) {
         if (value == null) {
             return "";
         }
         String str = value.toString();
         if (str.contains(",") || str.contains("\"") || str.contains("\n")) {
-            str = "\"" + str.replace("\"", "\"\"") + "\""; // Escape double quotes
+            str = "\"" + str.replace("\"", "\"\"") + "\"";
         }
         return str;
     }
+
+    // ====================== CSV Read ======================
+
+    /**
+     * Reads a CSV file and returns a list of Person objects.
+     * Expected header: Name,Phone,Email,Address,Tags
+     */
+    public static List<Person> deserializeCsvToPersonList(Path filePath)
+            throws IOException, CsvValidationException {
+    List<Person> personList = new ArrayList<>();
+
+    try (CSVReader csvReader = new CSVReader(new FileReader(filePath.toFile()))) {
+        String[] header = csvReader.readNext(); // Skip header
+        if (header == null || header.length < 11) {
+            throw new IOException("Missing or invalid CSV header.");
+        }
+
+        String[] row;
+        while ((row = csvReader.readNext()) != null) {
+            if (row.length < 11) continue;
+
+            Name name = new Name(row[0].trim());
+            Phone phone = new Phone(row[1].trim());
+            TeleHandle teleHandle = new TeleHandle(row[2].trim());
+            Email email = new Email(row[3].trim());
+            MatNum matNum = new MatNum(row[4].trim());
+            TutGroup tutGroup = new TutGroup(row[5].trim());
+            LabGroup labGroup = new LabGroup(row[6].trim());
+            Faculty faculty = new Faculty(row[7].trim());
+            Year year = new Year(row[8].trim());
+            Remark remark = new Remark(row[9].trim());
+
+            Set<Tag> tags = new HashSet<>();
+            if (!row[10].trim().isEmpty()) {
+                String[] tagStrings = row[10].split(",");
+                for (String tagStr : tagStrings) {
+                    tags.add(new Tag(tagStr.trim()));
+                }
+            }
+
+            // Provide default empty lists for attendance and lab scores
+            AttendanceList attendanceList = AttendanceList.generateAttendanceList(
+                AttendanceList.DEFAULT_ATTENDANCE_STRING);
+            LabScoreList labScoreList = new LabScoreList();
+
+            Person person = new Person(name, phone, teleHandle, email, matNum,
+                    tutGroup, labGroup, faculty, year, remark,
+                    attendanceList, labScoreList, tags);
+            personList.add(person);
+        }
+    }
+
+    return personList;
+}
+
 }

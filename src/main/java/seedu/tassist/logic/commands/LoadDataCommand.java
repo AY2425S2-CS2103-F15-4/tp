@@ -1,15 +1,14 @@
 package seedu.tassist.logic.commands;
 
-import static seedu.tassist.commons.util.CollectionUtil.requireAllNonNull;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EXTENSION;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FILENAME;
-
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Set;
 
+import static seedu.tassist.commons.util.CollectionUtil.requireAllNonNull;
 import seedu.tassist.logic.commands.exceptions.CommandException;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EXTENSION;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FILENAME;
 import seedu.tassist.model.Model;
 import seedu.tassist.model.ReadOnlyAddressBook;
 import seedu.tassist.storage.CsvAddressBookStorage;

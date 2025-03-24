@@ -4,15 +4,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_FILE_EXTENSION_CSV;
-import static seedu.tassist.logic.commands.CommandTestUtil.VALID_FILE_EXTENSION_JSON;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_FILE_NAME;
 import static seedu.tassist.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.tassist.logic.commands.LoadDataCommand.INVALID_ARGUMENT_EXTENSION;
 import static seedu.tassist.logic.commands.LoadDataCommand.INVALID_FILENAME_ERROR;
 import static seedu.tassist.testutil.TypicalPersons.getTypicalAddressBook;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import org.junit.jupiter.api.Test;
 
+import seedu.tassist.logic.commands.exceptions.CommandException;
 import seedu.tassist.model.Model;
 import seedu.tassist.model.ModelManager;
 import seedu.tassist.model.UserPrefs;
@@ -21,20 +26,59 @@ public class LoadDataCommandTest {
 
     private static final String INVALID_FILE_NAME = "hello@world.csv";
     private static final String INVALID_FILE_EXTENSION = "pdf";
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+
+    private final Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
     @Test
-    void execute_validFileNameAndExtension_success() throws Exception {
-        LoadDataCommand command = new LoadDataCommand(VALID_FILE_NAME, VALID_FILE_EXTENSION_CSV);
-        CommandResult commandResult = command.execute(model);
-        assertEquals("Loaded data from file: " + VALID_FILE_NAME + "." + VALID_FILE_EXTENSION_CSV,
-                commandResult.getFeedbackToUser());
+    void execute_validCsvFile_success() throws Exception {
+        String fileName = "manualcsv";
+        String extension = "csv";
+        Path filePath = Paths.get("data", fileName + "." + extension);
+        Files.createDirectories(filePath.getParent());
+
+        String csvContent = "Name,Phone,TeleHandle,Email,MatNum,TutGroup,LabGroup,Faculty,Year,Remark,Tags\n"
+                + "Alice Pauline,94351253,@alice,alice@example.com,A1234567X,T01,L01,Computing,1,Hardworking,friends\n"
+                + "Benson Meier,98765432,@meier,meier@example.com,A7654321Z,T02,L02,Engineering,2,Needs help,\"owesMoney,friends\"";
+
+        Files.writeString(filePath, csvContent);
+
+        try {
+            LoadDataCommand command = new LoadDataCommand(fileName, extension);
+            CommandResult result = command.execute(model);
+            assertEquals("Loaded data from file: " + fileName + "." + extension, result.getFeedbackToUser());
+        } finally {
+            Files.deleteIfExists(filePath);
+        }
+    }
+
+    @Test
+    void execute_invalidCsvFile_missingColumns_failure() throws Exception {
+        String fileName = "invalidcsv";
+        String extension = "csv";
+        Path filePath = Paths.get("data", fileName + "." + extension);
+        Files.createDirectories(filePath.getParent());
+
+        String csvContent = "Name,Phone,Email\n"
+                + "Only Three Fields,12345678,test@example.com\n";
+
+        Files.writeString(filePath, csvContent);
+
+        try {
+            LoadDataCommand command = new LoadDataCommand(fileName, extension);
+            try {
+                command.execute(model);
+                throw new AssertionError("Expected CommandException was not thrown.");
+            } catch (CommandException e) {
+                assertTrue(e.getCause() instanceof IOException);
+            }
+        } finally {
+            Files.deleteIfExists(filePath);
+        }
     }
 
     @Test
     public void execute_invalidFileName_failure() {
         String expectedMessage = String.format(INVALID_FILENAME_ERROR, INVALID_FILE_NAME);
-
         assertCommandFailure(
                 new LoadDataCommand(INVALID_FILE_NAME, VALID_FILE_EXTENSION_CSV),
                 model, expectedMessage);
@@ -43,7 +87,6 @@ public class LoadDataCommandTest {
     @Test
     public void execute_invalidFileExtension_failure() {
         String expectedMessage = String.format(INVALID_ARGUMENT_EXTENSION, INVALID_FILE_EXTENSION);
-
         assertCommandFailure(
                 new LoadDataCommand(VALID_FILE_NAME, INVALID_FILE_EXTENSION),
                 model, expectedMessage);
@@ -51,10 +94,10 @@ public class LoadDataCommandTest {
 
     @Test
     public void equals() {
-        final LoadDataCommand loadDataCommand = new LoadDataCommand(VALID_FILE_NAME, VALID_FILE_EXTENSION_CSV);
+        final LoadDataCommand loadDataCommand = new LoadDataCommand("manualcsv", "csv");
 
         // same values -> returns true
-        LoadDataCommand loadDataCommandTester = new LoadDataCommand(VALID_FILE_NAME, VALID_FILE_EXTENSION_CSV);
+        LoadDataCommand loadDataCommandTester = new LoadDataCommand("manualcsv", "csv");
         assertTrue(loadDataCommand.equals(loadDataCommandTester));
 
         // same object -> returns true
@@ -67,9 +110,9 @@ public class LoadDataCommandTest {
         assertFalse(loadDataCommand.equals(new ClearCommand()));
 
         // different file names -> false
-        assertFalse(loadDataCommand.equals(new LoadDataCommand("lifeisgood", VALID_FILE_EXTENSION_CSV)));
+        assertFalse(loadDataCommand.equals(new LoadDataCommand("different", "csv")));
 
         // different file extensions -> false
-        assertFalse(loadDataCommand.equals(new LoadDataCommand(VALID_FILE_NAME, VALID_FILE_EXTENSION_JSON)));
+        assertFalse(loadDataCommand.equals(new LoadDataCommand("manualcsv", "json")));
     }
 }
