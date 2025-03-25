@@ -1,10 +1,14 @@
 package seedu.tassist.storage;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static seedu.tassist.storage.JsonAdaptedPerson.MISSING_FIELD_MESSAGE_FORMAT;
+import static seedu.tassist.testutil.Assert.assertThrows;
+import static seedu.tassist.testutil.TypicalPersons.BENSON;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import seedu.tassist.commons.exceptions.IllegalValueException;
@@ -12,9 +16,6 @@ import seedu.tassist.model.person.AttendanceList;
 import seedu.tassist.model.person.Email;
 import seedu.tassist.model.person.Name;
 import seedu.tassist.model.person.Phone;
-import static seedu.tassist.storage.JsonAdaptedPerson.MISSING_FIELD_MESSAGE_FORMAT;
-import static seedu.tassist.testutil.Assert.assertThrows;
-import static seedu.tassist.testutil.TypicalPersons.BENSON;
 
 public class JsonAdaptedPersonTest {
     private static final String INVALID_NAME = "R@chel";

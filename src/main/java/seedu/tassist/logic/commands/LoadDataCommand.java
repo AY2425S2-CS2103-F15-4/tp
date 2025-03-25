@@ -1,13 +1,13 @@
 package seedu.tassist.logic.commands;
 
+import static seedu.tassist.commons.util.CollectionUtil.requireAllNonNull;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EXTENSION;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FILENAME;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Set;
-
-import static seedu.tassist.commons.util.CollectionUtil.requireAllNonNull;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EXTENSION;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FILENAME;
 
 import seedu.tassist.commons.util.JsonUtil;
 import seedu.tassist.logic.commands.exceptions.CommandException;
@@ -37,6 +37,13 @@ public class LoadDataCommand extends Command {
     private final String fileName;
     private final String extension;
 
+    /**
+     * Constructs a {@code LoadDataCommand} with the specified file name and extension.
+     *
+     * @param fileName The name of the file (without extension) to load data from.
+     * @param extension The extension of the file (e.g., "csv" or "json").
+     * @throws NullPointerException if either {@code fileName} or {@code extension} is null.
+     */
     public LoadDataCommand(String fileName, String extension) {
         requireAllNonNull(fileName, extension);
         this.fileName = fileName;
@@ -95,18 +102,18 @@ public class LoadDataCommand extends Command {
                 java.util.List<JsonAdaptedPerson> jsonPersons =
                         JsonUtil.readJsonArrayFile(filePath, JsonAdaptedPerson.class)
                                 .orElseThrow(() -> new IOException("File not found or unreadable."));
-    
+
                 seedu.tassist.model.AddressBook addressBookFromJson = new seedu.tassist.model.AddressBook();
                 for (JsonAdaptedPerson person : jsonPersons) {
                     addressBookFromJson.addPerson(person.toModelType());
                 }
                 return addressBookFromJson;
-    
+
             case "csv":
                 return new CsvAddressBookStorage(filePath)
                         .readAddressBook()
                         .orElseThrow(() -> new IOException("File not found or unreadable."));
-    
+
             default:
                 throw new IllegalArgumentException("Unsupported file extension: " + extension);
             }
@@ -114,6 +121,4 @@ public class LoadDataCommand extends Command {
             throw new IOException("Failed to load data: " + e.getMessage(), e);
         }
     }
-    
-    
 }

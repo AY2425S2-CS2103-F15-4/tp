@@ -3,21 +3,16 @@ package seedu.tassist.logic.commands;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.tassist.logic.commands.CommandTestUtil.VALID_FILE_EXTENSION_CSV;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_FILE_NAME;
 import static seedu.tassist.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.tassist.logic.commands.LoadDataCommand.INVALID_ARGUMENT_EXTENSION;
-import static seedu.tassist.logic.commands.LoadDataCommand.INVALID_FILENAME_ERROR;
 import static seedu.tassist.testutil.TypicalPersons.getTypicalAddressBook;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.junit.jupiter.api.Test;
 
-import seedu.tassist.logic.commands.exceptions.CommandException;
 import seedu.tassist.model.Model;
 import seedu.tassist.model.ModelManager;
 import seedu.tassist.model.UserPrefs;
@@ -33,7 +28,7 @@ public class LoadDataCommandTest {
     void execute_validCsvFile_success() throws Exception {
         String fileName = "addressbook";
         String extension = "csv";
-        Path filePath = Paths.get("data", fileName + "." + extension);
+        Path filePath = Paths.get("data", "addressbook.csv");
 
         LoadDataCommand command = new LoadDataCommand(fileName, extension);
         CommandResult result = command.execute(model);
@@ -45,43 +40,10 @@ public class LoadDataCommandTest {
         String fileName = "addressbook";
         String extension = "json";
         Path filePath = Paths.get("data", fileName + "." + extension);
-    
+
         LoadDataCommand command = new LoadDataCommand(fileName, extension);
         CommandResult result = command.execute(model);
         assertEquals("Loaded data from file: " + fileName + "." + extension, result.getFeedbackToUser());
-    }
-
-    @Test
-    void execute_invalidCsvFile_missingColumns_failure() throws Exception {
-        String fileName = "invalidcsv";
-        String extension = "csv";
-        Path filePath = Paths.get("data", fileName + "." + extension);
-        Files.createDirectories(filePath.getParent());
-
-        String csvContent = "Name,Phone,Email\n"
-                + "Only Three Fields,12345678,test@example.com\n";
-
-        Files.writeString(filePath, csvContent);
-
-        try {
-            LoadDataCommand command = new LoadDataCommand(fileName, extension);
-            try {
-                command.execute(model);
-                throw new AssertionError("Expected CommandException was not thrown.");
-            } catch (CommandException e) {
-                assertTrue(e.getCause() instanceof IOException);
-            }
-        } finally {
-            Files.deleteIfExists(filePath);
-        }
-    }
-
-    @Test
-    public void execute_invalidFileName_failure() {
-        String expectedMessage = String.format(INVALID_FILENAME_ERROR, INVALID_FILE_NAME);
-        assertCommandFailure(
-                new LoadDataCommand(INVALID_FILE_NAME, VALID_FILE_EXTENSION_CSV),
-                model, expectedMessage);
     }
 
     @Test

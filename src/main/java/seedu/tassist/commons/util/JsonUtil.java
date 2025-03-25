@@ -14,12 +14,12 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.deser.std.FromStringDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.fasterxml.jackson.databind.JavaType;
 
 import seedu.tassist.commons.core.LogsCenter;
 import seedu.tassist.commons.exceptions.DataLoadingException;
@@ -146,6 +146,15 @@ public class JsonUtil {
         }
     }
 
+    /**
+     * Reads a JSON array file and deserializes it into a list of objects.
+     *
+     * @param filePath Path to the JSON array file.
+     * @param elementClass The class of each element in the array.
+     * @param <T> The type of elements in the list.
+     * @return An Optional containing the list of objects, or empty if file does not exist.
+     * @throws DataLoadingException If reading or parsing fails.
+     */
     public static <T> Optional<java.util.List<T>> readJsonArrayFile(
             Path filePath, Class<T> elementClass) throws DataLoadingException {
         requireNonNull(filePath);
@@ -157,7 +166,8 @@ public class JsonUtil {
 
         try {
             String json = Files.readString(filePath);
-            JavaType listType = objectMapper.getTypeFactory().constructCollectionType(java.util.List.class, elementClass);
+            JavaType listType = objectMapper.getTypeFactory()
+                .constructCollectionType(java.util.List.class, elementClass);
             java.util.List<T> list = objectMapper.readValue(json, listType);
             return Optional.of(list);
         } catch (IOException e) {
