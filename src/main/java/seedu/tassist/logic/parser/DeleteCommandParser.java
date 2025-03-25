@@ -4,6 +4,7 @@ package seedu.tassist.logic.parser;
 import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.tassist.logic.Messages.MESSAGE_MISSING_ARGUMENTS;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_INDEX;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
     public DeleteCommand parse(String userInput) throws ParseException {
 
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(userInput, PREFIX_INDEX);
+                ArgumentTokenizer.tokenize(userInput, PREFIX_INDEX, PREFIX_TAG);
 
         if (!argMultimap.getValue(PREFIX_INDEX).isPresent()
                 || !argMultimap.getPreamble().isEmpty()) {
@@ -46,7 +47,8 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
 
         try {
             List<Index> targetIndexes = ParserUtil.parseMultipleIndexes(rawIndexes);
-            return new DeleteCommand(targetIndexes);
+            String tagToRemove = argMultimap.getValue(PREFIX_TAG).orElse(null);
+            return new DeleteCommand(targetIndexes, tagToRemove);
         } catch (ParseException e) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE), e);
         }
