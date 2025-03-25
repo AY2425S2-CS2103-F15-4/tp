@@ -30,7 +30,7 @@ import seedu.tassist.model.tag.Tag;
 /**
  * Jackson-friendly version of {@link Person}.
  */
-class JsonAdaptedPerson {
+public class JsonAdaptedPerson {
 
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Person's %s field is missing!";
 
@@ -53,7 +53,7 @@ class JsonAdaptedPerson {
      */
     @JsonCreator
     public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
-            @JsonProperty("teleHande") String teleHandle,
+            @JsonProperty("teleHandle") String teleHandle,
             @JsonProperty("email") String email,
             @JsonProperty("matNum") String matNum,
             @JsonProperty("tutGroup") String tutGroup,
@@ -112,48 +112,54 @@ class JsonAdaptedPerson {
         for (JsonAdaptedTag tag : tags) {
             personTags.add(tag.toModelType());
         }
-
+    
         final Name modelName = validateAndCreate(name, Name.class, Name::isValidName,
                 Name.MESSAGE_CONSTRAINTS, Name::new);
-
+    
         final Phone modelPhone = validateAndCreate(phone, Phone.class, Phone::isValidPhone,
                 Phone.MESSAGE_CONSTRAINTS, Phone::new);
-
+    
         final TeleHandle modelTeleHandle = validateAndCreate(teleHandle, TeleHandle.class,
                 TeleHandle::isValidTeleHandle, TeleHandle.MESSAGE_CONSTRAINTS, TeleHandle::new);
-
+    
         final Email modelEmail = validateAndCreate(email, Email.class, Email::isValidEmail,
                 Email.MESSAGE_CONSTRAINTS, Email::new);
-
+    
         final MatNum modelMatNum = validateAndCreate(matNum, MatNum.class,
                 MatNum::isValidMatNum, MatNum.MESSAGE_CONSTRAINTS, MatNum::new);
-
+    
         final TutGroup modelTutGroup = validateAndCreate(tutGroup, TutGroup.class,
                 TutGroup::isValidTutGroup, TutGroup.MESSAGE_CONSTRAINTS, TutGroup::new);
-
+    
         final LabGroup modelLabGroup = validateAndCreate(labGroup, LabGroup.class,
                 LabGroup::isValidLabGroup, LabGroup.MESSAGE_CONSTRAINTS, LabGroup::new);
-
+    
         final Faculty modelFaculty = validateAndCreate(faculty, Faculty.class,
                 Faculty::isValidFaculty, Faculty.MESSAGE_CONSTRAINTS, Faculty::new);
-
+    
         final Year modelYear = validateAndCreate(year, Year.class,
                 Year::isValidYear, Year.MESSAGE_CONSTRAINTS, Year::new);
-
+    
         final Remark modelRemark = validateAndCreate(remark, Remark.class, Remark::new);
-
-        final AttendanceList modelAttendanceList = validateAndCreate(attendances,
-                AttendanceList.class, AttendanceList::isValidAttendanceString,
-                AttendanceList.MESSAGE_CONSTRAINTS, AttendanceList::generateAttendanceList);
-        final LabScoreList modelLabScoreList = validateAndCreate(labScores, LabScoreList.class,
-                LabScoreList::isValidSaveString, LabScoreList.INVALID_LAB_SCORE,
-                LabScoreList::loadLabScores);
-
+    
+        final AttendanceList modelAttendanceList = (attendances == null || attendances.isEmpty())
+        ? AttendanceList.generateAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING)
+        : validateAndCreate(attendances, AttendanceList.class,
+            AttendanceList::isValidAttendanceString,
+            AttendanceList.MESSAGE_CONSTRAINTS, AttendanceList::generateAttendanceList);
+    
+        final LabScoreList modelLabScoreList = (labScores == null || labScores.isEmpty())
+                ? new LabScoreList()
+                : validateAndCreate(labScores, LabScoreList.class,
+                    LabScoreList::isValidSaveString,
+                    LabScoreList.INVALID_LAB_SCORE, LabScoreList::loadLabScores);
+    
         final Set<Tag> modelTags = new HashSet<>(personTags);
         return new Person(modelName, modelPhone, modelTeleHandle, modelEmail,
                 modelMatNum, modelTutGroup, modelLabGroup, modelFaculty, modelYear, modelRemark,
                 modelAttendanceList, modelLabScoreList, modelTags);
     }
+    
 
     /**
      * Validates if the value is not null.

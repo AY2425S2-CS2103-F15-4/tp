@@ -31,24 +31,24 @@ public class LoadDataCommandTest {
 
     @Test
     void execute_validCsvFile_success() throws Exception {
-        String fileName = "manualcsv";
+        String fileName = "addressbook";
         String extension = "csv";
         Path filePath = Paths.get("data", fileName + "." + extension);
-        Files.createDirectories(filePath.getParent());
 
-        String csvContent = "Name,Phone,TeleHandle,Email,MatNum,TutGroup,LabGroup,Faculty,Year,Remark,Tags\n"
-                + "Alice Pauline,94351253,@alice,alice@example.com,A1234567X,T01,L01,Computing,1,Hardworking,friends\n"
-                + "Benson Meier,98765432,@meier,meier@example.com,A7654321Z,T02,L02,Engineering,2,Needs help,\"owesMoney,friends\"";
+        LoadDataCommand command = new LoadDataCommand(fileName, extension);
+        CommandResult result = command.execute(model);
+        assertEquals("Loaded data from file: " + fileName + "." + extension, result.getFeedbackToUser());
+    }
 
-        Files.writeString(filePath, csvContent);
-
-        try {
-            LoadDataCommand command = new LoadDataCommand(fileName, extension);
-            CommandResult result = command.execute(model);
-            assertEquals("Loaded data from file: " + fileName + "." + extension, result.getFeedbackToUser());
-        } finally {
-            Files.deleteIfExists(filePath);
-        }
+    @Test
+    void execute_validJsonFile_success() throws Exception {
+        String fileName = "addressbook";
+        String extension = "json";
+        Path filePath = Paths.get("data", fileName + "." + extension);
+    
+        LoadDataCommand command = new LoadDataCommand(fileName, extension);
+        CommandResult result = command.execute(model);
+        assertEquals("Loaded data from file: " + fileName + "." + extension, result.getFeedbackToUser());
     }
 
     @Test

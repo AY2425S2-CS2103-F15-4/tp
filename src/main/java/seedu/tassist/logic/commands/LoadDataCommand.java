@@ -6,13 +6,15 @@ import java.nio.file.Paths;
 import java.util.Set;
 
 import static seedu.tassist.commons.util.CollectionUtil.requireAllNonNull;
-import seedu.tassist.logic.commands.exceptions.CommandException;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EXTENSION;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FILENAME;
+
+import seedu.tassist.commons.util.JsonUtil;
+import seedu.tassist.logic.commands.exceptions.CommandException;
 import seedu.tassist.model.Model;
 import seedu.tassist.model.ReadOnlyAddressBook;
 import seedu.tassist.storage.CsvAddressBookStorage;
-import seedu.tassist.storage.JsonAddressBookStorage;
+import seedu.tassist.storage.JsonAdaptedPerson;
 
 /**
  * Allows a user to load data from a CSV or JSON file into the address book.
@@ -90,13 +92,21 @@ public class LoadDataCommand extends Command {
         try {
             switch (extension) {
             case "json":
-                return new JsonAddressBookStorage(filePath)
-                        .readAddressBook()
-                        .orElseThrow(() -> new IOException("File not found or unreadable."));
+                java.util.List<JsonAdaptedPerson> jsonPersons =
+                        JsonUtil.readJsonArrayFile(filePath, JsonAdaptedPerson.class)
+                                .orElseThrow(() -> new IOException("File not found or unreadable."));
+    
+                seedu.tassist.model.AddressBook addressBookFromJson = new seedu.tassist.model.AddressBook();
+                for (JsonAdaptedPerson person : jsonPersons) {
+                    addressBookFromJson.addPerson(person.toModelType());
+                }
+                return addressBookFromJson;
+    
             case "csv":
                 return new CsvAddressBookStorage(filePath)
                         .readAddressBook()
                         .orElseThrow(() -> new IOException("File not found or unreadable."));
+    
             default:
                 throw new IllegalArgumentException("Unsupported file extension: " + extension);
             }
@@ -104,5 +114,6 @@ public class LoadDataCommand extends Command {
             throw new IOException("Failed to load data: " + e.getMessage(), e);
         }
     }
+    
     
 }

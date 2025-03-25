@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.deser.std.FromStringDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.fasterxml.jackson.databind.JavaType;
 
 import seedu.tassist.commons.core.LogsCenter;
 import seedu.tassist.commons.exceptions.DataLoadingException;
@@ -144,5 +145,26 @@ public class JsonUtil {
             return Level.class;
         }
     }
+
+    public static <T> Optional<java.util.List<T>> readJsonArrayFile(
+            Path filePath, Class<T> elementClass) throws DataLoadingException {
+        requireNonNull(filePath);
+
+        if (!Files.exists(filePath)) {
+            return Optional.empty();
+        }
+        logger.info("JSON array file " + filePath + " found.");
+
+        try {
+            String json = Files.readString(filePath);
+            JavaType listType = objectMapper.getTypeFactory().constructCollectionType(java.util.List.class, elementClass);
+            java.util.List<T> list = objectMapper.readValue(json, listType);
+            return Optional.of(list);
+        } catch (IOException e) {
+            logger.warning("Error reading JSON array file " + filePath + ": " + e);
+            throw new DataLoadingException(e);
+        }
+    }
+
 
 }

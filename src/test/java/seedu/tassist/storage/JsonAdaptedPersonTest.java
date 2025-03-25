@@ -1,14 +1,10 @@
 package seedu.tassist.storage;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static seedu.tassist.storage.JsonAdaptedPerson.MISSING_FIELD_MESSAGE_FORMAT;
-import static seedu.tassist.testutil.Assert.assertThrows;
-import static seedu.tassist.testutil.TypicalPersons.BENSON;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import seedu.tassist.commons.exceptions.IllegalValueException;
@@ -16,6 +12,9 @@ import seedu.tassist.model.person.AttendanceList;
 import seedu.tassist.model.person.Email;
 import seedu.tassist.model.person.Name;
 import seedu.tassist.model.person.Phone;
+import static seedu.tassist.storage.JsonAdaptedPerson.MISSING_FIELD_MESSAGE_FORMAT;
+import static seedu.tassist.testutil.Assert.assertThrows;
+import static seedu.tassist.testutil.TypicalPersons.BENSON;
 
 public class JsonAdaptedPersonTest {
     private static final String INVALID_NAME = "R@chel";
@@ -123,18 +122,6 @@ public class JsonAdaptedPersonTest {
     }
 
     // todo: zhenjie create invalid and null permtuations for all other attributes
-
-    @Test
-    public void toModelType_nullAttendance_throwsIllegalValueException() {
-        JsonAdaptedPerson person =
-                new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_TELE_HANDLE,
-                        VALID_EMAIL, VALID_MAT_NUM, VALID_TUT_GROUP, VALID_LAB_GROUP,
-                        VALID_FACULTY, VALID_YEAR, VALID_REMARK,
-                        null, VALID_LAB_SCORES_STRING , VALID_TAGS);
-        String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, AttendanceList.class.getSimpleName());
-        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
-    }
-
     @Test
     public void toModelType_invalidTags_throwsIllegalValueException() {
         List<JsonAdaptedTag> invalidTags = new ArrayList<>(VALID_TAGS);
