@@ -21,40 +21,43 @@ public class NameTest {
 
     @Test
     public void isValidName() {
-        // null name
+        // Null name.
         assertThrows(NullPointerException.class, () -> Name.isValidName(null));
 
-        // invalid name
-        assertFalse(Name.isValidName("")); // empty string
-        assertFalse(Name.isValidName(" ")); // spaces only
-        assertFalse(Name.isValidName("^")); // only non-alphanumeric characters
-        assertFalse(Name.isValidName("peter*")); // contains non-alphanumeric characters
+        // Invalid name.
+        assertFalse(Name.isValidName("")); // Empty string.
+        assertFalse(Name.isValidName(" ")); // Spaces only.
+        assertFalse(Name.isValidName("^")); // Only non-alphanumeric characters.
+        assertFalse(Name.isValidName("peter*")); // Contains non-alphanumeric characters.
 
-        // valid name
-        assertTrue(Name.isValidName("peter jack")); // alphabets only
-        assertTrue(Name.isValidName("12345")); // numbers only
-        assertTrue(Name.isValidName("peter the 2nd")); // alphanumeric characters
-        assertTrue(Name.isValidName("Capital Tan")); // with capital letters
-        assertTrue(Name.isValidName("David Roger Jackson Ray Jr 2nd")); // long names
+        // Valid name.
+        assertTrue(Name.isValidName("peter jack")); // Alphabets only.
+        assertTrue(Name.isValidName("12345")); // Numbers only.
+        assertTrue(Name.isValidName("peter the 2nd")); // Alphanumeric characters.
+        assertTrue(Name.isValidName("Capital Tan")); // With capital letters.
+        assertTrue(Name.isValidName("David Roger Jackson Ray Jr 2nd")); // Long names.
+        assertTrue(Name.isValidName("Robby-Downy")); // Hyphenated names.
+        assertTrue(Name.isValidName("Devi D/O Rajaratnam")); // Names with slashes.
+        assertTrue(Name.isValidName("Robert Jr.")); // Names with fullstops.
     }
 
     @Test
     public void equals() {
         Name name = new Name("Valid Name");
 
-        // same values -> returns true
+        // Same values -> returns true.
         assertTrue(name.equals(new Name("Valid Name")));
 
-        // same object -> returns true
+        // Same object -> returns true.
         assertTrue(name.equals(name));
 
-        // null -> returns false
+        // Null -> returns false.
         assertFalse(name.equals(null));
 
-        // different types -> returns false
+        // Different types -> returns false.
         assertFalse(name.equals(5.0f));
 
-        // different values -> returns false
+        // Different values -> returns false.
         assertFalse(name.equals(new Name("Other Valid Name")));
     }
 }

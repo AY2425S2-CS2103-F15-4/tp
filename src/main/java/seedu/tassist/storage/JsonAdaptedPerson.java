@@ -105,7 +105,7 @@ public class JsonAdaptedPerson {
     /**
      * Converts this Jackson-friendly adapted person object into the model's {@code Person} object.
      *
-     * @throws IllegalValueException if there were any data constraints violated in the adapted person.
+     * @throws IllegalValueException if there were any data constraints violations in the adapted person.
      */
     public Person toModelType() throws IllegalValueException {
         final List<Tag> personTags = new ArrayList<>();
@@ -140,7 +140,8 @@ public class JsonAdaptedPerson {
         final Year modelYear = validateAndCreate(year, Year.class,
                 Year::isValidYear, Year.MESSAGE_CONSTRAINTS, Year::new);
 
-        final Remark modelRemark = validateAndCreate(remark, Remark.class, Remark::new);
+        final Remark modelRemark = validateAndCreate(remark, Remark.class,
+                Remark::isValidRemark, Remark.MESSAGE_CONSTRAINTS, Remark::new);
 
         final AttendanceList modelAttendanceList = (attendances == null || attendances.isEmpty())
                 ? AttendanceList.generateAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING)

@@ -2,7 +2,7 @@
   "persons": [ {
     "name": "Alice Pauline",
     "phone": "94351253",
-    "teleHandle" : "@tele",
+    "teleHandle" : "@alice_paul",
     "email": "alice@example.com",
     "matNum" : "A0000000Y",
     "tutGroup" : "T01",
@@ -10,13 +10,13 @@
     "faculty" :  "SoC",
     "year" :  "3",
     "remark" : "todo",
-    "attendances" : "0000000000000",
-    "labScores" : "4.2/25|-|-|-",
+    "attendances" : "3300000000000",
+    "labScores" : "4.-|-|-|-",
     "tags": [ "friends" ]
   }, {
     "name": "Alice Pauline",
     "phone": "94351253",
-    "teleHandle" : "@tele",
+    "teleHandle" : "@alice_paul",
     "email": "pauline@example.com",
     "matNum" : "A0000000Y",
     "tutGroup" : "T01",
@@ -24,7 +24,7 @@
     "faculty" :  "SoC",
     "year" :  "3",
     "remark" : "todo",
-    "attendances" : "0000000000000",
-    "labScores" : "4.2/25|-|-|-"
+    "attendances" : "3300000000000",
+    "labScores" : "4.-|-|-|-"
   } ]
 }

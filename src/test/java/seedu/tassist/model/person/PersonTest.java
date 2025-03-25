@@ -4,9 +4,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
+import static seedu.tassist.logic.commands.CommandTestUtil.VALID_FACULTY_BOB;
+import static seedu.tassist.logic.commands.CommandTestUtil.VALID_LAB_GROUP_BOB;
+import static seedu.tassist.logic.commands.CommandTestUtil.VALID_MAT_NUM_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
+import static seedu.tassist.logic.commands.CommandTestUtil.VALID_REMARK_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
+import static seedu.tassist.logic.commands.CommandTestUtil.VALID_TELE_HANDLE_BOB;
+import static seedu.tassist.logic.commands.CommandTestUtil.VALID_TUT_GROUP_BOB;
+import static seedu.tassist.logic.commands.CommandTestUtil.VALID_YEAR_BOB;
 import static seedu.tassist.testutil.Assert.assertThrows;
 import static seedu.tassist.testutil.TypicalPersons.ALICE;
 import static seedu.tassist.testutil.TypicalPersons.BOB;
@@ -25,70 +32,74 @@ public class PersonTest {
 
     @Test
     public void isSamePerson() {
-        // same object -> returns true
+        // Same object -> returns true.
         assertTrue(ALICE.isSamePerson(ALICE));
 
-        // null -> returns false
+        // Null -> returns false.
         assertFalse(ALICE.isSamePerson(null));
 
-        // same name, all other attributes different -> returns true
-        Person editedAlice = new PersonBuilder(ALICE).withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_BOB)
+        // Same matNum, all other attributes different -> returns true.
+        Person editedAlice = new PersonBuilder(ALICE).withName(VALID_NAME_BOB)
+                .withPhone(VALID_PHONE_BOB)
+                .withTeleHandle(VALID_TELE_HANDLE_BOB).withEmail(VALID_EMAIL_BOB)
+                .withTutGroup(VALID_TUT_GROUP_BOB)
+                .withLabGroup(VALID_LAB_GROUP_BOB).withFaculty(VALID_FACULTY_BOB)
+                .withYear(VALID_YEAR_BOB).withRemark(VALID_REMARK_BOB)
                 .withTags(VALID_TAG_HUSBAND).build();
         assertTrue(ALICE.isSamePerson(editedAlice));
 
-        // different name, all other attributes same -> returns false
-        editedAlice = new PersonBuilder(ALICE).withName(VALID_NAME_BOB).build();
+        // Different matNum, all other attributes same -> returns false.
+        editedAlice = new PersonBuilder(ALICE).withMatNum(VALID_MAT_NUM_BOB).build();
         assertFalse(ALICE.isSamePerson(editedAlice));
 
-        // name differs in case, all other attributes same -> returns false
+        // Lower case matNum will be changed back upper case -> returns true.
         Person editedBob = new PersonBuilder(BOB).withName(VALID_NAME_BOB.toLowerCase()).build();
-        assertFalse(BOB.isSamePerson(editedBob));
-
-        // name has trailing spaces, all other attributes same -> returns false
-        String nameWithTrailingSpaces = VALID_NAME_BOB + " ";
-        editedBob = new PersonBuilder(BOB).withName(nameWithTrailingSpaces).build();
-        assertFalse(BOB.isSamePerson(editedBob));
+        assertTrue(BOB.isSamePerson(editedBob));
     }
 
     @Test
     public void equals() {
-        // same values -> returns true
+        // Same values -> returns true.
         Person aliceCopy = new PersonBuilder(ALICE).build();
         assertTrue(ALICE.equals(aliceCopy));
 
-        // same object -> returns true
+        // Same object -> returns true.
         assertTrue(ALICE.equals(ALICE));
 
-        // null -> returns false
+        // Null -> returns false.
         assertFalse(ALICE.equals(null));
 
-        // different type -> returns false
+        // Different type -> returns false.
         assertFalse(ALICE.equals(5));
 
-        // different person -> returns false
+        // Different person -> returns false.
         assertFalse(ALICE.equals(BOB));
 
-        // different name -> returns false
+        // Different name -> returns false.
         Person editedAlice = new PersonBuilder(ALICE).withName(VALID_NAME_BOB).build();
         assertFalse(ALICE.equals(editedAlice));
 
-        // different phone -> returns false
+        // Different phone -> returns false.
         editedAlice = new PersonBuilder(ALICE).withPhone(VALID_PHONE_BOB).build();
         assertFalse(ALICE.equals(editedAlice));
 
-        // different email -> returns false
+        // Different email -> returns false.
         editedAlice = new PersonBuilder(ALICE).withEmail(VALID_EMAIL_BOB).build();
         assertFalse(ALICE.equals(editedAlice));
 
-        // different tags -> returns false
+        // Different tags -> returns false.
         editedAlice = new PersonBuilder(ALICE).withTags(VALID_TAG_HUSBAND).build();
         assertFalse(ALICE.equals(editedAlice));
     }
 
     @Test
     public void toStringMethod() {
-        String expected = Person.class.getCanonicalName() + "{name=" + ALICE.getName() + ", phone=" + ALICE.getPhone()
-                + ", email=" + ALICE.getEmail()
+        String expected = Person.class.getCanonicalName() + "{name=" + ALICE.getName()
+                + ", phone=" + ALICE.getPhone() + ", teleHandle=" + ALICE.getTeleHandle()
+                + ", email=" + ALICE.getEmail() + ", matNum=" + ALICE.getMatNum()
+                + ", tutGroup=" + ALICE.getTutGroup() + ", labGroup=" + ALICE.getLabGroup()
+                + ", faculty=" + ALICE.getFaculty() + ", year=" + ALICE.getYear()
+                + ", remark=" + ALICE.getRemark()
                 + ", attendanceList=" + ALICE.getAttendanceList()
                 + ", labScoreList=" + ALICE.getLabScoreList() + ", tags=" + ALICE.getTags() + "}";
         assertEquals(expected, ALICE.toString());

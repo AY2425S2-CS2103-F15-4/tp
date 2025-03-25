@@ -80,4 +80,41 @@ public class ArgumentMultimap {
                     .getErrorMessageForDuplicatePrefixes(duplicatedPrefixes));
         }
     }
+
+    /**
+     * Throws a {@code ParseException} if any of the prefixes given in {@code prefixes}
+     * appeared more than once among the arguments.
+     * Includes a warning for potential quotation misalignment as well.
+     */
+    public void verifyNoDuplicatePrefixesAndWarnQuotesFor(Prefix... prefixes) throws ParseException {
+        Prefix[] duplicatedPrefixes = Stream.of(prefixes).distinct()
+                .filter(prefix -> argMultimap.containsKey(prefix)
+                        && argMultimap.get(prefix).size() > 1)
+                .toArray(Prefix[]::new);
+
+        if (duplicatedPrefixes.length > 0) {
+            throw new ParseException(Messages
+                    .getErrorMessageForDuplicatePrefixesWithQuotes(duplicatedPrefixes));
+        }
+    }
+
+    /**
+     * Throws a {@code ParseException} if none of the prefixes given in {@code prefixes}
+     * are present or if all present prefixes have empty string values.
+     *
+     * @param prefixes The prefixes to check for presence and non-empty values
+     * @throws ParseException if no prefixes are present with non-empty values
+     */
+    public void verifyOneNonEmptyFor(Prefix... prefixes) throws ParseException {
+        boolean hasNonEmptyValue = Stream.of(prefixes)
+                .anyMatch(prefix -> {
+                    Optional<String> value = getValue(prefix);
+                    return value.isPresent() && !value.get().isEmpty();
+                });
+
+        if (!hasNonEmptyValue) {
+            throw new ParseException(Messages.getErrorMessageForRequiredButEmptyField(prefixes));
+        }
+    }
+
 }

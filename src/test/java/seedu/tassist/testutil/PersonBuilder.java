@@ -26,7 +26,7 @@ public class PersonBuilder {
 
     public static final String DEFAULT_NAME = "Amy Bee";
     public static final String DEFAULT_PHONE = "85355255";
-    public static final String DEFAULT_TELE_HANDLE = "@tele";
+    public static final String DEFAULT_TELE_HANDLE = "@beee_mee";
     public static final String DEFAULT_EMAIL = "amy@gmail.com";
     public static final String DEFAULT_MAT_NUM = "A0000000Y";
     public static final String DEFAULT_TUT_GROUP = "T01";
@@ -34,7 +34,7 @@ public class PersonBuilder {
     public static final String DEFAULT_FACULTY = "SoC";
     public static final String DEFAULT_YEAR = "1";
     public static final String DEFAULT_REMARK = "todo";
-    public static final String DEFAULT_ATTENDANCE_STRING = "0000000000000";
+    public static final String DEFAULT_ATTENDANCE_STRING = AttendanceList.DEFAULT_ATTENDANCE_STRING;
 
     public static final String DEFAULT_LAB_SCORES = "-1/25 -1/25 -1/25 -1/25";
 
@@ -134,6 +134,15 @@ public class PersonBuilder {
      * Sets the {@code TutGroup} of the {@code Person} that we are building.
      */
     public PersonBuilder withTutGroup(String tutGroup) {
+        if (!this.attendanceList.isEmpty() && tutGroup.isEmpty()) {
+            // If the origin attendanceList is not empty, but the tutGroup is empty,
+            // Assign the Empty AttendanceList.
+            this.attendanceList = AttendanceList.EMPTY_ATTENDANCE_LIST;
+        } else if (this.attendanceList.isEmpty() && !tutGroup.isEmpty()) {
+            // Else if the origin attendanceList is empty, but the tutGroup is not empty,
+            // Generate an attendanceList with the Default AttendanceString.
+            this.attendanceList = AttendanceList.generateAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING);
+        }
         this.tutGroup = new TutGroup(tutGroup);
         return this;
     }

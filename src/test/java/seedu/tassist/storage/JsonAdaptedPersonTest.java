@@ -14,13 +14,27 @@ import org.junit.jupiter.api.Test;
 import seedu.tassist.commons.exceptions.IllegalValueException;
 import seedu.tassist.model.person.AttendanceList;
 import seedu.tassist.model.person.Email;
+import seedu.tassist.model.person.Faculty;
+import seedu.tassist.model.person.LabGroup;
+import seedu.tassist.model.person.MatNum;
 import seedu.tassist.model.person.Name;
 import seedu.tassist.model.person.Phone;
+import seedu.tassist.model.person.Remark;
+import seedu.tassist.model.person.TeleHandle;
+import seedu.tassist.model.person.TutGroup;
+import seedu.tassist.model.person.Year;
 
 public class JsonAdaptedPersonTest {
     private static final String INVALID_NAME = "R@chel";
     private static final String INVALID_PHONE = "-651234";
+    private static final String INVALID_TELE_HANDLE = "@ca";
     private static final String INVALID_EMAIL = "example.com";
+    private static final String INVALID_MAT_NUM = "A0000000A";
+    private static final String INVALID_TUT_GROUP = "C111";
+    private static final String INVALID_LAB_GROUP = "D111";
+    private static final String INVALID_FACULTY = "@#$S";
+    private static final String INVALID_YEAR = "8";
+    private static final String INVALID_REMARK = "as\"asdf";
     private static final String INVALID_ATTENDANCE_STRING = "1010500210112";
     private static final String INVALID_TAG = "#friend";
 
@@ -91,6 +105,28 @@ public class JsonAdaptedPersonTest {
     }
 
     @Test
+    public void toModelType_invalidTeleHandle_throwsIllegalValueException() {
+        JsonAdaptedPerson person =
+                new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, INVALID_TELE_HANDLE,
+                        VALID_EMAIL, VALID_MAT_NUM, VALID_TUT_GROUP, VALID_LAB_GROUP,
+                        VALID_FACULTY, VALID_YEAR, VALID_REMARK,
+                        VALID_ATTENDANCE_STRING, VALID_LAB_SCORES_STRING , VALID_TAGS);
+        String expectedMessage = TeleHandle.MESSAGE_CONSTRAINTS;
+        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+    }
+
+    @Test
+    public void toModelType_nullTeleHandle_throwsIllegalValueException() {
+        JsonAdaptedPerson person =
+                new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, null,
+                        VALID_EMAIL, VALID_MAT_NUM, VALID_TUT_GROUP, VALID_LAB_GROUP,
+                        VALID_FACULTY, VALID_YEAR, VALID_REMARK,
+                        VALID_ATTENDANCE_STRING, VALID_LAB_SCORES_STRING , VALID_TAGS);
+        String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, TeleHandle.class.getSimpleName());
+        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+    }
+
+    @Test
     public void toModelType_invalidEmail_throwsIllegalValueException() {
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_TELE_HANDLE,
@@ -108,6 +144,132 @@ public class JsonAdaptedPersonTest {
                 VALID_FACULTY, VALID_YEAR, VALID_REMARK,
                 VALID_ATTENDANCE_STRING, VALID_LAB_SCORES_STRING , VALID_TAGS);
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Email.class.getSimpleName());
+        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+    }
+
+    @Test
+    public void toModelType_invalidMatNum_throwsIllegalValueException() {
+        JsonAdaptedPerson person =
+                new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_TELE_HANDLE,
+                        VALID_EMAIL, INVALID_MAT_NUM, VALID_TUT_GROUP, VALID_LAB_GROUP,
+                        VALID_FACULTY, VALID_YEAR, VALID_REMARK,
+                        VALID_ATTENDANCE_STRING, VALID_LAB_SCORES_STRING , VALID_TAGS);
+        String expectedMessage = MatNum.MESSAGE_CONSTRAINTS;
+        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+    }
+
+    @Test
+    public void toModelType_nullMatNum_throwsIllegalValueException() {
+        JsonAdaptedPerson person = new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_TELE_HANDLE,
+                VALID_EMAIL, null, VALID_TUT_GROUP, VALID_LAB_GROUP,
+                VALID_FACULTY, VALID_YEAR, VALID_REMARK,
+                VALID_ATTENDANCE_STRING, VALID_LAB_SCORES_STRING , VALID_TAGS);
+        String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, MatNum.class.getSimpleName());
+        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+    }
+
+    @Test
+    public void toModelType_invalidTutGroup_throwsIllegalValueException() {
+        JsonAdaptedPerson person =
+                new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_TELE_HANDLE,
+                        VALID_EMAIL, VALID_MAT_NUM, INVALID_TUT_GROUP, VALID_LAB_GROUP,
+                        VALID_FACULTY, VALID_YEAR, VALID_REMARK,
+                        VALID_ATTENDANCE_STRING, VALID_LAB_SCORES_STRING , VALID_TAGS);
+        String expectedMessage = TutGroup.MESSAGE_CONSTRAINTS;
+        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+    }
+
+    @Test
+    public void toModelType_nullTutGroup_throwsIllegalValueException() {
+        JsonAdaptedPerson person = new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_TELE_HANDLE,
+                VALID_EMAIL, VALID_MAT_NUM, null, VALID_LAB_GROUP,
+                VALID_FACULTY, VALID_YEAR, VALID_REMARK,
+                VALID_ATTENDANCE_STRING, VALID_LAB_SCORES_STRING , VALID_TAGS);
+        String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, TutGroup.class.getSimpleName());
+        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+    }
+
+    @Test
+    public void toModelType_invalidLabGroup_throwsIllegalValueException() {
+        JsonAdaptedPerson person =
+                new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_TELE_HANDLE,
+                        VALID_EMAIL, VALID_MAT_NUM, VALID_TUT_GROUP, INVALID_LAB_GROUP,
+                        VALID_FACULTY, VALID_YEAR, VALID_REMARK,
+                        VALID_ATTENDANCE_STRING, VALID_LAB_SCORES_STRING , VALID_TAGS);
+        String expectedMessage = LabGroup.MESSAGE_CONSTRAINTS;
+        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+    }
+
+    @Test
+    public void toModelType_nullLabGroup_throwsIllegalValueException() {
+        JsonAdaptedPerson person = new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_TELE_HANDLE,
+                VALID_EMAIL, VALID_MAT_NUM, VALID_TUT_GROUP, null,
+                VALID_FACULTY, VALID_YEAR, VALID_REMARK,
+                VALID_ATTENDANCE_STRING, VALID_LAB_SCORES_STRING , VALID_TAGS);
+        String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, LabGroup.class.getSimpleName());
+        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+    }
+
+    @Test
+    public void toModelType_invalidFaculty_throwsIllegalValueException() {
+        JsonAdaptedPerson person =
+                new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_TELE_HANDLE,
+                        VALID_EMAIL, VALID_MAT_NUM, VALID_TUT_GROUP, VALID_LAB_GROUP,
+                        INVALID_FACULTY, VALID_YEAR, VALID_REMARK,
+                        VALID_ATTENDANCE_STRING, VALID_LAB_SCORES_STRING , VALID_TAGS);
+        String expectedMessage = Faculty.MESSAGE_CONSTRAINTS;
+        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+    }
+
+    @Test
+    public void toModelType_nullFaculty_throwsIllegalValueException() {
+        JsonAdaptedPerson person = new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_TELE_HANDLE,
+                VALID_EMAIL, VALID_MAT_NUM, VALID_TUT_GROUP, VALID_LAB_GROUP,
+                null, VALID_YEAR, VALID_REMARK,
+                VALID_ATTENDANCE_STRING, VALID_LAB_SCORES_STRING , VALID_TAGS);
+        String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Faculty.class.getSimpleName());
+        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+    }
+
+    @Test
+    public void toModelType_invalidYear_throwsIllegalValueException() {
+        JsonAdaptedPerson person =
+                new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_TELE_HANDLE,
+                        VALID_EMAIL, VALID_MAT_NUM, VALID_TUT_GROUP, VALID_LAB_GROUP,
+                        VALID_FACULTY, INVALID_YEAR, VALID_REMARK,
+                        VALID_ATTENDANCE_STRING, VALID_LAB_SCORES_STRING , VALID_TAGS);
+        String expectedMessage = Year.MESSAGE_CONSTRAINTS;
+        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+    }
+
+    @Test
+    public void toModelType_nullYear_throwsIllegalValueException() {
+        JsonAdaptedPerson person = new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_TELE_HANDLE,
+                VALID_EMAIL, VALID_MAT_NUM, VALID_TUT_GROUP, VALID_LAB_GROUP,
+                VALID_FACULTY, null, VALID_REMARK,
+                VALID_ATTENDANCE_STRING, VALID_LAB_SCORES_STRING , VALID_TAGS);
+        String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Year.class.getSimpleName());
+        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+    }
+
+    @Test
+    public void toModelType_invalidRemark_throwsIllegalValueException() {
+        JsonAdaptedPerson person =
+                new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_TELE_HANDLE,
+                        VALID_EMAIL, VALID_MAT_NUM, VALID_TUT_GROUP, VALID_LAB_GROUP,
+                        VALID_FACULTY, VALID_YEAR, INVALID_REMARK,
+                        VALID_ATTENDANCE_STRING, VALID_LAB_SCORES_STRING , VALID_TAGS);
+        String expectedMessage = Remark.MESSAGE_CONSTRAINTS;
+        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+    }
+
+    @Test
+    public void toModelType_nullRemark_throwsIllegalValueException() {
+        JsonAdaptedPerson person = new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_TELE_HANDLE,
+                VALID_EMAIL, VALID_MAT_NUM, VALID_TUT_GROUP, VALID_LAB_GROUP,
+                VALID_FACULTY, VALID_YEAR, null,
+                VALID_ATTENDANCE_STRING, VALID_LAB_SCORES_STRING , VALID_TAGS);
+        String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Remark.class.getSimpleName());
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
 

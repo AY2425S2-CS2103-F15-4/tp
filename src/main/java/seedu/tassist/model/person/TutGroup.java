@@ -5,14 +5,16 @@ import static seedu.tassist.commons.util.AppUtil.checkArgument;
 
 /**
  * Represents a Person's tutorial group in the address book.
+ * Optional field.
  * Guarantees: immutable; is valid as declared in {@link #isValidTutGroup(String)}
  */
 public class TutGroup {
 
     public static final String MESSAGE_CONSTRAINTS = "Invalid tutorial group!"
-            + "\nTutorial group should either start with a 'T' and/or contain only numbers.";
+            + "\nTutorial group should either start with a 'T' or 't'"
+            + "followed by a maximum of two digits larger than 0.";
 
-    public static final String VALIDATION_REGEX = "^[Tt]\\d+$";
+    public static final String VALIDATION_REGEX = "^[Tt]([1-9]|0[1-9]|[1-9]\\d)$";
 
     public final String value;
 
@@ -23,15 +25,25 @@ public class TutGroup {
      */
     public TutGroup(String tutGroup) {
         requireNonNull(tutGroup);
-        checkArgument(isValidTutGroup(tutGroup), MESSAGE_CONSTRAINTS);
-        value = tutGroup;
+        // Hardcode, can change in future when relaxing assumptions.
+        String processedTutGroup = tutGroup.length() == 2
+                ? tutGroup.charAt(0) + "0" + tutGroup.charAt(1) : tutGroup;
+        checkArgument(isValidTutGroup(processedTutGroup), MESSAGE_CONSTRAINTS);
+        value = processedTutGroup.toUpperCase();
+    }
+
+    /**
+     * Checks if value is empty.
+     */
+    public boolean isEmpty() {
+        return value.isEmpty();
     }
 
     /**
      * Returns true if a given string is a valid name.
      */
     public static boolean isValidTutGroup(String test) {
-        return test.matches(VALIDATION_REGEX);
+        return test.matches(VALIDATION_REGEX) || test.isEmpty();
     }
 
     @Override
@@ -50,8 +62,8 @@ public class TutGroup {
             return false;
         }
 
-        Name otherTutGroup = (Name) other;
-        return value.equals(otherTutGroup.fullName);
+        TutGroup otherTutGroup = (TutGroup) other;
+        return value.equals(otherTutGroup.value);
     }
 
     @Override

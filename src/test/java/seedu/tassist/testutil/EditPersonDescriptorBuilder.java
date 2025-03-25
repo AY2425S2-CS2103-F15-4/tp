@@ -5,11 +5,17 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import seedu.tassist.logic.commands.EditCommand.EditPersonDescriptor;
-import seedu.tassist.model.person.AttendanceList;
 import seedu.tassist.model.person.Email;
+import seedu.tassist.model.person.Faculty;
+import seedu.tassist.model.person.LabGroup;
+import seedu.tassist.model.person.MatNum;
 import seedu.tassist.model.person.Name;
 import seedu.tassist.model.person.Person;
 import seedu.tassist.model.person.Phone;
+import seedu.tassist.model.person.Remark;
+import seedu.tassist.model.person.TeleHandle;
+import seedu.tassist.model.person.TutGroup;
+import seedu.tassist.model.person.Year;
 import seedu.tassist.model.tag.Tag;
 
 /**
@@ -34,8 +40,14 @@ public class EditPersonDescriptorBuilder {
         descriptor = new EditPersonDescriptor();
         descriptor.setName(person.getName());
         descriptor.setPhone(person.getPhone());
+        descriptor.setTeleHandle(person.getTeleHandle());
         descriptor.setEmail(person.getEmail());
-        descriptor.setAttendanceList(person.getAttendanceList());
+        descriptor.setMatNum(person.getMatNum());
+        descriptor.setTutGroup(person.getTutGroup());
+        descriptor.setLabGroup(person.getLabGroup());
+        descriptor.setFaculty(person.getFaculty());
+        descriptor.setYear(person.getYear());
+        descriptor.setRemark(person.getRemark());
         descriptor.setTags(person.getTags());
     }
 
@@ -56,6 +68,14 @@ public class EditPersonDescriptorBuilder {
     }
 
     /**
+     * Sets the {@code TeleHandle} of the {@code EditPersonDescriptor} that we are building.
+     */
+    public EditPersonDescriptorBuilder withTeleHandle(String teleHandle) {
+        descriptor.setTeleHandle(new TeleHandle(teleHandle));
+        return this;
+    }
+
+    /**
      * Sets the {@code Email} of the {@code EditPersonDescriptor} that we are building.
      */
     public EditPersonDescriptorBuilder withEmail(String email) {
@@ -64,10 +84,50 @@ public class EditPersonDescriptorBuilder {
     }
 
     /**
-     * Sets the {@code AttendanceList} of the {@code EditPersonDescriptor} that we are building.
+     * Sets the {@code MatNum} of the {@code EditPersonDescriptor} that we are building.
      */
-    public EditPersonDescriptorBuilder withAttendanceList(String attendanceString) {
-        descriptor.setAttendanceList(AttendanceList.generateAttendanceList(attendanceString));
+    public EditPersonDescriptorBuilder withMatNum(String matNum) {
+        descriptor.setMatNum(new MatNum(matNum));
+        return this;
+    }
+
+    /**
+     * Sets the {@code TutGroup} of the {@code EditPersonDescriptor} that we are building.
+     */
+    public EditPersonDescriptorBuilder withTutGroup(String tutGroup) {
+        descriptor.setTutGroup(new TutGroup(tutGroup));
+        return this;
+    }
+
+    /**
+     * Sets the {@code LabGroup} of the {@code EditPersonDescriptor} that we are building.
+     */
+    public EditPersonDescriptorBuilder withLabGroup(String labGroup) {
+        descriptor.setLabGroup(new LabGroup(labGroup));
+        return this;
+    }
+
+    /**
+     * Sets the {@code Faculty} of the {@code EditPersonDescriptor} that we are building.
+     */
+    public EditPersonDescriptorBuilder withFaculty(String faculty) {
+        descriptor.setFaculty(new Faculty(faculty));
+        return this;
+    }
+
+    /**
+     * Sets the {@code Year} of the {@code EditPersonDescriptor} that we are building.
+     */
+    public EditPersonDescriptorBuilder withYear(String year) {
+        descriptor.setYear(new Year(year));
+        return this;
+    }
+
+    /**
+     * Sets the {@code Remark} of the {@code EditPersonDescriptor} that we are building.
+     */
+    public EditPersonDescriptorBuilder withRemark(String remark) {
+        descriptor.setRemark(new Remark(remark));
         return this;
     }
 

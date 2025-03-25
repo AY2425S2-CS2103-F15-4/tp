@@ -11,8 +11,8 @@
     "faculty" :  "SoC",
     "year" :  "1",
     "remark" : "todo",
-    "attendances" : "0000000000000",
-    "labScores" : "4.2/25|-|-|-",
+    "attendances" : "3300000000000",
+    "labScores" : "4.-|-|-|-",
     "tags" : [ "friends" ]
   }, {
     "name" : "Benson Meier",
@@ -25,7 +25,7 @@
     "faculty" :  "SoC",
     "year" :  "2",
     "remark" : "todo",
-    "attendances" : "0000000000000",
+    "attendances" : "3300000000000",
     "labScores" : "4.10/25|-|-|-",
     "tags" : [ "owesMoney", "friends" ]
   }, {
@@ -39,7 +39,7 @@
     "faculty" :  "SoC",
     "year" :  "3",
     "remark" : "todo",
-    "attendances" : "0000000000000",
+    "attendances" : "3300000000000",
     "labScores" : "4.15/25|-|-|-",
     "tags" : [ ]
   }, {
@@ -53,7 +53,7 @@
     "faculty" :  "SoC",
     "year" :  "4",
     "remark" : "todo",
-    "attendances" : "0000000000000",
+    "attendances" : "3300000000000",
     "labScores" : "4.25/25|-|-|-",
     "tags" : [ "friends" ]
   }, {
@@ -67,7 +67,7 @@
     "faculty" :  "SoC",
     "year" :  "5",
     "remark" : "todo",
-    "attendances" : "0000000000000",
+    "attendances" : "3300000000000",
     "labScores" : "4.25/25|-|-|-",
     "tags" : [ ]
   }, {
@@ -81,7 +81,7 @@
     "faculty" :  "SoC",
     "year" :  "6",
     "remark" : "todo",
-    "attendances" : "0000000000000",
+    "attendances" : "3300000000000",
     "labScores" : "4.25/25|-|-|-",
     "tags" : [ ]
   }, {
@@ -95,7 +95,7 @@
     "faculty" :  "SoC",
     "year" :  "3",
     "remark" : "todo",
-    "attendances" : "0000000000000",
+    "attendances" : "3300000000000",
     "labScores" : "4.25/25|-|-|-",
     "tags" : [ ]
   } ]

@@ -1,7 +1,7 @@
 package seedu.tassist.ui;
 
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EXTENSION;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FILENAME;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EXTENSION;
 
 import java.io.File;
 import java.util.logging.Logger;
@@ -138,10 +138,6 @@ public class MainWindow extends UiPart<Stage> {
         }
     }
 
-    void show() {
-        primaryStage.show();
-    }
-
     @FXML
     private void handleExport() {
         FileChooser fileChooser = new FileChooser();
@@ -158,6 +154,7 @@ public class MainWindow extends UiPart<Stage> {
         fileChooser.getExtensionFilters().addAll(jsonFilter, csvFilter);
 
         File file = fileChooser.showSaveDialog(primaryStage);
+
         if (file != null) {
             String[] fileData = file.getName().split("\\.");
             try {
@@ -201,6 +198,9 @@ public class MainWindow extends UiPart<Stage> {
                 logger.info("An error occurred while loading: " + e.getMessage());
             }
         }
+    }
+    void show() {
+        primaryStage.show();
     }
 
     /**

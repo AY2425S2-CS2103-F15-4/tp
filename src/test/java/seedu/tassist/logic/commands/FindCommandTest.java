@@ -37,20 +37,20 @@ public class FindCommandTest {
         FindCommand findFirstCommand = new FindCommand(firstPredicate);
         FindCommand findSecondCommand = new FindCommand(secondPredicate);
 
-        // same object -> returns true
+        // Same object -> returns true.
         assertTrue(findFirstCommand.equals(findFirstCommand));
 
-        // same values -> returns true
+        // Same values -> returns true.
         FindCommand findFirstCommandCopy = new FindCommand(firstPredicate);
         assertTrue(findFirstCommand.equals(findFirstCommandCopy));
 
-        // different types -> returns false
+        // Different types -> returns false.
         assertFalse(findFirstCommand.equals(1));
 
-        // null -> returns false
+        // Null -> returns false.
         assertFalse(findFirstCommand.equals(null));
 
-        // different person -> returns false
+        // Different person -> returns false.
         assertFalse(findFirstCommand.equals(findSecondCommand));
     }
 

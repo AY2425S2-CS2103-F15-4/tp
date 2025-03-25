@@ -5,15 +5,15 @@ import static seedu.tassist.commons.util.AppUtil.checkArgument;
 
 /**
  * Represents a Person's year of study in the address book.
+ * Optional field.
  * Guarantees: immutable; is valid as declared in {@link #isValidYear(String)}
  */
 public class Year {
 
-
     public static final String MESSAGE_CONSTRAINTS = "Invalid year!"
             + "\nOnly digits 1 through 6 are allowed.";
 
-    public static final String VALIDATION_REGEX = "\\d{1,6}";
+    public static final String VALIDATION_REGEX = "[1-6]";
 
     public final String value;
 
@@ -29,10 +29,17 @@ public class Year {
     }
 
     /**
+     * Checks if value is empty.
+     */
+    public boolean isEmpty() {
+        return value.isEmpty();
+    }
+
+    /**
      * Returns true if a given string is a valid phone number.
      */
     public static boolean isValidYear(String test) {
-        return test.matches(VALIDATION_REGEX);
+        return test.matches(VALIDATION_REGEX) || test.isEmpty();
     }
 
     @Override

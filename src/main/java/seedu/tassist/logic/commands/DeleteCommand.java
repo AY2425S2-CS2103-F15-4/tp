@@ -2,11 +2,14 @@ package seedu.tassist.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.commons.util.ToStringBuilder;
-import seedu.tassist.logic.Messages;
 import seedu.tassist.logic.commands.exceptions.CommandException;
 import seedu.tassist.model.Model;
 import seedu.tassist.model.person.Person;
@@ -16,27 +19,28 @@ import seedu.tassist.model.person.Person;
  */
 public class DeleteCommand extends Command {
 
-    public static final String COMMAND_WORD = "delete";
+    public static final String COMMAND_WORD = "del";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Deletes the person identified by the index number "
-            + "used in the displayed person list.\n"
-            + "Parameters: INDEX (must be a positive integer)\n"
-            + "Example: " + COMMAND_WORD + " 1";
+            + " -i <index>: Deletes the student identified by the index number (1-based)\n"
+            + "Parameters: -i <index> [,<index> or <range>...](must be a positive integer)\n"
+            + "Example: " + COMMAND_WORD + " -i  1-3, 5, 7";
 
-    public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Student: %1$s";
-    public static final String MESSAGE_DELETE_PERSON_INVALID_INDEX = "Invalid index! You currently have %d records!";
+    public static final String MESSAGE_DELETE_MULTIPLE_SUCCESS = "Deleted %d persons successfully!"
+            + "\nDeleted Student(s):\n%s";
+    public static final String MESSAGE_DELETE_PERSON_INVALID_INDEX = "Invalid index!"
+            + " You currently have %d records!";
 
-    private final Index targetIndex;
+    private final List<Index> targetIndexes;
+
 
     /**
-     * Constructs a {@code DeleteCommand} to delete the person at the specified {@code targetIndex}.
+     * Constructs a {@code DeleteCommand} to delete the person at the specified {@code targetIndexes}.
      *
-     * @param targetIndex Index of the person in the filtered list to delete.
+     * @param targetIndexes Indexes of the persons in the filtered list to delete.
      */
-    public DeleteCommand(Index targetIndex) {
-        requireNonNull(targetIndex);
-        this.targetIndex = targetIndex;
+    public DeleteCommand(List<Index> targetIndexes) {
+        this.targetIndexes = targetIndexes;
     }
 
     /**
@@ -49,51 +53,54 @@ public class DeleteCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+        List<Person> lastShownList = model.getFilteredPersonList();
+        List<Person> toDelete = new ArrayList<>();
+        Set<Index> uniqueSortedIndexes = new TreeSet<>(Comparator.comparingInt(Index::getZeroBased));
+        uniqueSortedIndexes.addAll(targetIndexes);
 
-        Person personToDelete = getTargetPerson(model);
+        for (Index index : uniqueSortedIndexes) {
+            int zeroBased = index.getZeroBased();
+            if (zeroBased >= lastShownList.size()) {
+                throw new CommandException(String.format(MESSAGE_DELETE_PERSON_INVALID_INDEX, lastShownList.size()));
+            }
+            toDelete.add(lastShownList.get(zeroBased));
+        }
 
-        model.deletePerson(personToDelete);
+        for (Person person : toDelete) {
+            model.deletePerson(person);
+        }
 
-        String feedback = String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(personToDelete));
-        return new CommandResult(feedback);
+        String deletedStudentsSummary = getDeletedStudentsSummary(toDelete);
+        return new CommandResult(String.format(MESSAGE_DELETE_MULTIPLE_SUCCESS,
+                toDelete.size(), deletedStudentsSummary));
+
     }
 
     /**
-     * Retrieves the person corresponding to {@code targetIndex} from the model's filtered list.
-     * Uses a guard clause to handle an invalid index immediately.
-     *
-     * @param model the model to retrieve the person from.
-     * @return the person to delete.
-     * @throws CommandException if {@code targetIndex} is out of bounds.
+     * Generates a short summary of deleted students.
      */
-    private Person getTargetPerson(Model model) throws CommandException {
-        List<Person> lastShownList = model.getFilteredPersonList();
-        if (targetIndex.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(String.format(MESSAGE_DELETE_PERSON_INVALID_INDEX, lastShownList.size()));
+    public static String getDeletedStudentsSummary(List<Person> students) {
+        StringBuilder sb = new StringBuilder();
+        for (Person p : students) {
+            sb.append(String.format("%s (%s) - %s, %s\n",
+                    p.getName().fullName,
+                    p.getMatNum().value,
+                    p.getTutGroup().value,
+                    p.getLabGroup().value));
         }
-        return lastShownList.get(targetIndex.getZeroBased());
-
+        return sb.toString().trim();
     }
 
     @Override
     public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-
-        // instanceof handles nulls
-        if (!(other instanceof DeleteCommand)) {
-            return false;
-        }
-
-        DeleteCommand otherDeleteCommand = (DeleteCommand) other;
-        return targetIndex.equals(otherDeleteCommand.targetIndex);
+        return other == this
+                || (other instanceof DeleteCommand
+                && targetIndexes.equals(((DeleteCommand) other).targetIndexes));
     }
-
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .add("targetIndex", targetIndex)
+                .add("targetIndexes", targetIndexes)
                 .toString();
     }
 }

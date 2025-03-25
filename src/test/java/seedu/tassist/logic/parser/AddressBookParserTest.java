@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.logic.commands.AddCommand;
 import seedu.tassist.logic.commands.ClearCommand;
 import seedu.tassist.logic.commands.DeleteCommand;
@@ -38,7 +39,6 @@ public class AddressBookParserTest {
 
     @Test
     public void parseCommand_add() throws Exception {
-        // todo zhenjie update in future.
         Person person = new PersonBuilder().build();
         AddCommand command = (AddCommand) parser.parseCommand(PersonUtil.getAddCommand(person));
         assertEquals(new AddCommand(person), command);
@@ -53,8 +53,10 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_delete() throws Exception {
         DeleteCommand command = (DeleteCommand) parser.parseCommand(
-                DeleteCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
-        assertEquals(new DeleteCommand(INDEX_FIRST_PERSON), command);
+                DeleteCommand.COMMAND_WORD + " -i 1,3-4");
+
+        List<Index> expectedIndexes = ParserUtil.parseMultipleIndexes("1,3-4");
+        assertEquals(new DeleteCommand(expectedIndexes), command);
     }
 
     @Test
@@ -62,6 +64,7 @@ public class AddressBookParserTest {
         Person person = new PersonBuilder().build();
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(person).build();
         EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
+                + PREFIX_INDEX + " "
                 + INDEX_FIRST_PERSON.getOneBased() + " " + PersonUtil.getEditPersonDescriptorDetails(descriptor));
         assertEquals(new EditCommand(INDEX_FIRST_PERSON, descriptor), command);
     }

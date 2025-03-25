@@ -38,8 +38,9 @@ public class Person {
      * Every field must be present and not null.
      */
     public Person(Name name, Phone phone, TeleHandle teleHandle, Email email,
-                  MatNum matNum, TutGroup tutGroup, LabGroup labGroup, Faculty faculty, Year year,
-                  Remark remark, AttendanceList attendanceList, LabScoreList labScoreList, Set<Tag> tags) {
+                  MatNum matNum, TutGroup tutGroup, LabGroup labGroup, Faculty faculty,
+                  Year year, Remark remark, AttendanceList attendanceList,
+                  LabScoreList labScoreList, Set<Tag> tags) {
         requireAllNonNull(name, phone, teleHandle, email,
                 matNum, tutGroup, labGroup, faculty, remark, attendanceList, labScoreList, tags);
         this.name = name;
@@ -109,12 +110,14 @@ public class Person {
     public AttendanceList getAttendanceList() {
         return attendanceList;
     }
+
     public LabScoreList getLabScoreList() {
         return labScoreList;
     }
 
     /**
-     * Returns true if both persons have the same name.
+     * Returns true if both persons have the same matriculation number
+     * (this is a guaranteed unique form of identification).
      * This defines a weaker notion of equality between two persons.
      */
     public boolean isSamePerson(Person otherPerson) {
@@ -123,7 +126,7 @@ public class Person {
         }
 
         return otherPerson != null
-                && otherPerson.getName().equals(getName());
+                && otherPerson.getMatNum().equals(getMatNum());
     }
 
     /**
@@ -144,7 +147,14 @@ public class Person {
         Person otherPerson = (Person) other;
         return name.equals(otherPerson.name)
                 && phone.equals(otherPerson.phone)
+                && teleHandle.equals(otherPerson.teleHandle)
                 && email.equals(otherPerson.email)
+                && matNum.equals(otherPerson.matNum)
+                && tutGroup.equals(otherPerson.tutGroup)
+                && labGroup.equals(otherPerson.labGroup)
+                && faculty.equals(otherPerson.faculty)
+                && year.equals(otherPerson.year)
+                && remark.equals(otherPerson.remark)
                 && tags.equals(otherPerson.tags)
                 && attendanceList.equals(otherPerson.attendanceList)
                 && labScoreList.equals(otherPerson.labScoreList);
@@ -153,7 +163,9 @@ public class Person {
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, tags, attendanceList, labScoreList);
+        return Objects.hash(name, phone, teleHandle, email,
+                matNum, tutGroup, labGroup, faculty, year, remark,
+                tags, attendanceList, labScoreList);
     }
 
     @Override
@@ -161,7 +173,14 @@ public class Person {
         return new ToStringBuilder(this)
                 .add("name", name)
                 .add("phone", phone)
+                .add("teleHandle", teleHandle)
                 .add("email", email)
+                .add("matNum", matNum)
+                .add("tutGroup", tutGroup)
+                .add("labGroup", labGroup)
+                .add("faculty", faculty)
+                .add("year", year)
+                .add("remark", remark)
                 .add("attendanceList", attendanceList)
                 .add("labScoreList", labScoreList)
                 .add("tags", tags)

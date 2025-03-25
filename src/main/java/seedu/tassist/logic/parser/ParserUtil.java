@@ -1,21 +1,25 @@
 package seedu.tassist.logic.parser;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.tassist.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.commons.util.StringUtil;
 import seedu.tassist.logic.parser.exceptions.ParseException;
-import seedu.tassist.model.person.AttendanceList;
 import seedu.tassist.model.person.Email;
 import seedu.tassist.model.person.Faculty;
 import seedu.tassist.model.person.LabGroup;
 import seedu.tassist.model.person.LabScoreList;
 import seedu.tassist.model.person.MatNum;
 import seedu.tassist.model.person.Name;
+import seedu.tassist.model.person.Person;
 import seedu.tassist.model.person.Phone;
 import seedu.tassist.model.person.Remark;
 import seedu.tassist.model.person.TeleHandle;
@@ -29,11 +33,12 @@ import seedu.tassist.model.tag.Tag;
 public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
-    public static final String MESSAGE_INVALID_WEEK = "Week is not an unsigned integer from 1 to 13.";
+    public static final String MESSAGE_INVALID_WEEK =
+            "Week is not an unsigned integer from 1 to 13.";
 
     /**
-     * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
-     * trimmed.
+     * Parses {@code oneBasedIndex} into an {@code Index} and returns it.
+     * Leading and trailing whitespaces will be trimmed.
      * @throws ParseException if the specified index is invalid (not non-zero unsigned integer).
      */
     public static Index parseIndex(String oneBasedIndex) throws ParseException {
@@ -186,6 +191,9 @@ public class ParserUtil {
      */
     public static Remark parseRemark(String remark) throws ParseException {
         requireNonNull(remark);
+        if (!Remark.isValidRemark(remark)) {
+            throw new ParseException(Remark.MESSAGE_CONSTRAINTS);
+        }
         return new Remark(remark);
     }
 
@@ -230,19 +238,6 @@ public class ParserUtil {
     }
 
     /**
-     * Parses {@code String attendanceString} into an {@code AttendanceList}.
-     *
-     * @throws ParseException if the given {@code week} is invalid.
-     */
-    public static AttendanceList parseAttendanceList(String attendanceString) throws ParseException {
-        requireNonNull(attendanceString);
-        if (!AttendanceList.isValidAttendanceString(attendanceString)) {
-            throw new ParseException(AttendanceList.ATTENDANCE_STRING_MESSAGE_CONSTRAINTS);
-        }
-        return AttendanceList.generateAttendanceList(attendanceString);
-    }
-
-    /**
      * Parses {@code String labNumber} into an {@code int}.
      *
      * @throws ParseException if the given {@code labNumber} is invalid.
@@ -268,5 +263,126 @@ public class ParserUtil {
             throw new ParseException(LabScoreList.INVALID_LAB_SCORE);
         }
 
+    }
+
+    /**
+     * Returns a filtered list of persons from personList
+     * who are in the given tutorial group.
+     *
+     * @param personList List of persons to filter from.
+     * @param tutGroup TutGroup to match persons against.
+     * @return List of persons from personList with the matching tutGroup.
+     */
+    public static List<Person> getPersonsInTutorialGroup(List<Person> personList, TutGroup tutGroup) {
+        requireAllNonNull(personList, tutGroup);
+        return personList.stream()
+                .filter(person -> person.getTutGroup().equals(tutGroup))
+                .toList();
+    }
+
+    /**
+     * Parses an input string representing a list of indexes (e.g. "1, 2, 4-6")
+     * into a sorted, de-duplicated list of {@link Index} objects.
+     *
+     * @param input The raw string containing index specifications.
+     * @return A list of {@link Index} parsed from the input, in sorted order and without duplicates.
+     * @throws ParseException If any part of the input is invalid.
+     */
+    public static List<Index> parseMultipleIndexes(String input) throws ParseException {
+        requireNonNull(input);
+        String trimmedInput = input.trim();
+        if (trimmedInput.isEmpty()) {
+            throw new ParseException(MESSAGE_INVALID_INDEX);
+        }
+
+        Set<Integer> indexSet = parseToSortedUniqueIntegers(trimmedInput);
+        return convertIntegersToIndexes(indexSet);
+    }
+
+    /**
+     * Parses the input string into a set of unique, sorted integers.
+     * Supports both individual indexes (e.g. "2") and ranges (e.g. "3-5").
+     *
+     * @param input The trimmed input string.
+     * @return A sorted set of unique one-based indexes.
+     * @throws ParseException If the input format is invalid.
+     */
+    private static Set<Integer> parseToSortedUniqueIntegers(String input) throws ParseException {
+        Set<Integer> indexSet = new TreeSet<>();
+        String[] parts = input.split(",");
+
+        for (String part : parts) {
+            part = part.trim();
+            if (part.contains("-")) {
+                parseRange(part, indexSet);
+            } else {
+                parseSingleIndex(part, indexSet);
+            }
+        }
+
+        return indexSet;
+    }
+
+    /**
+     * Parses a string representing a range (e.g. "2-4") and adds the integers
+     * to the provided set.
+     *
+     * @param rangeStr The range string (must be in "start-end" format).
+     * @param indexSet The set to populate with parsed integers.
+     * @throws ParseException If the range is invalid or not properly formatted.
+     */
+    private static void parseRange(String rangeStr, Set<Integer> indexSet) throws ParseException {
+        String[] range = rangeStr.split("-");
+        if (range.length != 2) {
+            throw new ParseException(MESSAGE_INVALID_INDEX);
+        }
+
+        try {
+            int start = Integer.parseInt(range[0].trim());
+            int end = Integer.parseInt(range[1].trim());
+
+            if (start <= 0 || end <= 0 || start > end) {
+                throw new ParseException(MESSAGE_INVALID_INDEX);
+            }
+
+            for (int i = start; i <= end; i++) {
+                indexSet.add(i);
+            }
+        } catch (NumberFormatException e) {
+            throw new ParseException(MESSAGE_INVALID_INDEX, e);
+        }
+    }
+
+    /**
+     * Parses a single integer token representing an index (e.g. "3") and adds it to the provided set.
+     *
+     * @param token The string token to parse.
+     * @param indexSet The set to populate with the parsed integer.
+     * @throws ParseException If the token is not a valid positive integer.
+     */
+    private static void parseSingleIndex(String token, Set<Integer> indexSet) throws ParseException {
+        try {
+            int value = Integer.parseInt(token);
+            if (value <= 0) {
+                throw new ParseException(MESSAGE_INVALID_INDEX);
+            }
+            indexSet.add(value);
+        } catch (NumberFormatException e) {
+            throw new ParseException(MESSAGE_INVALID_INDEX, e);
+        }
+    }
+
+    /**
+     * Converts a set of integers into a list of {@link Index} objects.
+     *
+     * @param intIndexes A set of valid one-based integers.
+     * @return A list of corresponding {@link Index} instances.
+     */
+    private static List<Index> convertIntegersToIndexes(Set<Integer> intIndexes) {
+        List<Index> indexList = new ArrayList<>();
+        for (int i : intIndexes) {
+            indexList.add(Index.fromOneBased(i));
+        }
+        return indexList;
     }
 }

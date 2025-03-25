@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import seedu.tassist.commons.core.LogsCenter;
 import seedu.tassist.commons.exceptions.DataLoadingException;
+import seedu.tassist.model.AddressBook;
 import seedu.tassist.model.ReadOnlyAddressBook;
 import seedu.tassist.model.ReadOnlyUserPrefs;
 import seedu.tassist.model.UserPrefs;
@@ -21,9 +22,11 @@ public class StorageManager implements Storage {
     private UserPrefsStorage userPrefsStorage;
 
     /**
-     * Creates a {@code StorageManager} with the given {@code AddressBookStorage} and {@code UserPrefStorage}.
+     * Creates a {@code StorageManager} with the given {@code AddressBookStorage}
+     * and {@code UserPrefStorage}.
      */
-    public StorageManager(AddressBookStorage addressBookStorage, UserPrefsStorage userPrefsStorage) {
+    public StorageManager(AddressBookStorage addressBookStorage,
+                          UserPrefsStorage userPrefsStorage) {
         this.addressBookStorage = addressBookStorage;
         this.userPrefsStorage = userPrefsStorage;
     }
@@ -59,7 +62,8 @@ public class StorageManager implements Storage {
     }
 
     @Override
-    public Optional<ReadOnlyAddressBook> readAddressBook(Path filePath) throws DataLoadingException {
+    public Optional<ReadOnlyAddressBook> readAddressBook(Path filePath)
+            throws DataLoadingException {
         logger.fine("Attempting to read data from file: " + filePath);
         return addressBookStorage.readAddressBook(filePath);
     }
@@ -70,9 +74,34 @@ public class StorageManager implements Storage {
     }
 
     @Override
-    public void saveAddressBook(ReadOnlyAddressBook addressBook, Path filePath) throws IOException {
+    public void saveAddressBook(ReadOnlyAddressBook addressBook, Path filePath)
+            throws IOException {
         logger.fine("Attempting to write to data file: " + filePath);
         addressBookStorage.saveAddressBook(addressBook, filePath);
+    }
+
+    @Override
+    public Optional<ReadOnlyAddressBook> readAddressBookFromCsv(Path filePath)
+            throws DataLoadingException {
+        logger.fine("Attempting to read CSV data from file: " + filePath);
+        try {
+            CsvAddressBookStorage tempCsvStorage = new CsvAddressBookStorage(filePath);
+            Optional<ReadOnlyAddressBook> optionalAb = tempCsvStorage.readAddressBook();
+            AddressBook ab = optionalAb.map(
+                    readOnlyAb -> new AddressBook(readOnlyAb))
+                    .orElse(new AddressBook());
+            return Optional.of(ab);
+        } catch (Exception e) {
+            throw new DataLoadingException(e);
+        }
+    }
+
+    @Override
+    public void saveAddressBookToCsv(ReadOnlyAddressBook addressBook, Path filePath)
+            throws IOException {
+        logger.fine("Attempting to write CSV data to file: " + filePath);
+        CsvAddressBookStorage tempCsvStorage = new CsvAddressBookStorage(filePath);
+        tempCsvStorage.saveAddressBook(addressBook);
     }
 
 }

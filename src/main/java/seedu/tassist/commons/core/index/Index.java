@@ -1,5 +1,7 @@
 package seedu.tassist.commons.core.index;
 
+import static java.util.Objects.requireNonNull;
+
 import seedu.tassist.commons.util.ToStringBuilder;
 
 /**
@@ -12,13 +14,17 @@ import seedu.tassist.commons.util.ToStringBuilder;
  * convert it back to an int if the index will not be passed to a different component again.
  */
 public class Index {
-    private int zeroBasedIndex;
+    public static final String MESSAGE_CONSTRAINTS =
+            "Index must be a positive integer (non-zero, no leading signs).";
+
+    private final int zeroBasedIndex;
 
     /**
      * Index can only be created by calling {@link Index#fromZeroBased(int)} or
      * {@link Index#fromOneBased(int)}.
      */
     private Index(int zeroBasedIndex) {
+        requireNonNull(zeroBasedIndex);
         if (zeroBasedIndex < 0) {
             throw new IndexOutOfBoundsException();
         }

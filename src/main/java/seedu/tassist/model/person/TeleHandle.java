@@ -5,15 +5,17 @@ import static seedu.tassist.commons.util.AppUtil.checkArgument;
 
 /**
  * Represents a Person's Telegram handle in the address book.
+ * Optional field.
  * Guarantees: immutable; is valid as declared in {@link #isValidTeleHandle(String)}
  */
 public class TeleHandle {
 
     public static final String MESSAGE_CONSTRAINTS = "Invalid Telegram handle!"
-            + "Must start with @, and can only contain alphanumeric characters and underscores.";
+            + "\nMust start with @, and can only contain alphanumeric characters and underscores."
+            + "\nMinimally 5, maximally 32 characters long.";
 
     // Regex based on Telegram's handle rules.
-    public static final String VALIDATION_REGEX = "^@[a-zA-Z0-9_]+$";
+    public static final String VALIDATION_REGEX = "^@[a-zA-Z0-9_]{5,32}$";
 
     public final String value;
 
@@ -29,10 +31,17 @@ public class TeleHandle {
     }
 
     /**
+     * Checks if value is empty.
+     */
+    public boolean isEmpty() {
+        return value.isEmpty();
+    }
+
+    /**
      * Returns true if a given string is a valid name.
      */
     public static boolean isValidTeleHandle(String test) {
-        return test.matches(VALIDATION_REGEX);
+        return test.matches(VALIDATION_REGEX) || test.isEmpty();
     }
 
     @Override

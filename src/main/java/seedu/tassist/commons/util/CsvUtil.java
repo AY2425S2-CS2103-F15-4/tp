@@ -36,6 +36,7 @@ import seedu.tassist.model.tag.Tag;
 public class CsvUtil {
     private static final Logger logger = LogsCenter.getLogger(CsvUtil.class);
 
+
     // ====================== CSV Write ======================
 
     /**

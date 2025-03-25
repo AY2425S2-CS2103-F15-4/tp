@@ -26,37 +26,39 @@ public class AddCommand extends Command {
 
     public static final String COMMAND_WORD = "add";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Adds a person to the address book. "
-            + "Parameters: "
-            + PREFIX_NAME + " NAME "
-            + PREFIX_PHONE + " PHONE "
-            + PREFIX_TELE_HANDLE + " TELEGRAM HANDLE"
-            + PREFIX_EMAIL + " EMAIL "
-            + PREFIX_MAT_NUM + " MATRICULATION NUMBER "
-            + PREFIX_TUT_GROUP + " TUTORIAL GROUP "
-            + PREFIX_LAB_GROUP + " LAB GROUP "
-            + PREFIX_FACULTY + " FACULTY "
-            + PREFIX_YEAR + " YEAR "
-            + PREFIX_REMARK + " REMARKS "
-            + "[" + PREFIX_TAG + "TAG]...\n"
-            + "Example: " + COMMAND_WORD + " "
-            + PREFIX_NAME + " John Doe "
-            + PREFIX_PHONE + " 98765432 "
-            + PREFIX_TELE_HANDLE + " @johnDoe "
-            + PREFIX_EMAIL + " johnd@example.com "
-            + PREFIX_MAT_NUM + " A0123456J "
-            + PREFIX_TUT_GROUP + " T01 "
-            + PREFIX_LAB_GROUP + " B02 "
-            + PREFIX_FACULTY + " School of Computing "
-            + PREFIX_YEAR + " 3 "
-            + PREFIX_REMARK + " TA candidate "
-            + PREFIX_TAG + " friends "
-            + PREFIX_TAG + " owesMoney";
+    public static final String MESSAGE_USAGE =
+            String.format(
+            "Usage: %s [OPTIONS]...\n\n"
+                    + "Adds a person to the address book.\n"
+                    + "Mandatory arguments:\n"
+                    + "  %-7s       Name\n"
+                    + "  %-7s       Email\n"
+                    + "  %-7s       Matriculation number\n\n"
+                    + "At least one of these must be provided:\n"
+                    + "  %-7s       Phone number\n"
+                    + "  %-7s       Telegram handle\n\n"
+                    + "At least one of these must be provided:\n"
+                    + "  %-7s       Tutorial group\n"
+                    + "  %-7s       Lab group\n"
+                    + "Optional arguments:\n"
+                    + "  %-7s       Faculty\n"
+                    + "  %-7s       Academic year\n"
+                    + "  %-7s       Remarks\n"
+                    + "  %-7s       Tag (can be specified multiple times) \n\n"
+                    + "Example: %s %s John Doe %s johnd@example.com %s A0123456J %s 98765432"
+                    + "%s @johnDoe %s T01 %s B02 %s School of Computing %s 3 %s TA candidate"
+                    + "%s friends %s owesMoney",
+                    COMMAND_WORD, PREFIX_NAME, PREFIX_EMAIL, PREFIX_MAT_NUM, PREFIX_PHONE,
+                    PREFIX_TELE_HANDLE, PREFIX_TUT_GROUP, PREFIX_LAB_GROUP, PREFIX_FACULTY,
+                    PREFIX_YEAR, PREFIX_REMARK, PREFIX_TAG, COMMAND_WORD, PREFIX_NAME, PREFIX_EMAIL,
+                    PREFIX_MAT_NUM, PREFIX_PHONE, PREFIX_TELE_HANDLE, PREFIX_TUT_GROUP,
+                    PREFIX_LAB_GROUP, PREFIX_FACULTY, PREFIX_YEAR, PREFIX_REMARK, PREFIX_TAG,
+                    PREFIX_TAG);
+
 
     public static final String MESSAGE_SUCCESS = "New person added: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON =
-            "This person already exists in the address book";
+            "This person already exists in the address book (same matriculation number)";
 
     private final Person toAdd;
 
@@ -77,7 +79,8 @@ public class AddCommand extends Command {
         }
 
         model.addPerson(toAdd);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)));
+        return new CommandResult(String.format(MESSAGE_SUCCESS,
+                Messages.getFormattedPersonAttributesForDisplay(toAdd)));
     }
 
     @Override

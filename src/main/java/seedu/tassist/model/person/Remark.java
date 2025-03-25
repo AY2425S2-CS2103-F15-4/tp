@@ -1,13 +1,21 @@
 package seedu.tassist.model.person;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.tassist.commons.util.AppUtil.checkArgument;
 
 /**
  * Represents a Person's remark in the address book.
+ * Optional field.
  * Guarantees: immutable; is always valid.
  * Adapted from https://se-education.org/guides/tutorials/ab3AddRemark.html.
  */
 public class Remark {
+
+    public static final String VALIDATION_REGEX = "^[^\"]*$";
+
+    public static final String MESSAGE_CONSTRAINTS = "Invalid remark!"
+            + "\nRemarks with hyphens need to be encased in \"\"";
+
     public final String value;
 
     /**
@@ -17,7 +25,22 @@ public class Remark {
      */
     public Remark(String remark) {
         requireNonNull(remark);
+        checkArgument(isValidRemark(remark), MESSAGE_CONSTRAINTS);
         value = remark;
+    }
+
+    /**
+     * Checks if value is empty.
+     */
+    public boolean isEmpty() {
+        return value.isEmpty();
+    }
+
+    /**
+     * Returns true if a given string is a valid name.
+     */
+    public static boolean isValidRemark(String test) {
+        return test.matches(VALIDATION_REGEX) || test.isEmpty();
     }
 
     @Override

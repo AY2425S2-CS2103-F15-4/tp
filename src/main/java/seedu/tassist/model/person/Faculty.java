@@ -5,21 +5,18 @@ import static seedu.tassist.commons.util.AppUtil.checkArgument;
 
 /**
  * Represents a Person's faculty in the address book.
+ * Optional field.
  * Guarantees: immutable; is valid as declared in {@link #isValidFaculty(String)}
  */
 public class Faculty {
 
-    /*
-     * The first character of the address must not be a whitespace,
-     * otherwise " " (a blank string) becomes a valid input.
-     */
-    public static final String VALIDATION_REGEX = "[\\p{Alnum}][\\p{Alnum} \\&\\-]*";
+    public static final String VALIDATION_REGEX = "^[\\p{Alnum}][\\p{Alnum} \\&\\-]*$";
     private static final String SPECIAL_CHARACTERS = "&-";
     public static final String MESSAGE_CONSTRAINTS = "Invalid faculty!"
             + "\nFaculties should only contain alphanumeric characters, spaces, "
             + "and these special characters, excluding "
             + "the parentheses, (" + SPECIAL_CHARACTERS + ")."
-            + "\nNames with hyphens need to be encased in \"\"";
+            + "\nFaculties with hyphens need to be encased in \"\"";
 
     public final String value;
 
@@ -35,10 +32,17 @@ public class Faculty {
     }
 
     /**
+     * Checks if value is empty.
+     */
+    public boolean isEmpty() {
+        return value.isEmpty();
+    }
+
+    /**
      * Returns true if a given string is a valid name.
      */
     public static boolean isValidFaculty(String test) {
-        return test.matches(VALIDATION_REGEX);
+        return test.matches(VALIDATION_REGEX) || test.isEmpty();
     }
 
     @Override

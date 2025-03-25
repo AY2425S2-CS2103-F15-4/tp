@@ -3,13 +3,16 @@ package seedu.tassist.logic.commands;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.tassist.logic.commands.CommandTestUtil.VALID_FILE_EXTENSION_CSV;
-import static seedu.tassist.logic.commands.CommandTestUtil.VALID_FILE_EXTENSION_JSON;
-import static seedu.tassist.logic.commands.CommandTestUtil.VALID_FILE_NAME;
+import static seedu.tassist.logic.commands.CommandTestUtil.VALID_EXPORT_FILE_PATH_CSV;
+import static seedu.tassist.logic.commands.CommandTestUtil.VALID_EXPORT_FILE_PATH_JSON;
 import static seedu.tassist.logic.commands.CommandTestUtil.assertCommandFailure;
+import static seedu.tassist.logic.commands.ExportDataCommand.FILE_SAVE_ERROR;
 import static seedu.tassist.logic.commands.ExportDataCommand.INVALID_ARGUMENT_EXTENSION;
-import static seedu.tassist.logic.commands.ExportDataCommand.INVALID_FILENAME_ERROR;
+import static seedu.tassist.logic.commands.ExportDataCommand.MESSAGE_SUCCESS;
 import static seedu.tassist.testutil.TypicalPersons.getTypicalAddressBook;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.junit.jupiter.api.Test;
 
@@ -19,58 +22,52 @@ import seedu.tassist.model.UserPrefs;
 
 public class ExportDataCommandTest {
 
-    private static final String INVALID_FILE_NAME = "hello@world.csv";
-    private static final String INVALID_FILE_EXTENSION = "pdf";
+    private static final String INVALID_FILE_NAME = "hello@world";
+    private static final String INVALID_FILE_EXTENSION = ".txt";
+    private static final String VALID_EXPORT_FILE = "./data/tassist_data";
+
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
     @Test
-    void execute_validFileNameAndExtension_success() throws Exception {
-        ExportDataCommand command = new ExportDataCommand(VALID_FILE_NAME, VALID_FILE_EXTENSION_CSV);
+    void execute_validFileLocation_success() throws Exception {
+        Path path = Paths.get(VALID_EXPORT_FILE_PATH_CSV);
+        ExportDataCommand command = new ExportDataCommand(path);
         CommandResult commandResult = command.execute(model);
-        assertEquals("Exported data to file: " + VALID_FILE_NAME + "." + VALID_FILE_EXTENSION_CSV,
+        assertEquals(String.format(MESSAGE_SUCCESS, path),
                 commandResult.getFeedbackToUser());
     }
 
     @Test
-    public void execute_invalidFileName_failure() {
-        String expectedMessage = String.format(INVALID_FILENAME_ERROR, INVALID_FILE_NAME);
-
-        assertCommandFailure(
-                new ExportDataCommand(INVALID_FILE_NAME, VALID_FILE_EXTENSION_CSV),
-                model, expectedMessage);
-    }
-
-    @Test
     public void execute_invalidFileExtension_failure() {
-        String expectedMessage = String.format(INVALID_ARGUMENT_EXTENSION, INVALID_FILE_EXTENSION);
+        String expectedMessage = String.format(FILE_SAVE_ERROR,
+                String.format(INVALID_ARGUMENT_EXTENSION, INVALID_FILE_EXTENSION));
 
         assertCommandFailure(
-                new ExportDataCommand(VALID_FILE_NAME, INVALID_FILE_EXTENSION),
+                new ExportDataCommand(Paths.get(VALID_EXPORT_FILE + INVALID_FILE_EXTENSION)),
                 model, expectedMessage);
     }
 
     @Test
     public void equals() {
-        //TODO: These checks might not be necessary
-        final ExportDataCommand exportDataCommand = new ExportDataCommand(VALID_FILE_NAME, VALID_FILE_EXTENSION_CSV);
+        final ExportDataCommand exportDataCommand = new ExportDataCommand(Paths.get(VALID_EXPORT_FILE_PATH_CSV));
 
-        // same values -> returns true
-        ExportDataCommand exportDataCommandTester = new ExportDataCommand(VALID_FILE_NAME, VALID_FILE_EXTENSION_CSV);
+        // Same values -> returns true.
+        ExportDataCommand exportDataCommandTester = new ExportDataCommand(Paths.get(VALID_EXPORT_FILE_PATH_CSV));
         assertTrue(exportDataCommand.equals(exportDataCommandTester));
 
-        // same object -> returns true
+        // Same object -> returns true.
         assertTrue(exportDataCommand.equals(exportDataCommand));
 
-        // null -> returns false
+        // Null -> returns false.
         assertFalse(exportDataCommand.equals(null));
 
-        // different types -> returns false
+        // Different types -> returns false.
         assertFalse(exportDataCommand.equals(new ClearCommand()));
 
-        // different file names -> false
-        assertFalse(exportDataCommand.equals(new ExportDataCommand("lifeisgood", VALID_FILE_EXTENSION_CSV)));
+        // Different file names -> returns false.
+        assertFalse(exportDataCommand.equals(new ExportDataCommand(Paths.get("./data/anotherName.csv"))));
 
-        // different file extensions -> false
-        assertFalse(exportDataCommand.equals(new ExportDataCommand(VALID_FILE_NAME, VALID_FILE_EXTENSION_JSON)));
+        // Different file extensions -> returns false.
+        assertFalse(exportDataCommand.equals(new ExportDataCommand(Paths.get(VALID_EXPORT_FILE_PATH_JSON))));
     }
 }

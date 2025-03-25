@@ -1,6 +1,7 @@
 package seedu.tassist.logic.parser;
 
 import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.tassist.logic.Messages.MESSAGE_INVALID_QUOTES;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FACULTY;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_LAB_GROUP;
@@ -37,13 +38,17 @@ import seedu.tassist.model.tag.Tag;
  * Parses input arguments and creates a new AddCommand object.
  */
 public class AddCommandParser implements Parser<AddCommand> {
-
     /**
      * Parses the given {@code String} of arguments in the context of the AddCommand
      * and returns an AddCommand object for execution.
      * @throws ParseException if the user input does not conform the expected format
      */
     public AddCommand parse(String args) throws ParseException {
+        // Ensure an even number of quotes.
+        if (!new QuotePattern().test(args)) {
+            throw new ParseException(MESSAGE_INVALID_QUOTES);
+        }
+
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_TELE_HANDLE,
                         PREFIX_EMAIL, PREFIX_MAT_NUM, PREFIX_TUT_GROUP, PREFIX_LAB_GROUP,
@@ -57,28 +62,40 @@ public class AddCommandParser implements Parser<AddCommand> {
                     AddCommand.MESSAGE_USAGE));
         }
 
-        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_TELE_HANDLE,
-                PREFIX_EMAIL, PREFIX_MAT_NUM, PREFIX_TUT_GROUP, PREFIX_LAB_GROUP,
-                PREFIX_FACULTY, PREFIX_YEAR, PREFIX_REMARK);
+        argMultimap.verifyNoDuplicatePrefixesAndWarnQuotesFor(PREFIX_NAME, PREFIX_PHONE,
+                PREFIX_TELE_HANDLE, PREFIX_EMAIL, PREFIX_MAT_NUM, PREFIX_TUT_GROUP,
+                PREFIX_LAB_GROUP, PREFIX_FACULTY, PREFIX_YEAR, PREFIX_REMARK);
+        argMultimap.verifyOneNonEmptyFor(PREFIX_PHONE, PREFIX_TELE_HANDLE);
+        argMultimap.verifyOneNonEmptyFor(PREFIX_TUT_GROUP, PREFIX_LAB_GROUP);
+
         Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
-        Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
+        Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).orElse(""));
         TeleHandle teleHandle = ParserUtil.parseTeleHandle(argMultimap
-                .getValue(PREFIX_TELE_HANDLE).get());
+                .getValue(PREFIX_TELE_HANDLE).orElse(""));
         Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
         MatNum matNum = ParserUtil.parseMatNum(argMultimap.getValue(PREFIX_MAT_NUM).get());
-        TutGroup tutGrp = ParserUtil.parseTutGroup(argMultimap.getValue(PREFIX_TUT_GROUP).get());
-        LabGroup labGrp = ParserUtil.parseLabGroup(argMultimap.getValue(PREFIX_LAB_GROUP).get());
-        Faculty faculty = ParserUtil.parseFaculty(argMultimap.getValue(PREFIX_FACULTY).get());
-        Year year = ParserUtil.parseYear(argMultimap.getValue(PREFIX_YEAR).get());
-        Remark remark = ParserUtil.parseRemark(argMultimap.getValue(PREFIX_REMARK).get());
-        AttendanceList attendanceList =
-                AttendanceList.generateAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING);
+        TutGroup tutGrp = ParserUtil.parseTutGroup(
+                argMultimap.getValue(PREFIX_TUT_GROUP).orElse(""));
+        LabGroup labGrp = ParserUtil.parseLabGroup(
+                argMultimap.getValue(PREFIX_LAB_GROUP).orElse(""));
+        Faculty faculty = ParserUtil.parseFaculty(
+                argMultimap.getValue(PREFIX_FACULTY).orElse(""));
+        Year year = ParserUtil.parseYear(argMultimap.getValue(PREFIX_YEAR).orElse(""));
+        Remark remark = ParserUtil.parseRemark(
+                argMultimap.getValue(PREFIX_REMARK).orElse(""));
+
+        AttendanceList attendanceList = AttendanceList.EMPTY_ATTENDANCE_LIST;
+
+        if (argMultimap.getValue(PREFIX_TUT_GROUP).isPresent()) {
+            attendanceList =
+                    AttendanceList.generateAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING);
+        }
+
         LabScoreList labScoreList = new LabScoreList();
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
-        // todo zhenjie
-        Person person = new Person(name, phone, teleHandle, email,
-                matNum, tutGrp, labGrp, faculty, year, remark, attendanceList, labScoreList, tagList);
+        Person person = new Person(name, phone, teleHandle, email, matNum,
+                tutGrp, labGrp, faculty, year, remark, attendanceList, labScoreList, tagList);
 
         return new AddCommand(person);
     }

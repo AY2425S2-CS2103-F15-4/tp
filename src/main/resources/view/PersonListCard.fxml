@@ -18,27 +18,37 @@
       <padding>
         <Insets top="5" right="5" bottom="5" left="15" />
       </padding>
-      <HBox spacing="0.5" alignment="CENTER_LEFT">
-        <Label fx:id="id" styleClass="cell_big_label">
+
+      <HBox spacing="8" alignment="CENTER_LEFT">
+        <Label fx:id="name" text="\$first" styleClass="cell_name_label" wrapText="true" HBox.hgrow="ALWAYS" >
+        </Label>
+        <Label fx:id="matNum" styleClass="cell_name_label" />
+        <Label fx:id="classGroup" styleClass="group_label" >
           <minWidth>
             <!-- Ensures that the label text is never truncated -->
             <Region fx:constant="USE_PREF_SIZE" />
           </minWidth>
         </Label>
-        <Label fx:id="name" text="\$first" styleClass="cell_big_label" />
       </HBox>
-      <FlowPane fx:id="tags" />
-      <Label fx:id="phone" styleClass="cell_small_label" text="\$phone" />
-      <Label fx:id="teleHandle" styleClass="cell_small_label" />
+      <Label fx:id="contact" styleClass="cell_small_label"/>
       <Label fx:id="email" styleClass="cell_small_label" />
-      <Label fx:id="matNum" styleClass="cell_small_label" />
-      <Label fx:id="tutGroup" styleClass="cell_small_label" />
-      <Label fx:id="labGroup" styleClass="cell_small_label" />
-      <Label fx:id="faculty" styleClass="cell_small_label" />
-      <Label fx:id="year" styleClass="cell_small_label" />
+      <Label fx:id="facAndYear" styleClass="cell_small_label" />
       <Label fx:id="remark" styleClass="cell_small_label" />
+      <FlowPane fx:id="tags" />
       <FlowPane fx:id="attendances" />
       <FlowPane fx:id="labScores" />
+    </VBox>
+
+    <!-- Right column with just the index label -->
+    <VBox alignment="TOP_CENTER" GridPane.columnIndex="1">
+      <padding>
+        <Insets top="5" right="5" bottom="5" left="5" />
+      </padding>
+      <Label fx:id="id" styleClass="index_label">
+        <minWidth>
+          <Region fx:constant="USE_PREF_SIZE" />
+        </minWidth>
+      </Label>
     </VBox>
   </GridPane>
 </HBox>

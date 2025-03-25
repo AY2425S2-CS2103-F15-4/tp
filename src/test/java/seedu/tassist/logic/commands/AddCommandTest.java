@@ -39,7 +39,8 @@ public class AddCommandTest {
 
         CommandResult commandResult = new AddCommand(validPerson).execute(modelStub);
 
-        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, Messages.format(validPerson)),
+        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS,
+                        Messages.getFormattedPersonAttributesForDisplay(validPerson)),
                 commandResult.getFeedbackToUser());
         assertEquals(Arrays.asList(validPerson), modelStub.personsAdded);
     }
@@ -60,20 +61,20 @@ public class AddCommandTest {
         AddCommand addAliceCommand = new AddCommand(alice);
         AddCommand addBobCommand = new AddCommand(bob);
 
-        // same object -> returns true
+        // Same object -> returns true.
         assertTrue(addAliceCommand.equals(addAliceCommand));
 
-        // same values -> returns true
+        // Same values -> returns true.
         AddCommand addAliceCommandCopy = new AddCommand(alice);
         assertTrue(addAliceCommand.equals(addAliceCommandCopy));
 
-        // different types -> returns false
+        // Different types -> returns false.
         assertFalse(addAliceCommand.equals(1));
 
-        // null -> returns false
+        // Null -> returns false.
         assertFalse(addAliceCommand.equals(null));
 
-        // different person -> returns false
+        // Different person -> returns false.
         assertFalse(addAliceCommand.equals(addBobCommand));
     }
 
@@ -85,7 +86,7 @@ public class AddCommandTest {
     }
 
     /**
-     * A default model stub that have all of the methods failing.
+     * A default model stub that has all methods failing.
      */
     private class ModelStub implements Model {
         @Override

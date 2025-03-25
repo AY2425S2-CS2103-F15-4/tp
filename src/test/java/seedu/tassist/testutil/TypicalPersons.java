@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import seedu.tassist.model.AddressBook;
+import seedu.tassist.model.person.AttendanceList;
 import seedu.tassist.model.person.Person;
 
 /**
@@ -40,52 +41,60 @@ public class TypicalPersons {
             .withEmail("alice@example.com").withPhone("94351253").withTeleHandle("@alice")
             .withMatNum("A0000001X").withTutGroup("T01").withLabGroup("B01")
             .withFaculty("SoC").withYear("1").withRemark("todo")
-            .withAttendanceList("0000000000000").withLabScores("4.2/25|-|-|-")
+            .withAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING).withLabScores("")
             .withTags("friends").build();
     public static final Person BENSON = new PersonBuilder().withName("Benson Meier")
             .withEmail("johnd@example.com").withPhone("98765432").withTeleHandle("@ben_mei")
             .withMatNum("A0000002W").withTutGroup("T01").withLabGroup("B01")
             .withFaculty("SoC").withYear("2").withRemark("todo")
             .withTags("owesMoney", "friends")
-            .withAttendanceList("0000000000000").withLabScores("4.10/25|-|-|-")
+            .withAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING)
+            .withLabScores("4.10/25|-|-|-")
             .build();
     public static final Person CARL = new PersonBuilder().withName("Carl Kurz").withPhone("95352563")
             .withEmail("heinz@example.com").withTeleHandle("@carlie")
             .withMatNum("A0000003U").withTutGroup("T01").withLabGroup("B01")
             .withFaculty("SoC").withYear("3").withRemark("todo")
-            .withAttendanceList("0000000000000").withLabScores("4.15/25|-|-|-").build();
+            .withAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING)
+            .withLabScores("4.15/25|-|-|-").build();
     public static final Person DANIEL = new PersonBuilder().withName("Daniel Meier").withPhone("87652533")
             .withEmail("cornelia@example.com").withTeleHandle("@meister")
             .withMatNum("A0000004R").withTutGroup("T01").withLabGroup("B01")
             .withFaculty("SoC").withYear("4").withRemark("todo")
-            .withAttendanceList("0000000000000").withLabScores("4.25/25|-|-|-")
+            .withAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING)
+            .withLabScores("4.25/25|-|-|-")
             .withTags("friends").build();
     public static final Person ELLE = new PersonBuilder().withName("Elle Meyer").withPhone("9482224")
             .withEmail("werner@example.com").withTeleHandle("@ellie")
             .withMatNum("A0000005N").withTutGroup("T01").withLabGroup("B01")
             .withFaculty("SoC").withYear("5").withRemark("todo")
-            .withAttendanceList("0000000000000").withLabScores("4.25/25|-|-|-").build();
+            .withAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING)
+            .withLabScores("4.25/25|-|-|-").build();
     public static final Person FIONA = new PersonBuilder().withName("Fiona Kunz").withPhone("9482427")
             .withEmail("lydia@example.com").withTeleHandle("@kunzzz")
             .withMatNum("A0000006M").withTutGroup("T01").withLabGroup("B01")
             .withFaculty("SoC").withYear("6").withRemark("todo")
-            .withAttendanceList("0000000000000").withLabScores("4.25/25|-|-|-").build();
+            .withAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING)
+            .withLabScores("4.25/25|-|-|-").build();
     public static final Person GEORGE = new PersonBuilder().withName("George Best").withPhone("9482442")
             .withEmail("anna@example.com").withTeleHandle("@bestie")
             .withMatNum("A0000007L").withTutGroup("T01").withLabGroup("B01")
             .withFaculty("SoC").withYear("3").withRemark("todo")
-            .withAttendanceList("0000000000000").withLabScores("4.25/25|-|-|-").build();
+            .withAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING)
+            .withLabScores("4.25/25|-|-|-").build();
 
     // Manually added
     public static final Person HOON = new PersonBuilder().withName("Hoon Meier").withPhone("8482424")
-            .withEmail("stefan@example.com").withTeleHandle("@hoon")
+            .withEmail("stefan@example.com").withTeleHandle("@hoo0n")
             .withMatNum("A0000010X").withTutGroup("T01").withLabGroup("B01")
-            .withFaculty("SoC").withYear("3").withRemark("todo").withAttendanceList("0000000000000")
+            .withFaculty("SoC").withYear("3").withRemark("todo")
+            .withAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING)
             .withLabScores("4.25/25|-|-|-").build();
     public static final Person IDA = new PersonBuilder().withName("Ida Mueller").withPhone("8482131")
-            .withEmail("hans@example.com").withTeleHandle("@id_mu")
+            .withEmail("hans@example.com").withTeleHandle("@id_muu")
             .withMatNum("A0000011W").withTutGroup("T01").withLabGroup("B01")
-            .withFaculty("SoC").withYear("3").withRemark("todo").withAttendanceList("0000000000000")
+            .withFaculty("SoC").withYear("3").withRemark("todo")
+            .withAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING)
             .withLabScores("4.25/25|-|-|-").build();
 
     // Manually added - Person's details found in {@code CommandTestUtil}
@@ -105,7 +114,7 @@ public class TypicalPersons {
 
     public static final String KEYWORD_MATCHING_MEIER = "Meier"; // A keyword that matches MEIER
 
-    private TypicalPersons() {} // prevents instantiation
+    private TypicalPersons() {} // Prevents instantiation
 
     /**
      * Returns an {@code AddressBook} with all the typical persons.
