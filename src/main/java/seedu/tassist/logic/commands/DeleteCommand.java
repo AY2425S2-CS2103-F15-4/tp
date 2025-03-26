@@ -84,7 +84,8 @@ public class DeleteCommand extends Command {
             }
 
             String deletedStudentsSummary = getDeletedStudentsSummary(toModify);
-            return new CommandResult(String.format(MESSAGE_DELETE_MULTIPLE_SUCCESS, toModify.size(), deletedStudentsSummary));
+            return new CommandResult(String.format(MESSAGE_DELETE_MULTIPLE_SUCCESS,
+                    toModify.size(), deletedStudentsSummary));
         } else {
             // Remove tag from students
             List<String> modifiedPersons = new ArrayList<>();
@@ -94,7 +95,8 @@ public class DeleteCommand extends Command {
                     modifiedPersons.add(updatedPerson.getName().fullName);
                 }
             }
-            return new CommandResult(String.format(MESSAGE_DELETE_TAG_SUCCESS, tagToRemove, String.join(", ", modifiedPersons)));
+            return new CommandResult(String.format(MESSAGE_DELETE_TAG_SUCCESS,
+                    tagToRemove, String.join(", ", modifiedPersons)));
         }
     }
 

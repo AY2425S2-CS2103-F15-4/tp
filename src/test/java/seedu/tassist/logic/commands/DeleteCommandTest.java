@@ -148,7 +148,8 @@ public class DeleteCommandTest {
 
         DeleteCommand deleteCommand = new DeleteCommand(List.of(INDEX_FIRST_PERSON), nonExistentTag);
 
-        String expectedMessage = String.format(DeleteCommand.MESSAGE_TAG_NOT_FOUND, nonExistentTag, personToModify.getName());
+        String expectedMessage = String.format(DeleteCommand.MESSAGE_TAG_NOT_FOUND,
+                nonExistentTag, personToModify.getName());
 
         assertCommandFailure(deleteCommand, model, expectedMessage);
     }
