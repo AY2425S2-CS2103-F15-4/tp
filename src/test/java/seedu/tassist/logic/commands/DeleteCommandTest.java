@@ -11,6 +11,7 @@ import static seedu.tassist.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.tassist.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,7 @@ import seedu.tassist.model.Model;
 import seedu.tassist.model.ModelManager;
 import seedu.tassist.model.UserPrefs;
 import seedu.tassist.model.person.Person;
+import seedu.tassist.model.tag.Tag;
 
 /**
  * Contains integration tests (interaction with the Model) and unit tests for
@@ -113,7 +115,43 @@ public class DeleteCommandTest {
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
     }
 
+    @Test
+    public void execute_removeTag_success() {
+        Person personToModify = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Tag tagToRemove = personToModify.getTags().iterator().next(); // Get first tag
 
+        DeleteCommand deleteCommand = new DeleteCommand(List.of(INDEX_FIRST_PERSON), tagToRemove.tagName);
+
+        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        Set<Tag> newTags = personToModify.getTags().stream()
+                .filter(tag -> !tag.equals(tagToRemove))
+                .collect(Collectors.toSet());
+        Person updatedPerson = new Person(
+                personToModify.getName(), personToModify.getPhone(), personToModify.getTeleHandle(),
+                personToModify.getEmail(), personToModify.getMatNum(), personToModify.getTutGroup(),
+                personToModify.getLabGroup(), personToModify.getFaculty(), personToModify.getYear(),
+                personToModify.getRemark(), personToModify.getAttendanceList(), personToModify.getLabScoreList(),
+                newTags
+        );
+
+        expectedModel.setPerson(personToModify, updatedPerson);
+
+        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_TAG_SUCCESS,
+                tagToRemove.tagName, updatedPerson.getName());
+
+        assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
+    }
+    @Test
+    public void execute_removeNonExistentTag_failure() {
+        Person personToModify = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        String nonExistentTag = "nonexistent";
+
+        DeleteCommand deleteCommand = new DeleteCommand(List.of(INDEX_FIRST_PERSON), nonExistentTag);
+
+        String expectedMessage = String.format(DeleteCommand.MESSAGE_TAG_NOT_FOUND, nonExistentTag, personToModify.getName());
+
+        assertCommandFailure(deleteCommand, model, expectedMessage);
+    }
 
     @Test
     public void equals() {
@@ -141,10 +179,19 @@ public class DeleteCommandTest {
     public void toStringMethod() {
         List<Index> targetIndexes = List.of(INDEX_FIRST_PERSON);
         DeleteCommand deleteCommand = new DeleteCommand(targetIndexes);
+
         String expected = new ToStringBuilder(deleteCommand)
                 .add("targetIndexes", targetIndexes)
                 .toString();
         assertEquals(expected, deleteCommand.toString());
+
+        // Test with tag removal
+        DeleteCommand deleteTagCommand = new DeleteCommand(targetIndexes, "friend");
+        String expectedWithTag = new ToStringBuilder(deleteTagCommand)
+                .add("targetIndexes", targetIndexes)
+                .add("tagToRemove", "friend")
+                .toString();
+        assertEquals(expectedWithTag, deleteTagCommand.toString());
     }
 
 

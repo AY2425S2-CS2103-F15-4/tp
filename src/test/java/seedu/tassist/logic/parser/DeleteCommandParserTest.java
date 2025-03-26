@@ -111,4 +111,21 @@ public class DeleteCommandParserTest {
         assertParseFailure(parser, "-i 1-two",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
     }
+    @Test
+    public void parse_validIndexAndTag_returnsDeleteCommand() {
+        assertParseSuccess(parser, " -i 2 -tag friend",
+                new DeleteCommand(List.of(INDEX_SECOND_PERSON), "friend"));
+    }
+
+    @Test
+    public void parse_missingIndexWithTag_throwsParseException() {
+        assertParseFailure(parser, "-tag friend",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_emptyTag_throwsParseException() {
+        assertParseFailure(parser, " -i 2 -tag ",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+    }
 }
