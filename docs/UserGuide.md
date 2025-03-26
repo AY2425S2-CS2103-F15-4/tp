@@ -175,17 +175,22 @@ Examples:
 
 ### Deleting a person : `del`
 
-Deletes the specified person from the address book.
+Deletes the specified person or a specific tag from a person in the address book.
 
-Format: `del -i INDEX`
+Format: 
+* To delete a person: `del -i INDEX`
+* To remove a tag from a person: `del -i INDEX -tag TAG_NAME`
 
-* Deletes the person at the specified `INDEX`.
-* The index refers to the index number shown in the displayed person list.
+Details:
+* INDEX refers to the index number shown in the displayed person list.
 * The index **must be a positive integer** 1, 2, 3, …​
+* To specify multiple indexes, input indexes separated by comma (e.g. 1,2,3) or a range (e.g. 1-5)
+* TAG_NAME must match an existing tag in the person's tag list exactly.
 
 Examples:
 * `list` followed by `del -i 2` deletes the 2nd person in the address book.
 * `find Betsy` followed by `del -i 1` deletes the 1st person in the results of the `find` command.
+*  `del -i 3 -tag friend` removes the friend tag from the 3rd person in the address book.
 
 ### Clearing all entries : `clear`
 
@@ -240,7 +245,7 @@ Action     | Format, Examples
 -----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 **Add**    | `add -n NAME (-p PHONE_NUMBER -tg TELEGRAM_HANDLE) -e EMAIL -m MATRICULATION_NUMBER (-t TUTORIAL_GROUP -b LAB_GROUP) [-f FACULTY] [-y YEAR_OF_STUDY] [-r REMARKS] [-tag TAG]…​` <br> e.g., `add -n John -p 81234567 -tg @jornn -e e1234567@u.nus.edu -m A1234567X -t T02 -b B03 -f Computing -y 5 -r Likes to sing`
 **Clear**  | `clear`
-**Delete** | `delete INDEX`<br> e.g., `delete 3`
+**Delete** |  `delete -i INDEX [-tag TAG]`<br> e.g., `delete -i 3` (Deletes person at index 3) <br> `delete -i 2 -tag friend` (Removes the tag "friend" from person at index 2)
 **Edit**   | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
 **Mark Attendance**   | `att (-i INDEX -t [TUTORIAL GROUP]) [-mc] [-u] [-nt]`
 **Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
