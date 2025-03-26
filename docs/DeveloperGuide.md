@@ -388,8 +388,9 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
     Use case resumes at step 3.
 
-*a. At any time, user clears input. 
-    Use case ends.
+* a. At any time, user clears input. 
+ 
+ Use case ends.
 
 **Use case: UC03 - Delete a student**
 
