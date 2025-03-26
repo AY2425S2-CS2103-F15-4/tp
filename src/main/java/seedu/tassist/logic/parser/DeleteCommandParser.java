@@ -3,10 +3,12 @@ package seedu.tassist.logic.parser;
 
 import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.tassist.logic.Messages.MESSAGE_MISSING_ARGUMENTS;
+import static seedu.tassist.logic.Messages.MESSAGE_MISSING_TAG;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_INDEX;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.List;
+import java.util.Optional;
 
 import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.logic.commands.DeleteCommand;
@@ -47,8 +49,17 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
 
         try {
             List<Index> targetIndexes = ParserUtil.parseMultipleIndexes(rawIndexes);
-            String tagToRemove = argMultimap.getValue(PREFIX_TAG).orElse(null);
-            return new DeleteCommand(targetIndexes, tagToRemove);
+            Optional<String> tagToRemove = argMultimap.getValue(PREFIX_TAG);
+            if (tagToRemove.isPresent()) {
+                String tagValue = tagToRemove.get().trim();
+                if (tagValue.isEmpty()) {
+                    throw new ParseException(MESSAGE_MISSING_TAG);
+                }
+                return new DeleteCommand(targetIndexes, tagValue);
+            }
+
+            return new DeleteCommand(targetIndexes);
+
         } catch (ParseException e) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE), e);
         }

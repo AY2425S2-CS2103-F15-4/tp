@@ -155,9 +155,13 @@ public class DeleteCommand extends Command {
     }
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .add("targetIndexes", targetIndexes)
-                .add("tagToRemove", tagToRemove)
-                .toString();
+        ToStringBuilder builder = new ToStringBuilder(this)
+                .add("targetIndexes", targetIndexes);
+
+        if (tagToRemove != null) {
+            builder.add("tagToRemove", tagToRemove);
+        }
+
+        return builder.toString();
     }
 }

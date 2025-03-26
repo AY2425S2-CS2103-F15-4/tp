@@ -29,12 +29,12 @@ public class Messages {
     public static final String MESSAGE_PERSONS_LISTED_OVERVIEW = "%1$d persons listed!";
     public static final String MESSAGE_DUPLICATE_FIELDS =
                 "Multiple values specified for the following single-valued field(s): ";
-    // For missing arguments in delete
     public static final String MESSAGE_MISSING_ARGUMENTS =
             "Missing arguments!\nRequires -i <index>.";
-    // For invalid arguments in delete
     public static final String MESSAGE_INVALID_ARGUMENTS =
             "Invalid arguments detected!\nValid arguments are -i <index>.";
+    public static final String MESSAGE_MISSING_TAG =
+            "Tag name cannot be empty! Please provide a valid tag.";
     /**
      * Returns an error message indicating the duplicate prefixes.
      */
