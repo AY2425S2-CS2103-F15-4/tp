@@ -23,14 +23,22 @@ public class DeleteCommand extends Command {
 
     public static final String COMMAND_WORD = "del";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD
-            + " -i <index> [-tag <tag_name>]: Deletes a student or a specific tag from the student.\n"
-            + "Parameters:\n"
-            + "  -i <index> [,<index> or <range>...](must be a positive integer)\n"
-            + "  -tag <tag_name> (optional, to remove a tag instead of deleting the student)\n"
-            + "Examples:\n"
-            + "  " + COMMAND_WORD + " -i 1-3,5,7   (Deletes multiple students)\n"
-            + "  " + COMMAND_WORD + " -i 1 -tag friend   (Deletes the 'friend' tag from student 1)";
+    public static final String MESSAGE_USAGE = String.format(
+            "Usage: " + COMMAND_WORD + "[OPTIONS]...\n"
+                    + "Deletes a person or removes a tag from a person in the address book.\n\n"
+                    + "Mandatory arguments:\n"
+                    + "-i <index> [,<index> or <range>...](must be a positive integer, 1-based, "
+                    + "required to specify which person)\n\n"
+                    + "Options:\n"
+                    + "  -i   Deletes the specified person(s) using 1-based index\n"
+                    + "  -tag  Removes the specified tag from the person at the given index\n\n"
+                    + "Examples:\n"
+                    + "  del -i 1         (Deletes the person at index 1)\n"
+                    + "  del -i 1-3,5,7   (Deletes multiple persons)\n"
+                    + "  del -i 2 -tag friend  (Removes the tag 'friend' from the person at index 2)"
+
+    );
+
 
     public static final String MESSAGE_DELETE_MULTIPLE_SUCCESS = "Deleted %d persons successfully!"
             + "\nDeleted Student(s):\n%s";
