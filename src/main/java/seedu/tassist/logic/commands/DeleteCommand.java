@@ -58,16 +58,22 @@ public class DeleteCommand extends Command {
         this.tagToRemove = tagToRemove;
     }
 
+    /**
+     * Constructs a {@code DeleteCommand} that deletes persons only.
+     *
+     * @param targetIndexes List of 1-based indexes representing persons to delete.
+     */
     public DeleteCommand(List<Index> targetIndexes) {
+
         this(targetIndexes, null);
     }
 
     /**
-     * Executes the deletion command.
+     * Executes the {@code DeleteCommand}, performing deletion or tag removal depending on the provided arguments.
      *
-     * @param model {@code Model} which the command should operate on.
-     * @return the result message of the deletion.
-     * @throws CommandException if the target index is invalid.
+     * @param model {@code Model} containing the current address book and filtered person list.
+     * @return {@code CommandResult} indicating the outcome of the command.
+     * @throws CommandException If any specified index is invalid or tag is not found.
      */
     @Override
     public CommandResult execute(Model model) throws CommandException {
@@ -109,7 +115,10 @@ public class DeleteCommand extends Command {
     }
 
     /**
-     * Generates a short summary of deleted students.
+     * Returns a short summary of students deleted, showing name, matriculation number, tutorial group, and lab group.
+     *
+     * @param students List of students that were deleted.
+     * @return A formatted string summary of each deleted student.
      */
     public static String getDeletedStudentsSummary(List<Person> students) {
         StringBuilder sb = new StringBuilder();
@@ -122,8 +131,15 @@ public class DeleteCommand extends Command {
         }
         return sb.toString().trim();
     }
+
     /**
-     * Removes a tag from a person and updates the model.
+     * Removes the specified tag from a {@code Person} and updates the model with the modified person.
+     *
+     * @param person    The original person.
+     * @param tagName   The name of the tag to remove.
+     * @param model     The model to update the person in.
+     * @return The updated person without the tag.
+     * @throws CommandException If the tag is not found in the person.
      */
     private Person removeTagFromPerson(Person person, String tagName, Model model) throws CommandException {
         Set<Tag> updatedTags = new HashSet<>(person.getTags());
@@ -155,6 +171,13 @@ public class DeleteCommand extends Command {
         model.setPerson(person, updatedPerson);
         return updatedPerson;
     }
+
+    /**
+     * Compares two DeleteCommand objects for equality.
+     *
+     * @param other The other object to compare with.
+     * @return true if both commands target the same indexes and tag removal state.
+     */
     @Override
     public boolean equals(Object other) {
         return other == this
@@ -163,6 +186,12 @@ public class DeleteCommand extends Command {
                 && (tagToRemove == null ? ((DeleteCommand) other).tagToRemove == null
                 : tagToRemove.equals(((DeleteCommand) other).tagToRemove)));
     }
+
+    /**
+     * Returns a string representation of the {@code DeleteCommand}.
+     *
+     * @return Formatted string with target indexes and tag (if applicable).
+     */
     @Override
     public String toString() {
         ToStringBuilder builder = new ToStringBuilder(this)
