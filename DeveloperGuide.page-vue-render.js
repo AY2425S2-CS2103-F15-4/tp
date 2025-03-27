@@ -11,7 +11,7 @@ with(this){return _c('h1',{attrs:{"id":"tassist-developer-guide"}},[_v("TAssist 
 with(this){return _c('h2',{attrs:{"id":"acknowledgements"}},[_c('strong',[_v("Acknowledgements")]),_c('a',{staticClass:"fa fa-anchor",attrs:{"href":"#acknowledgements","onclick":"event.stopPropagation()"}})])}
 },function anonymous(
 ) {
-with(this){return _c('p',[_v("This project was adapted from "),_c('a',{attrs:{"href":"https://se-education.org/addressbook-level3/"}},[_v("AB3")]),_v(" (source code provided "),_c('a',{attrs:{"href":"https://github.com/nus-cs2103-AY2425S2/tp"}},[_v("here")]),_v(")")])}
+with(this){return _c('p',[_v("This project was adapted from "),_c('a',{attrs:{"href":"https://se-education.org/addressbook-level3/"}},[_v("AB3")]),_v(" (source code provided "),_c('a',{attrs:{"href":"https://github.com/nus-cs2103-AY2425S2/tp"}},[_v("here")]),_v(").\nThis project adapts the matriculation number checksum from "),_c('a',{attrs:{"href":"https://nusmodifications.github.io/nus-matriculation-number-calculator/"}},[_v("here")]),_v(" (source code provided "),_c('a',{attrs:{"href":"https://github.com/nusmodifications/nus-matriculation-number-calculator/blob/gh-pages/matric.js"}},[_v("here")]),_v(").")])}
 },function anonymous(
 ) {
 with(this){return _c('h2',{attrs:{"id":"setting-up-getting-started"}},[_c('strong',[_v("Setting up, getting started")]),_c('a',{staticClass:"fa fa-anchor",attrs:{"href":"#setting-up-getting-started","onclick":"event.stopPropagation()"}})])}
@@ -356,6 +356,6 @@ with(this){return _c('h3',{attrs:{"id":"saving-data"}},[_v("Saving data"),_c('a'
 with(this){return _c('ol',[_c('li',[_c('p',[_v("Dealing with missing/corrupted data files")]),_v(" "),_c('ol',[_c('li',[_c('em',[_v("{explain how to simulate a missing/corrupted file, and the expected behavior}")])])])]),_v(" "),_c('li',[_c('p',[_c('em',[_v("{ more test cases …​ }")])])])])}
 },function anonymous(
 ) {
-with(this){return _c('footer',[_c('div',{staticClass:"text-center"},[_c('small',[_v("["),_c('span',[_c('strong',[_v("Powered by")])]),_v(" "),_c('img',{attrs:{"src":"https://markbind.org/favicon.ico","width":"30"}}),_v(" "),_c('a',{attrs:{"href":"https://markbind.org/"}},[_v("MarkBind 5.6.0")]),_v(", generated on Thu, 27 Mar 2025, 12:01:07 GMT+8]")])])])}
+with(this){return _c('footer',[_c('div',{staticClass:"text-center"},[_c('small',[_v("["),_c('span',[_c('strong',[_v("Powered by")])]),_v(" "),_c('img',{attrs:{"src":"https://markbind.org/favicon.ico","width":"30"}}),_v(" "),_c('a',{attrs:{"href":"https://markbind.org/"}},[_v("MarkBind 5.6.0")]),_v(", generated on Thu, 27 Mar 2025, 12:36:23 GMT+8]")])])])}
 }];
   
