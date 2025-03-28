@@ -33,15 +33,13 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private HBox cardPane;
     @FXML
-    private Label name;
+    private Label nameAndMatNum;
     @FXML
     private Label id;
     @FXML
     private Label contact;
     @FXML
     private Label email;
-    @FXML
-    private Label matNum;
     @FXML
     private Label classGroup;
     @FXML
@@ -62,8 +60,7 @@ public class PersonCard extends UiPart<Region> {
         super(FXML);
         this.person = person;
         id.setText(displayedIndex + "");
-        name.setText(person.getName().fullName);
-        matNum.setText("(" + person.getMatNum().value + ")");
+        nameAndMatNum.setText(person.getName().fullName + "\t" + "(" + person.getMatNum().value + ")");
 
         // Guaranteed for either tutGroup or labGroup to have a value.
         assert !(person.getTutGroup().isEmpty() && person.getLabGroup().isEmpty())

@@ -35,7 +35,7 @@ TAssist is a **desktop app designed for CS2106 Teaching Assistants (TAs) to mana
 
    * `list` : Lists all contacts.
 
-   * `add -n John Doe -p 98765432 -e johnd@example.com -m A0123456J -tut T01` : Adds a contact named `John Doe` to TAssist.
+   * `add -n John Doe -p 98765432 -e johnd@example.com -m A0123456J -t T01` : Adds a contact named `John Doe` to TAssist.
 
    * `del -i 3` : Deletes the 3rd contact shown in the current list.
 
@@ -107,11 +107,12 @@ Want to manually calculate the checksum?
 
 **Tip:** A person can have any number of tags (including 0).
 Tags must be a single word consisting of alphanumeric characters only.
+Tags must also be at most 60 characters.
 </box>
 
 Examples:
 * `add -n John -p 81234567 -tg @jornn -e e1234567@u.nus.edu -m A1234567X -t T02 -b B03 -f Computing -y 5 -r Likes to sing`
-* `add -n Doe -tg @doe_a_deer -e e7654321@u.nus.edu -B B01 -m A7654321J`
+* `add -n Doe -tg @doe_a_deer -e e7654321@u.nus.edu -b B01 -m A7654321J`
 
 ### Listing all persons : `list`
 

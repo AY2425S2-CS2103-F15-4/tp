@@ -15,7 +15,7 @@ public class FacultyTest {
 
     @Test
     public void constructor_invalidFaculty_throwsIllegalArgumentException() {
-        String invalidFaculty = "abc^%$#cba";
+        String invalidFaculty = "abc^%$\"#cba";
         assertThrows(IllegalArgumentException.class, () -> new Faculty(invalidFaculty));
     }
 
@@ -25,14 +25,15 @@ public class FacultyTest {
         assertThrows(NullPointerException.class, () -> Faculty.isValidFaculty(null));
 
         // Invalid Faculty.
-        assertFalse(Faculty.isValidFaculty("hehe^haha.")); // Unaccepted special characters.
         assertFalse(Faculty.isValidFaculty(" ")); // Spaces only.
+        assertFalse(Faculty.isValidFaculty("\"")); // Double quotations.
+        assertFalse(Faculty.isValidFaculty("!#@$%^&%*^")); // Symbols only.
+        assertFalse(Faculty.isValidFaculty("12345677")); // Numbers only.
 
         // Valid Faculty.
         assertTrue(Faculty.isValidFaculty("")); // Empty.
         assertTrue(Faculty.isValidFaculty("abcdef")); // Characters only.
         assertTrue(Faculty.isValidFaculty("ABCdef")); // Uppercase characters.
-        assertTrue(Faculty.isValidFaculty("12345677")); // Numbers only.
         assertTrue(Faculty.isValidFaculty("3rd School of Yay")); // Alphanumeric characters.
         assertTrue(Faculty.isValidFaculty("3rd-School-of-Nay")); // Hyphens.
         assertTrue(Faculty.isValidFaculty("3rd School of Yay & Nay")); // Ampersand.
@@ -44,13 +45,13 @@ public class FacultyTest {
         Faculty faculty = new Faculty("");
         assertTrue(faculty.isEmpty());
 
-        faculty = new Faculty("5");
+        faculty = new Faculty("a");
         assertFalse(faculty.isEmpty());
     }
 
     @Test
     public void equals() {
-        Faculty faculty = new Faculty("3");
+        Faculty faculty = new Faculty("b");
 
         // Same object -> returns true.
         assertTrue(faculty.equals(faculty));
@@ -66,7 +67,7 @@ public class FacultyTest {
         assertFalse(faculty.equals(null));
 
         // Different Faculty -> returns false.
-        Faculty differentFaculty = new Faculty("5");
+        Faculty differentFaculty = new Faculty("x");
         assertFalse(faculty.equals(differentFaculty));
     }
 }

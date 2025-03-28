@@ -28,11 +28,17 @@ public class NameTest {
         assertFalse(Name.isValidName("")); // Empty string.
         assertFalse(Name.isValidName(" ")); // Spaces only.
         assertFalse(Name.isValidName("^")); // Only non-alphanumeric characters.
-        assertFalse(Name.isValidName("peter*")); // Contains non-alphanumeric characters.
+        assertFalse(Name.isValidName(".")); // Only special character '.'.
+        assertFalse(Name.isValidName("@")); // Only special character '@'.
+        assertFalse(Name.isValidName("\"")); // " not allowed in name.
+        assertFalse(Name.isValidName("-")); // Only special character '-'.
+        assertFalse(Name.isValidName("'")); // Only special character '''.
+        assertFalse(Name.isValidName("12345")); // Numbers only.
+        assertFalse(Name.isValidName("!#$%^&")); // Symbols only.
+        assertFalse(Name.isValidName("   !#$%^&")); // Symbols and spaces only.
 
         // Valid name.
         assertTrue(Name.isValidName("peter jack")); // Alphabets only.
-        assertTrue(Name.isValidName("12345")); // Numbers only.
         assertTrue(Name.isValidName("peter the 2nd")); // Alphanumeric characters.
         assertTrue(Name.isValidName("Capital Tan")); // With capital letters.
         assertTrue(Name.isValidName("David Roger Jackson Ray Jr 2nd")); // Long names.

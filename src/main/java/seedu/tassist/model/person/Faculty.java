@@ -10,13 +10,12 @@ import static seedu.tassist.commons.util.AppUtil.checkArgument;
  */
 public class Faculty {
 
-    public static final String VALIDATION_REGEX = "^[\\p{Alnum}][\\p{Alnum} \\&\\-]*$";
-    private static final String SPECIAL_CHARACTERS = "&-";
+    public static final String VALIDATION_REGEX = "^(?=.*\\p{L})[^\"]*$";
     public static final String MESSAGE_CONSTRAINTS = "Invalid faculty!"
-            + "\nFaculties should only contain alphanumeric characters, spaces, "
-            + "and these special characters, excluding "
-            + "the parentheses, (" + SPECIAL_CHARACTERS + ")."
-            + "\nFaculties with hyphens need to be encased in \"\"";
+            + "\nFaculty must contain at least one letter."
+            + "\nFaculty cannot contain double quotation marks (\")."
+            + "\nPlease opt for single quotation marks."
+            + "\nSpecial characters are allowed, but a faculty cannot consist of only special characters.";
 
     public final String value;
 

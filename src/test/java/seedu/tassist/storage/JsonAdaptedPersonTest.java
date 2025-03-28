@@ -25,14 +25,14 @@ import seedu.tassist.model.person.TutGroup;
 import seedu.tassist.model.person.Year;
 
 public class JsonAdaptedPersonTest {
-    private static final String INVALID_NAME = "R@chel";
+    private static final String INVALID_NAME = "\"!@#!@$";
     private static final String INVALID_PHONE = "-651234";
     private static final String INVALID_TELE_HANDLE = "@ca";
     private static final String INVALID_EMAIL = "example.com";
     private static final String INVALID_MAT_NUM = "A0000000A";
     private static final String INVALID_TUT_GROUP = "C111";
     private static final String INVALID_LAB_GROUP = "D111";
-    private static final String INVALID_FACULTY = "@#$S";
+    private static final String INVALID_FACULTY = "@#$";
     private static final String INVALID_YEAR = "8";
     private static final String INVALID_REMARK = "as\"asdf";
     private static final String INVALID_ATTENDANCE_STRING = "1010500210112";

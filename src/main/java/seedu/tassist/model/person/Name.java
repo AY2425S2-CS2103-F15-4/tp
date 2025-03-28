@@ -14,14 +14,13 @@ public class Name {
      * The first character of the address must not be a whitespace,
      * otherwise " " (a blank string) becomes a valid input.
      */
-    public static final String VALIDATION_REGEX = "^[\\p{Alnum}][\\p{Alnum} \\.\\/'\\-]*$";
-    private static final String SPECIAL_CHARACTERS = "+_.-";
+
+    public static final String VALIDATION_REGEX = "^(?=.*\\p{L})[^\"]*$";
     public static final String MESSAGE_CONSTRAINTS = "Invalid name!"
-            + "\nNames must start with an alphanumeric character."
-            + "\nNames can only contain alphanumeric characters, spaces, "
-            + "and these special characters, excluding "
-            + "the parentheses, (" + SPECIAL_CHARACTERS + ")."
-            + "\nNames with hyphens need to be encased in \"\"";
+            + "\nNames must contain at least one letter."
+            + "\nNames cannot contain double quotation marks (\")."
+            + "\nPlease opt for single quotation marks."
+            + "\nSpecial characters are allowed, but a name cannot consist of only special characters.";
 
     public final String fullName;
 

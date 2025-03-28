@@ -34,14 +34,14 @@ import seedu.tassist.model.tag.Tag;
 public class ParserUtilTest {
     private static final String WHITESPACE = " \t\r\n";
 
-    private static final String INVALID_NAME = "R@chel";
+    private static final String INVALID_NAME = "\"";
     private static final String INVALID_PHONE = "-651234";
     private static final String INVALID_TELE_HANDLE = "@c";
     private static final String INVALID_EMAIL = "example.com";
     private static final String INVALID_MAT_NUM = "U123";
     private static final String INVALID_TUT_GROUP = "abbb3";
     private static final String INVALID_LAB_GROUP = "bo001";
-    private static final String INVALID_FACULTY = "S@@@F";
+    private static final String INVALID_FACULTY = "\"@@@";
     private static final String INVALID_YEAR = "8";
     private static final String INVALID_REMARK = "asdf\"asfdasf";
     private static final String INVALID_TAG = "#friend";

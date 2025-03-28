@@ -20,9 +20,8 @@
       </padding>
 
       <HBox spacing="8" alignment="CENTER_LEFT">
-        <Label fx:id="name" text="\$first" styleClass="cell_name_label" wrapText="true" HBox.hgrow="ALWAYS" >
+        <Label fx:id="nameAndMatNum" text="\$first" styleClass="cell_name_label" wrapText="true" HBox.hgrow="ALWAYS" >
         </Label>
-        <Label fx:id="matNum" styleClass="cell_name_label" />
         <Label fx:id="classGroup" styleClass="group_label" >
           <minWidth>
             <!-- Ensures that the label text is never truncated -->

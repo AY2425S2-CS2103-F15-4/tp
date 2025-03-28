@@ -119,7 +119,7 @@ How the parsing works:
 ### Model component
 **API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
 
-<puml src="diagrams/ModelClassDiagram.puml" width="450" />
+<puml src="diagrams/ModelClassDiagram.puml" width="600" />
 
 
 The `Model` component,
@@ -133,7 +133,7 @@ The `Model` component,
 
 **Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `AddressBook`, which `Person` references. This allows `AddressBook` to only require one `Tag` object per unique tag, instead of each `Person` needing their own `Tag` objects.<br>
 
-<puml src="diagrams/BetterModelClassDiagram.puml" width="450" />
+<puml src="diagrams/BetterModelClassDiagram.puml" width="600" />
 
 </box>
 
@@ -300,7 +300,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* * *`  | user           | add a student's record                                                  | note their particulars and begin keeping track of their attendance and/or lab scores                                                                                                                    |
 | `* * *`  | user           | update a student's tutorial attendance                                  | maintain accurate administrative records.                                                                                                                                                               |
 | `* * *`  | user           | udpate a student's grades for labs                                      | identify if they are struggling with course content and may require additional guidance. This also helps me keep track of graded assignments without rummaging through all the scripts in my workspace. |
-| `*`      | user           | tag a student by home faculty                                           | manage administrative records and identify those with less                                                                                                                                              
+| `*`      | user           | tag a student by home faculty                                           | manage administrative records                                                                                                                                              |
 | `*`      | user           | tag a student by current performance                                    | identify those who may need additional academic support.                                                                                                                                                |
 | `* * *`  | user           | delete a student record                                                 | remove dropped students, incorrect entries, or outdated records.                                                                                                                                        |
 | `* *`    | user           | edit a students record                                                  | minimize chance of someone else seeing them by accident                                                                                                                                                 |
@@ -389,7 +389,7 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
     Use case resumes at step 3.
 
-*a. At any time, user clears input. 
+*a. At any time, user clears input.
     Use case ends.
 
 **Use case: UC03 - Delete a student**
