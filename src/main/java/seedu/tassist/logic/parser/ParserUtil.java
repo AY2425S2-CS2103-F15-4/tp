@@ -289,9 +289,34 @@ public class ParserUtil {
      */
     public static List<Person> getPersonsInTutorialGroups(List<Person> personList, List<TutGroup> tutGroupList) {
         requireAllNonNull(personList, tutGroupList);
+
         return personList.stream()
                 .filter(person -> tutGroupList.contains(person.getTutGroup()))
                 .toList();
+    }
+
+    /**
+     * Gets the invalid {@link TutGroup}s in {@code tutGroupList} as a String.
+     * A TutGroup is invalid if it is not a tutorial group of any person in {@code personList}.
+     *
+     * @param personList List of Persons to check Tutorial Groups of.
+     * @param tutGroupList List of Tutorial Groups to be checked.
+     * @return String containing the Tutorial Groups that are in the provided
+     *         {@code tutGroupList}, but not a Tutorial Group of any person in personList.
+     */
+    public static String getInvalidTutGroupsAsString(List<Person> personList, List<TutGroup> tutGroupList) {
+        requireAllNonNull(personList, tutGroupList);
+        List<TutGroup> listOfTutGroups = personList.stream().map(person -> person.getTutGroup()).toList();
+        List<TutGroup> listOfUniqueTutGroups = new HashSet<>(listOfTutGroups).stream().toList();
+        List<TutGroup> listOfInvalidTutGroups =
+                tutGroupList.stream().filter(tutGroup -> !listOfUniqueTutGroups.contains(tutGroup)).toList();
+        if (listOfInvalidTutGroups.isEmpty()) {
+            return "";
+        } else {
+            String result = listOfInvalidTutGroups.stream().reduce("", (acc, tg) ->
+                    acc + tg.toString() + ", ", (x, y) -> x + y);
+            return result.substring(0, result.length() - 2);
+        }
     }
 
     /**

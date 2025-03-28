@@ -120,6 +120,10 @@ public class Operations {
             return;
         }
 
+        if (currentState.getIndex() > personList.size() - 1) {
+            return;
+        }
+
         Person editedPerson = personList.get(currentState.getIndex());
         currentState.setPerson(editedPerson);
     }

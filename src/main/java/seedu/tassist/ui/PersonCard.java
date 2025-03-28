@@ -9,6 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import seedu.tassist.model.person.Attendance;
 import seedu.tassist.model.person.Person;
 
@@ -30,6 +31,8 @@ public class PersonCard extends UiPart<Region> {
 
     public final Person person;
 
+    @FXML
+    private VBox vboxWithContents;
     @FXML
     private HBox cardPane;
     @FXML
@@ -107,42 +110,46 @@ public class PersonCard extends UiPart<Region> {
             remark.setManaged(false);
         }
 
-        Label tutorialAttendanceLabel = new Label("Tutorial att:");
-        tutorialAttendanceLabel.setStyle("-fx-font-size: 11pt;");
-        attendances.getChildren().add(tutorialAttendanceLabel);
         labScores.getChildren().add(new Label("Lab grades:"));
 
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
 
-        person.getAttendanceList().getAttendanceStream()
-                .forEach(attendance -> {
-                    String tagPrefix = attendance.getWeekAsTagPrefix();
-                    HBox hBox = new HBox(2);
-                    hBox.getStyleClass().add("hbox");
-                    switch (attendance.getAttendance()) {
-                    case Attendance.ON_MC:
-                        hBox.setStyle("-fx-background-color: #df6d14;");
-                        hBox.getChildren().add(new Label(tagPrefix + " MC"));
-                        break;
-                    case Attendance.ATTENDED:
-                        hBox.setStyle("-fx-background-color: #5cb338;");
-                        hBox = addLabelAndImageViewToHBox(hBox, tagPrefix, Attendance.ATTENDED_IMAGE_PATH);
-                        break;
-                    case Attendance.NOT_ATTENDED:
-                        hBox.setStyle("-fx-background-color: #d70654;");
-                        hBox = addLabelAndImageViewToHBox(hBox, tagPrefix, Attendance.NOT_ATTENDED_IMAGE_PATH);
-                        break;
-                    case Attendance.NO_TUTORIAL:
-                        hBox.setStyle("-fx-background-color: #A9A9A9;");
-                        hBox = addLabelAndImageViewToHBox(hBox, tagPrefix, Attendance.NO_TUTORIAL_IMAGE_PATH);
-                        break;
-                    default:
-                        break;
-                    }
-                    attendances.getChildren().add(hBox);
-                });
+        if (person.getAttendanceList().isEmpty()) {
+            vboxWithContents.getChildren().remove(attendances);
+        } else {
+            Label tutorialAttendanceLabel = new Label("Tutorial att:");
+            tutorialAttendanceLabel.setStyle("-fx-font-size: 11pt;");
+            attendances.getChildren().add(tutorialAttendanceLabel);
+            person.getAttendanceList().getAttendanceStream()
+                    .forEach(attendance -> {
+                        String tagPrefix = attendance.getWeekAsTagPrefix();
+                        HBox hBox = new HBox(2);
+                        hBox.getStyleClass().add("hbox");
+                        switch (attendance.getAttendance()) {
+                        case Attendance.ON_MC:
+                            hBox.setStyle("-fx-background-color: #df6d14;");
+                            hBox.getChildren().add(new Label(tagPrefix + " MC"));
+                            break;
+                        case Attendance.ATTENDED:
+                            hBox.setStyle("-fx-background-color: #5cb338;");
+                            hBox = addLabelAndImageViewToHBox(hBox, tagPrefix, Attendance.ATTENDED_IMAGE_PATH);
+                            break;
+                        case Attendance.NOT_ATTENDED:
+                            hBox.setStyle("-fx-background-color: #d70654;");
+                            hBox = addLabelAndImageViewToHBox(hBox, tagPrefix, Attendance.NOT_ATTENDED_IMAGE_PATH);
+                            break;
+                        case Attendance.NO_TUTORIAL:
+                            hBox.setStyle("-fx-background-color: #A9A9A9;");
+                            hBox = addLabelAndImageViewToHBox(hBox, tagPrefix, Attendance.NO_TUTORIAL_IMAGE_PATH);
+                            break;
+                        default:
+                            break;
+                        }
+                        attendances.getChildren().add(hBox);
+                    });
+        }
 
         final int[] labCounter = {1};
         person.getLabScoreList().getLabScores().forEach(

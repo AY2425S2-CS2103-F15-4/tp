@@ -140,9 +140,9 @@ Examples:
 
 Marks the attendance of an individual student, or a tutorial group.
 
-Format: `att (-i INDEX -t TUTORIAL GROUP) -w WEEK [-mc] [-u] [-nt]`
+Format: `att (-i INDEX -t TUTORIAL_GROUP) -w WEEK [-mc] [-u] [-nt]`
 
-* Conditional parameters: EITHER `-i INDEX` OR `-t TUTORIAL GROUP`
+* Conditional parameters: EITHER `-i INDEX` OR `-t TUTORIAL_GROUP`
   * Not accepted: NEITHER or BOTH FLAGS TOGETHER
 * Mandatory parameter: `-w WEEK`
   * Not accepted: MISSING week flag
@@ -152,7 +152,7 @@ Format: `att (-i INDEX -t TUTORIAL GROUP) -w WEEK [-mc] [-u] [-nt]`
 
 Assuming the above restrictions are satisfied,
 * Marks the attendance of a student (if `-i INDEX` is provided)
-  OR all students in a tutorial group (if `-t TUTORIAL GROUP` is provided).
+  OR all students in a tutorial group (if `-t TUTORIAL_GROUP` is provided).
 * The new attendance status is ATTENDED by default. However:
   * If `-mc` is provided, new attendance status is ON MC.
   * If `-u` is provided, new attendance status is NOT ATTENDED.
@@ -164,10 +164,6 @@ Examples:
 * `att -t T01 -w 1 -nt` marks the whole tutorial group T01 as No Tutorial for Tutorial Week 1.
   * This means each student in tutorial group T01 has his attendance updated to No Tutorial.
 
-Images used are courtesy of:
-Check Icon: https://www.iconsdb.com/white-icons/checkmark-icon.html
-Cross Icon: https://www.iconsdb.com/white-icons/x-mark-icon.html
-Ban Icon: https://www.iconsdb.com/white-icons/ban-icon.html
 
 ### Locating persons by name: `find`
 

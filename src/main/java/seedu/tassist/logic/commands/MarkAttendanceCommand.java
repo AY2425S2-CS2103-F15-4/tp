@@ -34,11 +34,16 @@ public class MarkAttendanceCommand extends Command {
     public static final String COMMAND_WORD = "att";
 
     public static final String MESSAGE_MARK_WHEN_NO_TUTORIAL_FAILURE =
-            "%1$s (%2$s) in Tutorial Group %3$s currently \nhas No Tutorial for Tutorial Week %4$d.\n"
+            "%1$s (%2$s) in Tutorial Group %3$s currently has No Tutorial for Tutorial Week %4$d.\n"
             + "You must mark the Tutorial Group %3$s as Attended or Not Attended for Week %4$d,\n"
             + "e.g. using the command: " + COMMAND_WORD + " " + PREFIX_TUT_GROUP + " %3$s "
             + PREFIX_WEEK + " %4$d , which marks tutorial group as attended,\n"
             + "before you can mark %1$s individually as Attended, Not Attended or On MC.";
+
+    public static final String MESSAGE_INVALID_TUT_GROUPS_FAILURE =
+            "%1$s are invalid Tutorial Groups.\n"
+            + "You cannot mark attendance for these Tutorial Groups.\n"
+            + "Please do not include these Tutorial Groups when marking attendance.\n";
 
     public static final String MESSAGE_MARK_GIVEN_NO_TUT_GROUP_FAILURE =
             "%1$s (%2$s) has No Tutorial Group, so Attendance cannot be marked.\n";
@@ -68,21 +73,28 @@ public class MarkAttendanceCommand extends Command {
             "Everyone in %1$s has No Tutorial for Tutorial Week %2$d.";
 
     public static final String MESSAGE_USAGE = String.format(
-            "%s: %s [%s INDEX | %s TUTORIAL_GROUP] %s WEEK_NUMBER [OPTIONS]\n"
+            "%s: %s (%s INDEX | %s TUTORIAL_GROUP) %s WEEK_NUMBER [OPTIONS]\n"
                     + "    Marks the attendance of a student or tutorial group for a specific week.\n"
                     + "    Existing attendance status will be overwritten by the input.\n\n"
                     + "    Conditional Parameters: (Either or BUT not both)\n"
                     + "      %s INDEX           Student index (positive integer, valid index)\n"
-                    + "      %s TUTORIAL_GROUP  Tutorial group (capital 'T' followed by a positive integer)\n\n"
+                    + "      %s TUTORIAL_GROUP  Tutorial group ('T' or 't', followed by a positive integer)\n\n"
                     + "    Mandatory Parameters:\n"
                     + "      %s WEEK_NUMBER     Week number (positive integer, 1-13)\n\n"
                     + "    Options:\n"
-                    + "      %s                 Mark as not attended\n"
+                    + "      %s                Mark as not attended\n"
                     + "      %s                Mark as on MC\n"
                     + "      %s                Mark as no tutorial\n\n"
                     + "    Additional Restrictions:\n"
                     + "      - Only one of -u, -mc, or -nt can be provided, or none.\n"
-                    + "      - The -nt flag cannot be used with -i (cannot mark a single student as no tutorial).\n\n"
+                    + "      - The -nt flag cannot be used with -i (cannot mark a single student as no tutorial).\n"
+                    + "      - If a student currently has no tutorial, you cannot mark his attendance using -i flag.\n"
+                    + "        (Students can only be marked TO No Tutorial, and FROM No Tutorial to other statuses,\n"
+                    + "         through commands that target the whole tutorial group.).\n"
+                    + "    Batch Marking of Attendance:\n"
+                    + "      - You can provide a comma-separated or dashed range of indexes and tutorial groups.\n"
+                    + "        For example, att -i 1,3,5 -w 1 marks attendance for indexes 1,3,5.\n"
+                    + "        att -t T01-T03 -w 1 marks attendance for tutorial groups T01, T02 and T03.\n"
                     + "    Examples:\n"
                     + "      %s -i 1 -w 3\n"
                     + "        Marks student at index 1 as attended in tutorial week 3.\n\n"
@@ -143,17 +155,24 @@ public class MarkAttendanceCommand extends Command {
     }
 
     /**
-     * Checks if a Command (index flag) is valid, and throws a CommandException if not.
+     * Checks if a Command applied on an Index list is valid, and throws a CommandException if not.
+     * Here, the method checks for two invalid cases:
+     * Firstly, if the command is marking attendance for a person who has no tutorial group,
+     * and hence has an empty attendance list.
+     * Secondly, if the command is marking attendance for a person who has no tutorial for the given week.
+     *
+     * This method applies only for commands applied on an Index list.
+     * Commands applied on a TutGroup list will not involve people with an Empty AttendanceList
+     * and a whole tutorial group can be marked to any attendance status,
+     * regardless of the initial attendance status of students within it.
      *
      * @param personToCheck Person to be checked against.
-     * @param week Week to check for.
      * @throws CommandException Exception to be thrown if Index Flag is Invalid.
      */
-    public static void checkIfIndexFlagCommandValid(Person personToCheck, int week) throws CommandException {
-        // This method applies only for commands using Index flag.
-        // Commands using TutGroup flag will not involve people with an Empty AttendanceList
-        // and a whole tutorial group can be marked to any attendance status,
-        // regardless of the initial attendance status of students within it.
+    public void checkIfIndexFlagCommandValid(Person personToCheck) throws CommandException {
+
+        // Assert that the command is being applied on an index list, not a tutGroup list.
+        assert this.indexList != null && this.tutGroupList == null;
 
         if (personToCheck.getAttendanceList() == AttendanceList.EMPTY_ATTENDANCE_LIST) {
             logger.info("Invalid Command: Person has No TutGroup hence Empty AttendanceList.");
@@ -177,7 +196,10 @@ public class MarkAttendanceCommand extends Command {
         StringBuilder successMessage = new StringBuilder();
 
         if (tutGroupList != null) {
-
+            String invalidTutGroupsString = ParserUtil.getInvalidTutGroupsAsString(lastShownList, tutGroupList);
+            if (!invalidTutGroupsString.isEmpty()) {
+                throw new CommandException(String.format(MESSAGE_INVALID_TUT_GROUPS_FAILURE, invalidTutGroupsString));
+            }
             personsToEdit = ParserUtil.getPersonsInTutorialGroups(lastShownList, tutGroupList);
             successMessage.append(generateSuccessMessage(tutGroupList)).append("\n-------------\n");
         } else {
@@ -191,7 +213,7 @@ public class MarkAttendanceCommand extends Command {
             personsToEdit = new ArrayList<>();
             for (Index index : indexList) {
                 Person personToEdit = lastShownList.get(index.getZeroBased());
-                checkIfIndexFlagCommandValid(personToEdit, this.week);
+                this.checkIfIndexFlagCommandValid(personToEdit);
                 personsToEdit.add(personToEdit);
             }
         }

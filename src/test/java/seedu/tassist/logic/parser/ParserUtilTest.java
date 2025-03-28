@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.tassist.logic.parser.ParserUtil.MESSAGE_INVALID_INDEX;
 import static seedu.tassist.testutil.Assert.assertThrows;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+import static seedu.tassist.testutil.TypicalPersons.getTypicalAddressBook;
 import static seedu.tassist.testutil.TypicalPersons.getTypicalPersons;
 
 import java.util.ArrayList;
@@ -18,6 +19,9 @@ import org.junit.jupiter.api.Test;
 
 import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.logic.parser.exceptions.ParseException;
+import seedu.tassist.model.Model;
+import seedu.tassist.model.ModelManager;
+import seedu.tassist.model.UserPrefs;
 import seedu.tassist.model.person.Email;
 import seedu.tassist.model.person.Faculty;
 import seedu.tassist.model.person.LabGroup;
@@ -72,6 +76,8 @@ public class ParserUtilTest {
     private static final String VALID_REMARK = "Likes to walk";
     private static final String VALID_TAG_1 = "friend";
     private static final String VALID_TAG_2 = "neighbour";
+
+    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
     @Test
     public void parseIndex_invalidInput_throwsParseException() {
@@ -472,6 +478,38 @@ public class ParserUtilTest {
         // Duplicates
         assertTrue(ParserUtil.parseMultipleTutGroups("T01-T03,T01,T03").equals(
                 List.of(new TutGroup("T01"), new TutGroup("T02"), new TutGroup("T03"))));
+
+    }
+
+    @Test
+    public void getInvalidTutGroupsAsString_nullInput_throwsNullPointerException() {
+        List<Person> personList = model.getFilteredPersonList();
+        List<TutGroup> tutGroupList = new ArrayList<>();
+        assertThrows(NullPointerException.class, () ->
+                ParserUtil.getInvalidTutGroupsAsString(null, tutGroupList));
+        assertThrows(NullPointerException.class, () ->
+                ParserUtil.getInvalidTutGroupsAsString(personList, null));
+    }
+
+    @Test
+    public void getInvalidTutGroupsAsString_validInput_success() throws Exception {
+        List<Person> personList = model.getFilteredPersonList();
+        List<TutGroup> tutGroupList = new ArrayList<>();
+
+        // Valid tutorial groups only.
+        tutGroupList.add(new TutGroup("T01"));
+        assertTrue(ParserUtil.getInvalidTutGroupsAsString(personList, tutGroupList).equals(""));
+
+        // Mix of valid and invalid tutorial groups.
+        tutGroupList.add(new TutGroup("T98")); // Invalid tutorial group.
+        tutGroupList.add(new TutGroup("T99")); // Invalid tutorial group.
+        assertTrue(ParserUtil.getInvalidTutGroupsAsString(personList, tutGroupList).equals("T98, T99"));
+
+        // Invalid tutorial groups only.
+        tutGroupList = new ArrayList<>();
+        tutGroupList.add(new TutGroup("T98")); // Invalid tutorial group.
+        tutGroupList.add(new TutGroup("T99")); // Invalid tutorial group.
+        assertTrue(ParserUtil.getInvalidTutGroupsAsString(personList, tutGroupList).equals("T98, T99"));
 
     }
 

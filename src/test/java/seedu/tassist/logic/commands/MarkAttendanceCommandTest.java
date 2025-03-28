@@ -334,16 +334,20 @@ public class MarkAttendanceCommandTest {
     public void checkIfIndexFlagCommandValid_emptyAttendanceList_throwsCommandException() {
         // Build a person with empty attendanceList.
         Person personWithEmptyAttendanceList = new PersonBuilder().withTutGroup("").build();
+        MarkAttendanceCommand command = new MarkAttendanceCommand(
+                List.of(INDEX_FIRST_PERSON), 5, Attendance.ATTENDED);
         assertThrows(CommandException.class, () ->
-                MarkAttendanceCommand.checkIfIndexFlagCommandValid(personWithEmptyAttendanceList, 5));
+                command.checkIfIndexFlagCommandValid(personWithEmptyAttendanceList));
     }
 
     @Test
     public void checkIfIndexFlagCommandValid_existingNoTutorial_throwsCommandException() {
         // Build a person with No Tutorial on all weeks.
         Person personWithNoTutorialAllWeeks = new PersonBuilder().withAttendanceList("3333333333333").build();
+        MarkAttendanceCommand command = new MarkAttendanceCommand(
+                List.of(INDEX_FIRST_PERSON), 5, Attendance.ATTENDED);
         assertThrows(CommandException.class, () ->
-                MarkAttendanceCommand.checkIfIndexFlagCommandValid(personWithNoTutorialAllWeeks, 1));
+                command.checkIfIndexFlagCommandValid(personWithNoTutorialAllWeeks));
     }
 
     @Test
