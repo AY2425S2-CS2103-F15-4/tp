@@ -34,8 +34,10 @@ public class PersonListPanel extends UiPart<Region> {
         personListView.setItems(personList);
         personListView.setCellFactory(listView -> new PersonListViewCell());
 
-        compactView.addListener((obs,
-                                 oldVal, newVal) -> personListView.refresh());
+        compactView.addListener((observable, oldVal, newVal) -> {
+            personListView.setCellFactory(listView -> new PersonListViewCell());
+            personListView.refresh();
+        });
 
         personListView.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
