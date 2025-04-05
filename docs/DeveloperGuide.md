@@ -130,7 +130,7 @@ How the parsing works:
 
 The `Model` component,
 
-* stores the address book data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
+* stores TAssist data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
 * stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
 * stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
 * does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
@@ -150,7 +150,7 @@ The `LoadDataCommand` allows TAssist to import student data from external files 
 - It is parsed by `LoadDataCommandParser`, which validates the file name and extension.
 - Supported extensions: `.csv` and `.json`.
 - Upon execution, the command passes control to the `Storage` component, which attempts to read the file and parse its contents.
-- The parsed students are added into the existing address book model. Duplicate and malformed entries are filtered with user-facing error messages.
+- The parsed students are added into the existing TAssist model. Duplicate and malformed entries are filtered with user-facing error messages.
 - If the data file is missing, corrupted, or contains entries violating the schema, the command raises a `CommandException` with detailed context.
 
 <puml src="diagrams/LoadDataSequenceDiagram.puml" alt="Sequence diagram for LoadDataCommand" />
@@ -340,6 +340,7 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
     Use case resumes at step 3.
 
 *a. At any time, user clears input.
+
     Use case ends.
 
 **Use case: UC06 - Delete a student**
@@ -539,7 +540,7 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 1.  User closes the app.
 2.  TAssist saves students' data into a file, at a specified location.
 
-    Use case ends.
+  Use case ends.
 
 
 ### Non-Functional Requirements
@@ -590,16 +591,18 @@ testers are expected to do more *exploratory* testing.
 
    1. Download the jar file and copy into an empty folder
 
-   1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+   1. Copy the file to the folder you want to use as the _home folder_ for TAssist.
+
+   1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar TAssist.jar` command to run the application.<br>
+      A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
+      ![Ui](images/Ui.png)
 
 1. Saving window preferences
 
    1. Resize the window to an optimum size. Move the window to a different location. Close the window.
 
-   1. Re-launch the app by double-clicking the jar file.<br>
+   1. Re-launch the app by using the `java -jar TAssist.jar` command.<br>
        Expected: The most recent window size and location is retained.
-
-1. _{ more test cases …​ }_
 
 ### Toggling student contact details
 1. Toggling student contact details within the UI. Performed within one session.
@@ -680,7 +683,7 @@ testers are expected to do more *exploratory* testing.
       Expected: Edits the name of the 1st student to JohnDoe.
 
    2. Test Case: `edit -i 1 -m A0000030U`<br>
-      Expected: This student already exists in the address book.
+      Expected: This student already exists in TAssist.
 
    3. Test Case: `edit -i 1 -p`<br>
       Expected: You cannot remove the Phone Number!
@@ -833,7 +836,12 @@ testers are expected to do more *exploratory* testing.
 
 ### UI glitch upon selecting contact
 
-A contact will flicker when selected. This is likely due to the loading of attendance tags.
+A bug causes the selection of a contact to slightly flicker. This is likely due to the loading of attendance tags.
+
+### Ensuring readable non-alphanumerical characters.
+
+This pertains to the `NAME`, `FACULTY`, and `REMARK` of a contact.
+To allow for overzealous input validation, the application allows for most unicode characters to be provided. As such, one can have names such as `恵凛`, `まさひろ`, or even `Nguyễn Thị Minh Hằng`. However, due to the extensive nature of such characters, we have not properly ensured that all characters can be displayed by the UI, and may appear as `▯` instead. Considering the fact that this application is targeted for English typists, we strongly recommend only alphanumerical characters be provided to the application instead.
 
 ## **Appendix: Effort**
 

@@ -70,6 +70,9 @@ TAssist is a **desktop app designed for CS2106 Teaching Assistants (TAs) to mana
 
 **Notes about the command format:**<br>
 
+* Commands are **case sensitive**.<br>
+  e.g. `add` is valid but not `ADD`, `Add`, etc.
+
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
   e.g. in `add -n NAME`, `NAME` is a parameter which can be used as `add -n John Doe`.
 
@@ -99,21 +102,66 @@ Shows a message explaning how to access the help page.
 
 Format: `help`
 
-### Toggling view : `toggle`
-
-Toggles the student record view to be more compact.
-The following particulars of a student will be hidden if compact view is enabled where applicable: `PHONE_NUMBER`, `TELEGRAM_HANDLE`, `EMAIL`, `MATRICULATION_NUMBER`, `YEAR` and `FACULTY`.
-
-<box type="tip" seamless>
-
 **Tip:** `PHONE_NUMBER` AND `TELEGRAM_HANDLE` can be copied to your clipboard! Just click on it!
 </box>
 
 ### Listing all students : `list`
 
-Shows a list of all students in the address book.
+Shows a list of all students in TAssist.
 
 Format: `list`
+
+### Toggling view : `toggle`
+
+Toggles the student record view to be more compact.
+The following particulars of a student will be hidden if compact view is enabled where applicable: `PHONE_NUMBER`, `TELEGRAM_HANDLE`, `EMAIL`, `YEAR` and `FACULTY`.
+
+<box type="tip" seamless>
+
+### Adding a student: `add`
+
+Adds a student to TAssist.
+
+Format: `add -n NAME (-p PHONE_NUMBER -tg TELEGRAM_HANDLE) -e EMAIL -m MATRICULATION_NUMBER (-t TUTORIAL_GROUP -b LAB_GROUP) [-f FACULTY] [-y YEAR_OF_STUDY] [-r REMARKS] [-tag TAG]…​`
+
+<box type="tip" seamless>
+
+**Tip:** You **do not need to fill in the entire matriculation number**, only **'A' followed by 8 digits!**. The last character follows a checksum rule!
+See [here](https://nusmodifications.github.io/nus-matriculation-number-calculator/) for a matriculation number calculator.
+
+Want to manually calculate the checksum?
+1. Sum up only the **last 6 numbers** within the matriculation number.
+1. Divide this sum by 13 and take the remainder.
+1. Use the remainder as an index (0-based!) to select a character from the sequence `YXWURNMLJHEADB`.
+- `A0000000Y` has a sum of `0` and thus ends with `Y`.
+- `A4000049Y` has a sum of `13` and thus also ends with `Y`.
+- `A0000001X` has a sum of `1` and thus ends with `X`.
+  </box>
+
+<box type="tip" seamless>
+
+**Tip:** Only the **matriculation number** of a record makes them unique!
+</box>
+
+<box type="tip" seamless>
+
+**Tip:** A student can have any number of tags (including 0).
+Tags must be a single word consisting of alphanumeric characters only.
+Tags also have a limit of 60 characters.
+</box>
+
+<box type="tip" seamless>
+
+**Note:**
+* If `TUTORIAL_GROUP` is provided as an input when adding a student, then the student is assigned
+  the Default Attendance List (with No Tutorial for Weeks 1 and 2, and Not Attended for Weeks 3 to 13).
+* If no `TUTORIAL_GROUP` is provided as input when adding a student, then the student is assigned
+  a Blank Attendance List.
+  </box>
+
+Examples:
+* `add -n John -p 81234567 -tg @jornn -e e1234567@u.nus.edu -m A1234567X -t T02 -b B03 -f Computing -y 5 -r Likes to sing`
+* `add -n Doe -tg @doe_a_deer -e e7654321@u.nus.edu -b B01 -m A7654321J`
 
 ### Searching students: `search`
 
@@ -169,58 +217,13 @@ The following commands will ignore any changes:
 * `export`
 * `load`
 
-### Adding a student: `add`
-
-Adds a student to the address book.
-
-Format: `add -n NAME (-p PHONE_NUMBER -tg TELEGRAM_HANDLE) -e EMAIL -m MATRICULATION_NUMBER (-t TUTORIAL_GROUP -b LAB_GROUP) [-f FACULTY] [-y YEAR_OF_STUDY] [-r REMARKS] [-tag TAG]…​`
-
-<box type="tip" seamless>
-
-**Tip:** Matriculation numbers follows a checksum rule!
-See [here](https://nusmodifications.github.io/nus-matriculation-number-calculator/) for a matriculation number calculator.
-
-Want to manually calculate the checksum?
-1. Sum up only the **last 6 numbers** within the matriculation number.
-1. Divide this sum by 13 and take the remainder.
-1. Use the remainder as an index (0-based!) to select a character from the sequence `YXWURNMLJHEADB`.
-- `A0000000Y` has a sum of `0` and thus ends with `Y`.
-- `A4000049Y` has a sum of `13` and thus also ends with `Y`.
-- `A0000001X` has a sum of `1` and thus ends with `X`.
-</box>
-
-<box type="tip" seamless>
-
-**Tip:** Only the **matriculation number** of a record makes them unique!
-</box>
-
-<box type="tip" seamless>
-
-**Tip:** A student can have any number of tags (including 0).
-Tags must be a single word consisting of alphanumeric characters only.
-Tags also have a limit of 60 characters.
-</box>
-
-<box type="tip" seamless>
-
-**Note:**
-* If `TUTORIAL_GROUP` is provided as an input when adding a student, then the student is assigned
-the Default Attendance List (with No Tutorial for Weeks 1 and 2, and Not Attended for Weeks 3 to 13).
-* If no `TUTORIAL_GROUP` is provided as input when adding a student, then the student is assigned
-a Blank Attendance List.
-</box>
-
-Examples:
-* `add -n John -p 81234567 -tg @jornn -e e1234567@u.nus.edu -m A1234567X -t T02 -b B03 -f Computing -y 5 -r Likes to sing`
-* `add -n Doe -tg @doe_a_deer -e e7654321@u.nus.edu -b B01 -m A7654321J`
-
 ### Editing a student : `edit`
 
 There are 2 possible ways to edit the students in the list.
 
 #### 1. Edit a single student
 
-Edits an existing student in the address book.
+Edits an existing student in TAssist.
 
 Format: `edit -i INDEX [-n NAME] [-p PHONE_NUMBER] [-tg TELEGRAM_HANDLE] [-e EMAIL] [-m MATRICULATION_NUMBER] [-t TUTORIAL_GROUP] [-b LAB_GROUP] [-f FACULTY] [-y YEAR_OF_STUDY] [-r REMARKS]​`
 
@@ -254,7 +257,7 @@ Examples:
 
 #### 2. Edit multiple students (Batch edit)
 
-Edits several existing student in the address book in one go.
+Edits several existing student in TAssist in one go.
 
 Format: `edit -i INDEX_RANGE [-t TUTORIAL_GROUP] [-b LAB_GROUP] [-f FACULTY] [-y YEAR_OF_STUDY]`
 * Edits the student at the specified `INDEX_RANGE`. The index **must be a positive integer** 1, 2, 3, …​
@@ -286,7 +289,7 @@ Examples:
 </box>
 
 ### Deleting a student : `del`
-Deletes the specified student from the address book.
+Deletes the specified student from TAssist.
 
 Format: `del -i INDEX[,INDEX or RANGE]...`
 
@@ -310,7 +313,7 @@ Examples:
 
 ### Clearing all entries : `clear`
 
-Clears all entries from the address book.
+Clears all entries from TAssist.
 
 Format: `clear`
 
