@@ -426,15 +426,23 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
   Use case resumes at step 2.
 
-* 1d. User requests that the student be marked as not attended.
+* 1d. The student that the user wants to mark attendance for does not have
+  a valid tutorial group.
 
-    * 1d1. TAssist marks the student as not attended for the indicated week.
+    * 1d1. TAssist shows an error message, informing the user that the student
+    has no tutorial group, and therefore cannot be marked attendance for tutorials.
+    
+    * 1d2. User enters new data.
+
+* 1e. User requests that the student be marked as not attended.
+
+    * 1e1. TAssist marks the student as not attended for the indicated week.
 
       Use case ends.
 
-* 1e. User requests that the student be marked as on MC.
+* 1f. User requests that the student be marked as on MC.
 
-    * 1e1. TAssist marks the student as on MC for the indicated week.
+    * 1f1. TAssist marks the student as on MC for the indicated week.
 
       Use case ends.
 
@@ -763,11 +771,11 @@ testers are expected to do more *exploratory* testing.
    1. Test case: `att -i 1 -w 5`<br>
       Expected: First contact is marked as attended for week 5. (Provided he satisfies the restrictions of the mark attendance command)
 
-   1. Test case: `att -i 1 -w 5`<br>
-      Expected: Expected: No student is deleted. Error details shown in the status message. Status bar remains the same.
+   1. Test case: `att -t T01 -w 5`<br>
+      Expected: All students in the tutorial group T01 are marked as attended for week 5. (Provided the restrictions of the mark attendance command are satisfied)
 
    1. Other incorrect delete commands to try: `att`, `att -i x`, `...` (where x is larger than the list size)<br>
-      Expected: Similar to previous.
+      Expected: Error messages describing the error.
 
 ### Lab Score
 
