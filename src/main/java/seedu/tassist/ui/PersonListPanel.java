@@ -4,12 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import javafx.animation.FadeTransition;
 import javafx.beans.property.BooleanProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
+import javafx.util.Duration;
 import seedu.tassist.commons.core.LogsCenter;
 import seedu.tassist.model.person.Person;
 
@@ -65,7 +67,11 @@ public class PersonListPanel extends UiPart<Region> {
                 displayedCards.remove(person);
             } else {
                 PersonCard personCard = new PersonCard(person, getIndex() + 1);
+                personCard.getRoot().setOpacity(0);
                 setGraphic(personCard.getRoot());
+                FadeTransition fade = new FadeTransition(Duration.millis(200), personCard.getRoot());
+                fade.setToValue(1);
+                fade.play();
 
                 boolean isCompactView = compactView.get();
                 boolean isSelected = getListView().getSelectionModel().getSelectedItem() == person;

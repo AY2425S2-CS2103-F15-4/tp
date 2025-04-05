@@ -211,10 +211,18 @@ public class MarkAttendanceCommand extends Command {
                         String.format(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX, lastShownList.size()));
             }
             personsToEdit = new ArrayList<>();
+            StringBuilder invalidPersonsErrorMessage = new StringBuilder();
             for (Index index : indexList) {
                 Person personToEdit = lastShownList.get(index.getZeroBased());
-                this.checkIfIndexFlagCommandValid(personToEdit);
-                personsToEdit.add(personToEdit);
+                try {
+                    this.checkIfIndexFlagCommandValid(personToEdit);
+                    personsToEdit.add(personToEdit);
+                } catch (CommandException e) {
+                    invalidPersonsErrorMessage.append(e.getMessage());
+                }
+            }
+            if (!invalidPersonsErrorMessage.toString().isEmpty()) {
+                throw new CommandException(invalidPersonsErrorMessage.toString());
             }
         }
 
@@ -273,7 +281,7 @@ public class MarkAttendanceCommand extends Command {
 
     /**
      * Generates a command execution success message for
-     * {@code personToEdit}.
+     * {@code tutGroupsToEdit}.
      *
      * @return String with the Success Message once MarkAttendanceCommand
      *         is executed successfully.
