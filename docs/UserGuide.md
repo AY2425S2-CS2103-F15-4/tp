@@ -117,12 +117,40 @@ Format: `list`
 
 ### Searching students: `search`
 
-Search for students based on parameters.
+Search for students based on specified parameters and keywords.
 
-Format: `search [OPTIONS]`
+Format: `search [-n NAME] [-m MATRICULATION_NUMBER] [-p PHONE_NUMBER] [-tg TELEGRAM_HANDLE] [-e EMAIL] [-t TUTORIAL_GROUP] [-b LAB_GROUP] [-f FACULTY] [-y YEAR] [-tag TAG]`
+
+Where:
+* `-n NAME`: Searches for students whose names contain the specified keyword(s)
+* `-m MATRICULATION_NUMBER`: Searches for students with matching matriculation number
+* `-p PHONE_NUMBER`: Searches for students with matching phone number
+* `-tg TELEGRAM_HANDLE`: Searches for students with matching Telegram handle
+* `-e EMAIL`: Searches for students with matching email address
+* `-t TUTORIAL_GROUP`: Searches for students in the specified tutorial group (e.g., T01)
+* `-b LAB_GROUP`: Searches for students in the specified lab group (e.g., B01)
+* `-f FACULTY`: Searches for students in the specified faculty (e.g., Computing)
+* `-y YEAR`: Searches for students in the specified year of study (e.g., 1)
+* `-tag TAG`: Searches for students with the specified tag
+
+**Note**: If no arguments are provided, shows all persons (same as 'list' command).
+
+**Important**: When multiple values are provided for the same parameter (e.g., `search -f SoC -f FoS`), only the last value (`FoS` in this example) will be used for searching.
+
+**Multiple parameters**: You can combine multiple parameters to refine your search. When multiple parameters are used, only students who match ALL specified parameters will be shown (logical AND).
+
+**Name search behavior**:
+* For single-word name searches (e.g., `search -n John`), all students with "John" in their name will be shown
+* For multi-word name searches (e.g., `search -n "John Doe"`), only students whose name exactly matches "John Doe" will be shown
 
 Examples:
-* `search -n john` returns `john` and `John Doe`
+* `search -n john` returns students whose names contain "john" (case-insensitive)
+* `search -n "John Doe"` returns only students whose full name exactly matches "John Doe"
+* `search -t T01` returns all students in tutorial group T01
+* `search -n Li -p 91234567` returns students with "Li" in their name AND phone number 91234567
+* `search -f Computing` returns all students in the Computing faculty
+* `search -tag lateStudent` returns all students tagged as "lateStudent"
+* `search -y 2` returns all second-year students
 
 ### Redo command: `redo`
 Format: `redo`
@@ -165,7 +193,6 @@ The following commands will ignore any changes:
 * `help`
 * `toggle`
 * `search`
-    * Note: run the list command to see any updated changes to student's information if you any more commands.
 * `export`
 * `load`
 
@@ -531,7 +558,7 @@ Action     | Format, Examples
 **Help**   | `help`
 **Toggle** | `toggle`
 **List**   | `list`
-**Search** | `search [OPTIONS]`<br> e.g., `search -n john`
+**Search** | `search [-n NAME] [-m MATRICULATION_NUMBER] [-p PHONE_NUMBER] [-tg TELEGRAM_HANDLE] [-e EMAIL] [-t TUTORIAL_GROUP] [-b LAB_GROUP] [-f FACULTY] [-y YEAR] [-tag TAG]`
 **Redo**   | `redo`
 **Undo**   | `undo`
 **Add**    | `add -n NAME (-p PHONE_NUMBER -tg TELEGRAM_HANDLE) -e EMAIL -m MATRICULATION_NUMBER (-t TUTORIAL_GROUP -b LAB_GROUP) [-f FACULTY] [-y YEAR_OF_STUDY] [-r REMARKS] [-tag TAG]…​` <br> e.g., `add -n John -p 81234567 -tg @jornn -e e1234567@u.nus.edu -m A1234567X -t T02 -b B03 -f Computing -y 5 -r Likes to sing`

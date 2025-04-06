@@ -1,7 +1,5 @@
 package seedu.tassist.logic.parser;
 
-import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
 import java.util.List;
@@ -62,7 +60,8 @@ public class SearchCommandParserTest {
 
     @Test
     public void parse_noValidPrefix_failure() {
-        assertParseFailure(parser, "Amy",
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, SearchCommand.MESSAGE_USAGE));
+        PersonMatchesPredicate predicate = new PersonMatchesPredicate(
+                null, null, null, null, null, null, null, null, null, null);
+        assertParseSuccess(parser, "Amy", new SearchCommand(predicate));
     }
 }

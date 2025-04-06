@@ -1,7 +1,6 @@
 package seedu.tassist.model.person;
 
 import static java.util.Objects.requireNonNull;
-
 import static seedu.tassist.commons.util.AppUtil.checkArgument;
 
 /**

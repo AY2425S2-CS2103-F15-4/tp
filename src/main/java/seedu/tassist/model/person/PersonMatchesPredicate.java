@@ -44,20 +44,47 @@ public class PersonMatchesPredicate implements Predicate<Person> {
      */
     @Override
     public boolean test(Person person) {
+        // If all search parameters are null or empty, return true (show all persons)
         if ((nameKeywords == null || nameKeywords.isEmpty())
                 && matNum == null && phone == null && teleHandle == null
                 && email == null && tag == null && tutGroup == null && labGroup == null
                 && faculty == null && year == null) {
-            return false;
+            return true;
         }
 
+        // Special case for name search with multiple keywords (full name search)
+        if (nameKeywords != null && nameKeywords.size() > 1) {
+            // First check for exact full name match
+            String searchFullName = String.join(" ", nameKeywords);
+
+            // If we have an exact match for the full name (case insensitive)
+            boolean isExactFullNameMatch = person.getName().fullName.equalsIgnoreCase(searchFullName);
+
+            // When performing a multi-word (full name) search, we ONLY want exact matches
+            // If other criteria match too, include it in results, otherwise exclude
+            if (isExactFullNameMatch) {
+                return checkAllOtherCriteria(person);
+            } else {
+                // If it's not an exact match for a multi-word search, don't include
+                return false;
+            }
+        }
+
+        // Regular matching for single keyword (not full name) searches
         return (nameKeywords == null || (
                 nameKeywords.isEmpty() ? person.getName().fullName.isEmpty()
                         : nameKeywords.stream().anyMatch(
                                 keyword -> StringUtil.containsIgnoreCase(person.getName().fullName, keyword))))
-                && (matNum == null || (
-                        matNum.isEmpty() ? person.getMatNum().value.isEmpty()
-                                : StringUtil.containsIgnoreCase(person.getMatNum().value, matNum)))
+                && checkAllOtherCriteria(person);
+    }
+
+    /**
+     * Helper method to check all criteria except name
+     */
+    private boolean checkAllOtherCriteria(Person person) {
+        return (matNum == null || (
+                matNum.isEmpty() ? person.getMatNum().value.isEmpty()
+                        : StringUtil.containsIgnoreCase(person.getMatNum().value, matNum)))
                 && (phone == null || (
                         phone.isEmpty() ? person.getPhone().value.isEmpty()
                                 : StringUtil.containsIgnoreCase(person.getPhone().value, phone)))
@@ -93,7 +120,7 @@ public class PersonMatchesPredicate implements Predicate<Person> {
         // Remove any 'T' or 't' prefix and leading zeros from both strings
         String normalizedValue = value.replaceAll("^[Tt]0*", "");
         String normalizedSearch = searchTerm.replaceAll("^[Tt]0*", "");
-        
+
         // Compare the normalized strings
         return normalizedValue.equalsIgnoreCase(normalizedSearch);
     }

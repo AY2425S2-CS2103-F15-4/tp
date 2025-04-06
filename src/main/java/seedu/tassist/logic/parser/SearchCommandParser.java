@@ -1,6 +1,5 @@
 package seedu.tassist.logic.parser;
 
-import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FACULTY;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_LAB_GROUP;
@@ -21,6 +20,7 @@ import seedu.tassist.model.person.Email;
 import seedu.tassist.model.person.Faculty;
 import seedu.tassist.model.person.LabGroup;
 import seedu.tassist.model.person.MatNum;
+import seedu.tassist.model.person.Name;
 import seedu.tassist.model.person.PersonMatchesPredicate;
 import seedu.tassist.model.person.Phone;
 import seedu.tassist.model.person.TeleHandle;
@@ -40,60 +40,131 @@ public class SearchCommandParser implements Parser<SearchCommand> {
                 PREFIX_EMAIL, PREFIX_TAG, PREFIX_TUT_GROUP, PREFIX_LAB_GROUP,
                 PREFIX_FACULTY, PREFIX_YEAR);
 
-        // Name (supports multiple keywords)
-        List<String> nameKeywords = null;
-        if (argMultimap.getValue(PREFIX_NAME).isPresent()) {
-            String trimmedName = argMultimap.getValue(PREFIX_NAME).get().trim();
-            nameKeywords = trimmedName.isEmpty() ? List.of() : Arrays.asList(trimmedName.split("\\s+"));
+        if (argMultimap.getValue(PREFIX_NAME).isPresent()
+                && argMultimap.getValue(PREFIX_NAME).get().trim().isEmpty()) {
+            throw new ParseException(Name.MESSAGE_CONSTRAINTS);
         }
 
-        // Other fields (each validated)
-        String matNum = argMultimap.getValue(PREFIX_MAT_NUM).orElse(null);
-        if (matNum != null && !MatNum.isValidMatNum(matNum)) {
+        if (argMultimap.getValue(PREFIX_MAT_NUM).isPresent()
+                && argMultimap.getValue(PREFIX_MAT_NUM).get().trim().isEmpty()) {
             throw new ParseException(MatNum.MESSAGE_CONSTRAINTS);
         }
 
-        String phone = argMultimap.getValue(PREFIX_PHONE).orElse(null);
-        if (phone != null && !Phone.isValidPhone(phone)) {
+        if (argMultimap.getValue(PREFIX_PHONE).isPresent()
+                && argMultimap.getValue(PREFIX_PHONE).get().trim().isEmpty()) {
             throw new ParseException(Phone.MESSAGE_CONSTRAINTS);
         }
 
-        String teleHandle = argMultimap.getValue(PREFIX_TELE_HANDLE).orElse(null);
-        if (teleHandle != null && !TeleHandle.isValidTeleHandle(teleHandle)) {
+        if (argMultimap.getValue(PREFIX_TELE_HANDLE).isPresent()
+                && argMultimap.getValue(PREFIX_TELE_HANDLE).get().trim().isEmpty()) {
             throw new ParseException(TeleHandle.MESSAGE_CONSTRAINTS);
         }
 
-        String email = argMultimap.getValue(PREFIX_EMAIL).orElse(null);
-        if (email != null && !Email.isValidEmail(email)) {
+        if (argMultimap.getValue(PREFIX_EMAIL).isPresent()
+                && argMultimap.getValue(PREFIX_EMAIL).get().trim().isEmpty()) {
             throw new ParseException(Email.MESSAGE_CONSTRAINTS);
         }
 
-        String tag = argMultimap.getValue(PREFIX_TAG).orElse(null);
-        if (tag != null && !Tag.isValidTagName(tag)) {
+        if (argMultimap.getValue(PREFIX_TAG).isPresent()
+                && argMultimap.getValue(PREFIX_TAG).get().trim().isEmpty()) {
             throw new ParseException(Tag.MESSAGE_CONSTRAINTS);
         }
 
-        String tutGroup = argMultimap.getValue(PREFIX_TUT_GROUP).orElse(null);
-        if (tutGroup != null && !TutGroup.isValidTutGroup(tutGroup)) {
+        if (argMultimap.getValue(PREFIX_TUT_GROUP).isPresent()
+                && argMultimap.getValue(PREFIX_TUT_GROUP).get().trim().isEmpty()) {
             throw new ParseException(TutGroup.MESSAGE_CONSTRAINTS);
         }
 
-        String labGroup = argMultimap.getValue(PREFIX_LAB_GROUP).orElse(null);
-        if (labGroup != null && !LabGroup.isValidLabGroup(labGroup)) {
+        if (argMultimap.getValue(PREFIX_LAB_GROUP).isPresent()
+                && argMultimap.getValue(PREFIX_LAB_GROUP).get().trim().isEmpty()) {
             throw new ParseException(LabGroup.MESSAGE_CONSTRAINTS);
         }
 
-        String faculty = argMultimap.getValue(PREFIX_FACULTY).orElse(null);
-        if (faculty != null && !Faculty.isValidFaculty(faculty)) {
+        if (argMultimap.getValue(PREFIX_FACULTY).isPresent()
+                && argMultimap.getValue(PREFIX_FACULTY).get().trim().isEmpty()) {
             throw new ParseException(Faculty.MESSAGE_CONSTRAINTS);
         }
 
-        String year = argMultimap.getValue(PREFIX_YEAR).orElse(null);
-        if (year != null && !Year.isValidYear(year)) {
+        if (argMultimap.getValue(PREFIX_YEAR).isPresent()
+                && argMultimap.getValue(PREFIX_YEAR).get().trim().isEmpty()) {
             throw new ParseException(Year.MESSAGE_CONSTRAINTS);
         }
 
-        // No input at all → error
+        List<String> nameKeywords = null;
+        if (argMultimap.getValue(PREFIX_NAME).isPresent()) {
+            String trimmedName = argMultimap.getValue(PREFIX_NAME).get().trim();
+            String[] keywords = trimmedName.split("\\s+");
+            for (String keyword : keywords) {
+                if (!Name.isValidName(keyword)) {
+                    throw new ParseException(Name.MESSAGE_CONSTRAINTS);
+                }
+            }
+            nameKeywords = Arrays.asList(keywords);
+        }
+
+        String matNum = null;
+        if (argMultimap.getValue(PREFIX_MAT_NUM).isPresent()) {
+            String matNumValue = argMultimap.getValue(PREFIX_MAT_NUM).get();
+            ParserUtil.parseMatNum(matNumValue);
+            matNum = matNumValue;
+        }
+
+        String phone = null;
+        if (argMultimap.getValue(PREFIX_PHONE).isPresent()) {
+            String phoneValue = argMultimap.getValue(PREFIX_PHONE).get();
+            ParserUtil.parsePhone(phoneValue);
+            phone = phoneValue;
+        }
+
+        String teleHandle = null;
+        if (argMultimap.getValue(PREFIX_TELE_HANDLE).isPresent()) {
+            String teleHandleValue = argMultimap.getValue(PREFIX_TELE_HANDLE).get();
+            ParserUtil.parseTeleHandle(teleHandleValue);
+            teleHandle = teleHandleValue;
+        }
+
+        String email = null;
+        if (argMultimap.getValue(PREFIX_EMAIL).isPresent()) {
+            String emailValue = argMultimap.getValue(PREFIX_EMAIL).get();
+            ParserUtil.parseEmail(emailValue);
+            email = emailValue;
+        }
+
+        String tag = null;
+        if (argMultimap.getValue(PREFIX_TAG).isPresent()) {
+            String tagValue = argMultimap.getValue(PREFIX_TAG).get();
+            ParserUtil.parseTag(tagValue);
+            tag = tagValue;
+        }
+
+        String tutGroup = null;
+        if (argMultimap.getValue(PREFIX_TUT_GROUP).isPresent()) {
+            String tutGroupValue = argMultimap.getValue(PREFIX_TUT_GROUP).get();
+            ParserUtil.parseTutGroup(tutGroupValue);
+            tutGroup = tutGroupValue;
+        }
+
+        String labGroup = null;
+        if (argMultimap.getValue(PREFIX_LAB_GROUP).isPresent()) {
+            String labGroupValue = argMultimap.getValue(PREFIX_LAB_GROUP).get();
+            ParserUtil.parseLabGroup(labGroupValue);
+            labGroup = labGroupValue;
+        }
+
+        String faculty = null;
+        if (argMultimap.getValue(PREFIX_FACULTY).isPresent()) {
+            String facultyValue = argMultimap.getValue(PREFIX_FACULTY).get();
+            ParserUtil.parseFaculty(facultyValue);
+            faculty = facultyValue;
+        }
+
+        String year = null;
+        if (argMultimap.getValue(PREFIX_YEAR).isPresent()) {
+            String yearValue = argMultimap.getValue(PREFIX_YEAR).get();
+            ParserUtil.parseYear(yearValue);
+            year = yearValue;
+        }
+
         if (nameKeywords == null
                 && matNum == null
                 && phone == null
@@ -104,11 +175,13 @@ public class SearchCommandParser implements Parser<SearchCommand> {
                 && labGroup == null
                 && faculty == null
                 && year == null) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, SearchCommand.MESSAGE_USAGE));
+            return new SearchCommand(new PersonMatchesPredicate(
+                    null, null, null, null, null, null, null, null, null, null));
         }
 
         PersonMatchesPredicate predicate = new PersonMatchesPredicate(
-                nameKeywords, matNum, phone, teleHandle, email, tag, tutGroup, labGroup, faculty, year);
+                nameKeywords, matNum, phone, teleHandle, email, tag,
+                tutGroup, labGroup, faculty, year);
 
         return new SearchCommand(predicate);
     }
