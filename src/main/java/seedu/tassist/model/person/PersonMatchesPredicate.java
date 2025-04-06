@@ -73,7 +73,7 @@ public class PersonMatchesPredicate implements Predicate<Person> {
                                         .anyMatch(t -> StringUtil.containsIgnoreCase(t.tagName, tag))))
                 && (tutGroup == null || (
                         tutGroup.isEmpty() ? person.getTutGroup().value.isEmpty()
-                                : StringUtil.containsIgnoreCase(person.getTutGroup().value, tutGroup)))
+                                : matchesTutorialGroup(person.getTutGroup().value, tutGroup)))
                 && (labGroup == null || (
                         labGroup.isEmpty() ? person.getLabGroup().value.isEmpty()
                                 : StringUtil.containsIgnoreCase(person.getLabGroup().value, labGroup)))
@@ -83,6 +83,19 @@ public class PersonMatchesPredicate implements Predicate<Person> {
                 && (year == null || (
                         year.isEmpty() ? person.getYear().value.isEmpty()
                                 : StringUtil.containsIgnoreCase(person.getYear().value, year)));
+    }
+
+    /**
+     * Checks if a tutorial group value matches the search term, handling different formats.
+     * For example, "T01" will match "t1", "T1", "t01", etc.
+     */
+    private boolean matchesTutorialGroup(String value, String searchTerm) {
+        // Remove any 'T' or 't' prefix and leading zeros from both strings
+        String normalizedValue = value.replaceAll("^[Tt]0*", "");
+        String normalizedSearch = searchTerm.replaceAll("^[Tt]0*", "");
+        
+        // Compare the normalized strings
+        return normalizedValue.equalsIgnoreCase(normalizedSearch);
     }
 
     @Override

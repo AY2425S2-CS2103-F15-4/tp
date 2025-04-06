@@ -1,6 +1,7 @@
 package seedu.tassist.model.person;
 
 import static java.util.Objects.requireNonNull;
+
 import static seedu.tassist.commons.util.AppUtil.checkArgument;
 
 /**
@@ -14,7 +15,7 @@ public class TutGroup implements Comparable<TutGroup> {
             + "\nTutorial group should either start with a 'T' or 't' "
             + "followed by a maximum of two digits larger than 0.";
 
-    public static final String VALIDATION_REGEX = "^[Tt]([1-9]|0[1-9]|[1-9]\\d)$";
+    public static final String VALIDATION_REGEX = "^[Tt]([1-9]|0[1-9]|[1-9]\\d)$|^[1-9]$";
 
     public final String value;
 
@@ -25,9 +26,15 @@ public class TutGroup implements Comparable<TutGroup> {
      */
     public TutGroup(String tutGroup) {
         requireNonNull(tutGroup);
-        // Hardcode, can change in future when relaxing assumptions.
-        String processedTutGroup = tutGroup.length() == 2
-                ? tutGroup.charAt(0) + "0" + tutGroup.charAt(1) : tutGroup;
+        // Process the tutorial group to ensure it matches the format
+        String processedTutGroup = tutGroup;
+        if (tutGroup.length() == 2 && Character.toLowerCase(tutGroup.charAt(0)) == 't') {
+            // If it's a 2-character string starting with 't' or 'T', add a '0' after the 'T'
+            processedTutGroup = "T0" + tutGroup.charAt(1);
+        } else if (tutGroup.length() == 1 && Character.isDigit(tutGroup.charAt(0))) {
+            // If it's a single digit, add 'T0' prefix
+            processedTutGroup = "T0" + tutGroup;
+        }
         checkArgument(isValidTutGroup(processedTutGroup), MESSAGE_CONSTRAINTS);
         value = processedTutGroup.toUpperCase();
     }
