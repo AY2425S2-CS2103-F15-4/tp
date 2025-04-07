@@ -137,7 +137,7 @@
         "undo-command-undo": "Undo command: undo",
         "adding-a-student-add": "Adding a student: add",
         "editing-a-student-edit": "Editing a student : edit",
-        "deleting-a-student-del": "Deleting a student : del",
+        "deleting-student-s-del": "Deleting student(s): del",
         "clearing-all-entries-clear": "Clearing all entries : clear",
         "tagging-a-student-tag": "Tagging a student: tag",
         "marks-attendance-att": "Marks attendance: att",
